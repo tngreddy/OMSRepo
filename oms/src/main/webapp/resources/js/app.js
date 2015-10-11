@@ -1,10 +1,8 @@
 
-alert("gowtham");
-
-var app = angular.module('omsApp', ['ngRoute']);
+var App = angular.module('App', ['ngRoute']);
 
 //configure our routes
-app.config(function($routeProvider) {
+App.config(function($routeProvider) {
     $routeProvider
 
         .when('/oms/categoryHome', {
