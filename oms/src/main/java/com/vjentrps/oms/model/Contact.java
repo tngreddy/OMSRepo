@@ -6,8 +6,8 @@ public class Contact {
 	private Address address;
 	private String contactPerson;
 	private String contactDesignation;
-	private int phoneNo;
-	private int mobileNo;
+	private String phoneNo;
+	private String mobileNo;
 	
 	public long getContactId() {
 		return contactId;
@@ -33,16 +33,16 @@ public class Contact {
 	public void setContactDesignation(String contactDesignation) {
 		this.contactDesignation = contactDesignation;
 	}
-	public int getPhoneNo() {
+	public String getPhoneNo() {
 		return phoneNo;
 	}
-	public void setPhoneNo(int phoneNo) {
+	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public int getMobileNo() {
+	public String getMobileNo() {
 		return mobileNo;
 	}
-	public void setMobileNo(int mobileNo) {
+	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
 	

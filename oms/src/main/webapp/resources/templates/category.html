@@ -6,8 +6,13 @@
 		</div>
 		<div class="tablecontainer">
 
-			<table class="table table-hover">
-
+			<table id="categoryTable" class="table table-bordered table-striped">
+			<thead>
+                      <tr>
+                        <th>CategoryId</th>
+                        <th>CategoryName</th>
+                        </tr>
+                    </thead>
 				<tbody>
 					<tr ng-repeat="category in categories">
 						<td><span ng-bind="category.categoryId"></span></td>
@@ -19,3 +24,6 @@
 			</table>
 		</div>
 	</div>
+	
+	
+	

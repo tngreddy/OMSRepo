@@ -2,13 +2,13 @@ package com.vjentrps.oms.model;
 
 public class Category {
 	
-	private int categoryId;
+	private long categoryId;
 	private String categoryName;
 	
-	public int getCategoryId() {
+	public long getCategoryId() {
 		return categoryId;
 	}
-	public void setCategoryId(int categoryId) {
+	public void setCategoryId(long categoryId) {
 		this.categoryId = categoryId;
 	}
 	public String getCategoryName() {

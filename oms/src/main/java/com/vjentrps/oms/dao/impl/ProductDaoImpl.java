@@ -44,13 +44,16 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 				throws SQLException {
 
 			Product product = new Product();
+			Category category = new Category();
 
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
 			product.setUnitOfMeasure(resultSet.getInt("unit_of_measure"));
 			product.setUnitBasicRate(resultSet.getInt("unit_basic_rate"));
 			product.setStock(resultSet.getLong("stock"));
-			product.setCategoryId(resultSet.getLong("category_id"));
+			category.setCategoryId(resultSet.getLong("category_id"));
+			category.setCategoryName(resultSet.getString("category_name"));
+			product.setCategory(category);
 			return product;
 		}
 
@@ -60,7 +63,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 	public void addProduct(Product product) {
 		try {
 			jdbcTemplate.update(addProductQuery,
-					new Object[] { product.getProductName(), product.getCategoryId(), product.getUnitOfMeasure(), product.getUnitBasicRate(), product.getStock() });
+					new Object[] { product.getProductName(), product.getCategory().getCategoryId(), product.getUnitOfMeasure(), product.getUnitBasicRate(), product.getStock() });
 		} catch (DataAccessException dae) {
 
 		}
@@ -74,7 +77,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		try {
 			jdbcTemplate.update(
 					updateProductQuery,
-					new Object[] { product.getProductName(), product.getCategoryId(), product.getUnitOfMeasure(), product.getUnitBasicRate(), product.getStock(),
+					new Object[] { product.getProductName(), product.getCategory().getCategoryId(), product.getUnitOfMeasure(), product.getUnitBasicRate(), product.getStock(),
 							 product.getProductId() });
 		} catch (DataAccessException dae) {
 

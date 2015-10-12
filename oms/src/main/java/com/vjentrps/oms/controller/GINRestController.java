@@ -16,7 +16,7 @@ import com.vjentrps.oms.service.CategoryService;
 import com.vjentrps.oms.service.GINService;
 
 @RestController
-@RequestMapping(value="/gin")
+@RequestMapping(value="/service/gin")
 public class GINRestController {
 	
 	/*@Autowired

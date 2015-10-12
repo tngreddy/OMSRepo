@@ -1,0 +1,44 @@
+ <div class="panel panel-default">
+		<!-- Default panel contents -->
+		<div class="panel-heading">
+			<span class="lead">List of Suppliers </span>
+		</div>
+		<div class="tablecontainer">
+
+			<table class="table table-bordered table-striped">
+			<thead>
+                      <tr>
+                        <th>SupplierId</th>
+                        <th>SupplierName</th>
+                        <th>TIN_NO</th>
+                        <th>CST_NO</th>
+                        <th>ContactPerson</th>
+                        <th>ContactDesignation</th>
+                        <th>PhoneNo</th>
+                        <th>MobileNo</th>
+                        <th>Address</th>
+                        </tr>
+                    </thead>
+				<tbody>
+					<tr ng-repeat="supplier in suppliers">
+						<td><span ng-bind="supplier.supplierId"></span></td>
+						<td><span ng-bind="supplier.supplierName"></span></td>
+						<td><span ng-bind="supplier.tinNo"></span></td>
+						<td><span ng-bind="supplier.cstNo"></span></td>
+						<td><span ng-bind="supplier.contact.contactPerson"></span></td>
+						<td><span ng-bind="supplier.contact.contactDesignation"></span></td>
+						<td><span ng-bind="supplier.contact.phoneNo"></span></td>
+						<td><span ng-bind="supplier.contact.mobileNo"></span></td>
+						<td><span ng-bind="supplier.contact.address.addressLine1"></span></br>
+						<span ng-bind="supplier.contact.address.addressLine2"></span></br>
+						<span ng-bind="supplier.contact.address.city"></span></br>
+						<span ng-bind="supplier.contact.address.state"></span></br>
+						<span ng-bind="supplier.contact.address.pinCode"></span>
+						</td>
+
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>

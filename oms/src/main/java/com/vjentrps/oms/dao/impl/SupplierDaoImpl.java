@@ -135,8 +135,8 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 			contact.setContactId(resultSet.getLong("contact_id"));
 			contact.setContactPerson(resultSet.getString("contact_person"));
 			contact.setContactDesignation(resultSet.getString("contact_desgn"));
-			contact.setMobileNo(resultSet.getInt("mobile"));
-			contact.setPhoneNo(resultSet.getInt("phone"));
+			contact.setMobileNo(resultSet.getString("mobile"));
+			contact.setPhoneNo(resultSet.getString("phone"));
 			supplier.setContact(contact);
 			supplier.setSupplierId(resultSet.getLong("supplier_id"));
 			supplier.setSupplierName(resultSet.getString("supplier_name"));

@@ -14,14 +14,14 @@ import com.vjentrps.oms.model.Supplier;
 import com.vjentrps.oms.service.SupplierService;
 
 @RestController
-@RequestMapping(value="/supplier")
+@RequestMapping(value="/service/supplier")
 public class SupplierRestController {
 	
 	@Autowired
 	SupplierService supplierService;
  
     @RequestMapping(method = RequestMethod.GET)
-    public List<Supplier> getCustomers() {
+    public List<Supplier> getSuppliers() {
               
         List<Supplier> suppliers = new ArrayList<Supplier>();
    	

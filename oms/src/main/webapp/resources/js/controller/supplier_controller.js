@@ -1,21 +1,21 @@
 'use strict';
 
-omsApp.controller('CategoryController', ['$scope', 'CategoryService', function($scope, CategoryService) {
-			$scope.categories=[];
+omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($scope, SupplierService) {
+			$scope.suppliers=[];
                         
-			$scope.fetchAllCategories = function(){
-              CategoryService.fetchAllCategories()
+			$scope.fetchAllSuppliers = function(){
+				SupplierService.fetchAllSuppliers()
                   .then(
       					       function(data) {
-      					    	 $scope.categories = data;
+      					    	 $scope.suppliers = data;
       					       },
             					function(errResponse){
-            						console.error('Error while fetching Currencies');
+            						console.error('Error while fetching Suppliers');
             					}
       			       );
           };
           
-          $scope.fetchAllCategories();
+          $scope.fetchAllSuppliers();
            
          }]);
 

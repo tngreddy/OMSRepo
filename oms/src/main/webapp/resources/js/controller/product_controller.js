@@ -1,10 +1,10 @@
 'use strict';
 
-App.controller('ProductController', ['$scope', 'ProductService', function($scope, ProductService) {
+omsApp.controller('ProductController', ['$scope', 'ProductService', function($scope, ProductService) {
 			$scope.products=[];
                         
 			$scope.fetchAllProducts = function(){
-				ProductService.fetchAllCategories()
+				ProductService.fetchAllProducts()
                   .then(
       					       function(data) {
       					    	 $scope.products = data;

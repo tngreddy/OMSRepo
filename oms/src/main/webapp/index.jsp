@@ -13,9 +13,12 @@
 		<link rel="stylesheet" href="<c:url value="/resources/css/skins/_all-skins.min.css" />" />
 		<!-- bootstrap wysihtml5 - text editor -->
 		<link href="<c:url value="/resources/css/bootstrap3-wysihtml5.min.css" />" rel="stylesheet">
+		
+		<!-- DataTables -->
+       <link rel="stylesheet" href="<c:url value="/resources/css/dataTables.bootstrap.css" />" >
     	
 	</head>
-<body ng-app="App" class="hold-transition skin-blue sidebar-mini">
+<body ng-app="omsApp" class="hold-transition skin-blue sidebar-mini">
 	<!-- <header>
 		<nav class="navbar navbar-default">
 			<div class="container">
@@ -46,14 +49,16 @@
             <span class="sr-only">Toggle navigation</span>
           </a>
           
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-left">
 			<li><a href="/oms/"><i class="fa fa-home"></i>Home</a></li>
-			<li><a href="/oms/categoryHome"><i class="fa fa-shield"></i>Category</a></li>
-			<li><a href="/oms/productHome"><i class="fa fa-comment">Product</i></a></li>
+			<li><a ui-sref="category"><i class="fa fa-shield"></i>Category</a></li>
+			<li><a ui-sref="product"><i class="fa fa-shield">Product</i></a></li>
+			<li><a ui-sref="customer"><i class="fa fa-shield">Customer</i></a></li>
+			<li><a ui-sref="supplier"><i class="fa fa-shield">Supplier</i></a></li>
 		</ul>
 				
 				
-          <div class="navbar-custom-menu">
+           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- Messages: style can be found in dropdown.less-->
               <li class="dropdown messages-menu">
@@ -288,7 +293,7 @@
           </div>
         </nav>
       </header>
-      <aside class="main-sidebar">
+     <%-- <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar" style="height: auto;">
           <!-- Sidebar user panel -->
@@ -449,13 +454,13 @@
           </ul>
         </section>
         <!-- /.sidebar -->
-      </aside>
+      </aside> --%>
 
 	<div id="main">
-		<div ng-view></div>
+		<div ui-view></div>
 	</div>
 <!-- jQuery 2.1.4 -->
-<script src="<c:url value="/resources/js/jQuery-2.1.4.min.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery/jQuery-2.1.4.min.js"/>"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
@@ -463,8 +468,18 @@
 
 <script src="<c:url value="/resources/js/angular/angular.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-route.js" />"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.11/angular-ui-router.js"></script>
+<script src="<c:url value="/resources/js/datatables/dataTables.bootstrap.js" />"></script>
+<script src="<c:url value="/resources/js/datatables/jquery.dataTables.min.js" />"></script>
+
 <script src="<c:url value="/resources/js/app.js" />"></script>
 <script src="<c:url value="/resources/js/controller/category_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/category_service.js" />"></script>
 <script src="<c:url value="/resources/js/controller/product_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/product_service.js" />"></script>
+<script src="<c:url value="/resources/js/controller/customer_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/customer_service.js" />"></script>
+<script src="<c:url value="/resources/js/controller/supplier_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/supplier_service.js" />"></script>
 </body>
 </html>

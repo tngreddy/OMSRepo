@@ -14,7 +14,7 @@ import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.service.CategoryService;
 
 @RestController
-@RequestMapping(value="/category")
+@RequestMapping(value="/service/category")
 public class CategoryRestController {
 	
 	@Autowired

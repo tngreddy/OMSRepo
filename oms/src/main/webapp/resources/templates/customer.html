@@ -1,0 +1,44 @@
+ <div class="panel panel-default">
+		<!-- Default panel contents -->
+		<div class="panel-heading">
+			<span class="lead">List of Customers </span>
+		</div>
+		<div class="tablecontainer">
+
+			<table class="table table-bordered table-striped">
+			<thead>
+                      <tr>
+                        <th>CustomerId</th>
+                        <th>CustomerName</th>
+                        <th>TIN_NO</th>
+                        <th>CST_NO</th>
+                        <th>ContactPerson</th>
+                        <th>ContactDesignation</th>
+                        <th>PhoneNo</th>
+                        <th>MobileNo</th>
+                        <th>Address</th>
+                        </tr>
+                    </thead>
+				<tbody>
+					<tr ng-repeat="customer in customers">
+						<td><span ng-bind="customer.customerId"></span></td>
+						<td><span ng-bind="customer.customerName"></span></td>
+						<td><span ng-bind="customer.tinNo"></span></td>
+						<td><span ng-bind="customer.cstNo"></span></td>
+						<td><span ng-bind="customer.contact.contactPerson"></span></td>
+						<td><span ng-bind="customer.contact.contactDesignation"></span></td>
+						<td><span ng-bind="customer.contact.phoneNo"></span></td>
+						<td><span ng-bind="customer.contact.mobileNo"></span></td>
+						<td><span ng-bind="customer.contact.address.addressLine1"></span></br>
+						<span ng-bind="customer.contact.address.addressLine2"></span></br>
+						<span ng-bind="customer.contact.address.city"></span></br>
+						<span ng-bind="customer.contact.address.state"></span></br>
+						<span ng-bind="customer.contact.address.pinCode"></span>
+						</td>
+
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>

@@ -16,7 +16,7 @@ import com.vjentrps.oms.model.Customer;
 import com.vjentrps.oms.service.CustomerService;
 
 @RestController
-@RequestMapping(value="/customer")
+@RequestMapping(value="/service/customer")
 public class CustomerRestController {
 	
 	@Autowired
@@ -55,8 +55,8 @@ public class CustomerRestController {
     	contact.setAddress(address);
     	contact.setContactPerson("rao");
     	contact.setContactDesignation("maasdfnager");
-    	contact.setMobileNo(1234566789);
-    	contact.setPhoneNo(1234567891);
+    	contact.setMobileNo("1234566789");
+    	contact.setPhoneNo("1234567891");
     	customer.setContact(contact);
     	customer.setCustomerName("manasdfasdfastech");
     	customer.setCstNo("12asdfa3abc");
@@ -86,8 +86,8 @@ public class CustomerRestController {
     	contact.setContactId(1);
     	contact.setContactPerson("rao");
     	contact.setContactDesignation("maasdfnager");
-    	contact.setMobileNo(1234566789);
-    	contact.setPhoneNo(1234567891);
+    	contact.setMobileNo("1234566789");
+    	contact.setPhoneNo("1234567891");
     	customer.setContact(contact);
     	customer.setCustomerName("manasdfasdfastech");
     	customer.setCstNo("12asdfa3abc");

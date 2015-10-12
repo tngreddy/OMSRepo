@@ -40,7 +40,7 @@
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
 
-	<bean id="jspViewResolver"
+	<!-- <bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 
 		<property name="prefix">
@@ -49,8 +49,8 @@
 		<property name="suffix">
 			<value>.jsp</value>
 		</property>
-		<!-- <property name="order" value="2" /> -->
-	</bean>
+		<property name="order" value="2" />
+	</bean> -->
 	
 	
 	<bean id="dataSource" destroy-method="close"

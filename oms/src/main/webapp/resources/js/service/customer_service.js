@@ -1,17 +1,17 @@
 'use strict';
 
-omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
+omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 
 	return {
 		
-			fetchAllCategories: function() {
-					return $http.get('http://localhost:8080/oms/service/category/')
+			fetchAllCustomers: function() {
+					return $http.get('http://localhost:8080/oms/service/customer/')
 							.then(
 									function(response){
 										return response.data;
 									}, 
 									function(errResponse){
-										console.error('Error while fetching categories');
+										console.error('Error while fetching customers');
 										return $q.reject(errResponse);
 									}
 							);

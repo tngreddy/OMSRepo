@@ -4,7 +4,7 @@ public class Product {
 	
 	private long productId;
 	private String productName;
-	private long categoryId;
+	private Category category;
 	private int unitOfMeasure;
 	private int unitBasicRate;
 	private long stock;
@@ -20,11 +20,12 @@ public class Product {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public long getCategoryId() {
-		return categoryId;
+	
+	public Category getCategory() {
+		return category;
 	}
-	public void setCategoryId(long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 	public int getUnitOfMeasure() {
 		return unitOfMeasure;

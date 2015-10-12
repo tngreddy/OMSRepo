@@ -1,74 +1,38 @@
 
-var App = angular.module('App', ['ngRoute']);
+var omsApp = angular.module('omsApp', ['ui.router']);
 
-//configure our routes
-App.config(function($routeProvider) {
-    $routeProvider
-
-        .when('/oms/categoryHome', {
-            templateUrl : 'views/category.html',
-            controller  : 'controller/categoryController'
-        })
-
-        .when('/oms/productHome', {
-            templateUrl : 'views/product.html',
-            controller  : 'controller/productController'
-        })
-
-        .when('/customerHome', {
-            templateUrl : 'views/customer.html',
-            controller  : 'controller/customerController'
-        })
-        
-        .when('/supplierHome', {
-            templateUrl : 'views/supplier.html',
-            controller  : 'controller/supplierController'
-         
-        })
-        .otherwise({
-				redirectTo: '/'
-			
-        });
-});
-
-
-
-/*app.controller('mainController', function($scope, $http) {
-	
-	
-	
-});*/
+omsApp.config(function($stateProvider, $urlRouterProvider) {
+	    
+	    $urlRouterProvider.otherwise('/oms/');
+	    
+	    $stateProvider
+	        
+	        .state('category', {
+	        	url: '/categoryHome',
+	            templateUrl: 'resources/templates/category.html',
+	            controller: 'CategoryController'
+	        })
+	        
+	        .state('product', {
+	        	url: '/productHome',
+	            templateUrl: 'resources/templates/product.html',
+	            controller: 'ProductController'
+	        })
+	        
+	        .state('customer', {
+	        	url: '/customerHome',
+	            templateUrl: 'resources/templates/customer.html',
+	            controller: 'CustomerController'
+	        })
+	        
+	        .state('supplier', {
+	        	url: '/supplierHome',
+	            templateUrl: 'resources/templates/supplier.html',
+	            controller: 'SupplierController'
+	        });
+	        
+	});
 
 
-/*
-//configure our routes
-scotchApp.config(function($routeProvider) {
-    $routeProvider
 
-        .when('/category', {
-            templateUrl : 'views/category.html',
-            controller  : 'controller/categoryController'
-        })
 
-        .when('/product', {
-            templateUrl : 'views/product.html',
-            controller  : 'controller/productController'
-        })
-
-        .when('/customer', {
-            templateUrl : 'views/customer.html',
-            controller  : 'controller/customerController'
-        })
-        
-        .when('/supplier', {
-            templateUrl : 'views/supplier.html',
-            controller  : 'controller/supplierController'
-         
-        })
-        .otherwise({
-				redirectTo: '/'
-			
-        });
-});
-
-*/

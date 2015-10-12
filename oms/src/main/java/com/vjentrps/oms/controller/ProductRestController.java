@@ -14,7 +14,7 @@ import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.service.ProductService;
 
 @RestController
-@RequestMapping(value = "/product")
+@RequestMapping(value = "/service/product")
 public class ProductRestController {
 
 	@Autowired
@@ -35,7 +35,7 @@ public class ProductRestController {
 		product.setProductName("Wireless123");
 		product.setUnitBasicRate(5);
 		product.setUnitOfMeasure(8);
-		product.setCategoryId(2);
+		//product.setCategoryId(2);
 		product.setStock(50);
 		productService.addProduct(product);
 		return "Success";
