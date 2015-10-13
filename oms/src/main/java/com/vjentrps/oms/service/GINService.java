@@ -14,7 +14,7 @@ public interface GINService {
 
 	void deleteGIN(long ginNo);
 
-	void updateGINStatus(long ginNo);
+	void updateGINStatus(GoodsInwardNote gin);
 	
 	
 

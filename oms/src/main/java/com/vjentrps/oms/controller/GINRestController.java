@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.model.Category;
+import com.vjentrps.oms.model.Constants;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.service.CategoryService;
 import com.vjentrps.oms.service.GINService;
@@ -61,7 +62,10 @@ public class GINRestController {
     @RequestMapping(value="/{ginNo}",method = RequestMethod.PUT)
     public String updateGINStatus(@PathVariable long ginNo) {
     	
-    	ginService.updateGINStatus(ginNo);
+    	GoodsInwardNote gin = new GoodsInwardNote();
+    	gin.setGinNo(ginNo);
+    	gin.setStatus(Constants.CLOSED);
+    	ginService.updateGINStatus(gin);
  
            return "Success";
     }

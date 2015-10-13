@@ -44,7 +44,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 	public void addCategory(Category category) {
 
 		try {
-			jdbcTemplate.update(addCategoryQuery,
+			jdbcTemplate.update(createGINQuery,
 					new Object[] { category.getCategoryName() });
 		} catch (DataAccessException dae) {
 
@@ -113,9 +113,13 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 	}*/
 
 	@Override
-	public Object createGIN(GoodsInwardNote gin) {
-		// TODO Auto-generated method stub
-		return null;
+	public void createGIN(GoodsInwardNote gin) {
+		try {
+			jdbcTemplate.update(createGINQuery,
+					new Object[] { gin.getProduct().getProductId(), gin.getGoodIn(), gin.getDefectiveIn(), gin.getStatus() });
+		} catch (DataAccessException dae) {
+
+		}
 	}
 
 	@Override
@@ -126,19 +130,34 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 
 	@Override
 	public void updateGIN(GoodsInwardNote gin) {
-		// TODO Auto-generated method stub
+		try {
+			jdbcTemplate.update(updateGINQuery,
+					new Object[] { gin.getProduct().getProductId(), gin.getGoodIn(), gin.getDefectiveIn(), gin.getStatus() });
+		} catch (DataAccessException dae) {
+
+		}
 		
 	}
 
 	@Override
 	public void deleteGIN(long ginNo) {
-		// TODO Auto-generated method stub
+		try {
+			jdbcTemplate.update(deleteGINQuery,
+					new Object[] { ginNo });
+		} catch (DataAccessException dae) {
+
+		}
 		
 	}
 
 	@Override
-	public void updateGINStatus(long ginNo) {
-		// TODO Auto-generated method stub
+	public void updateGINStatus(GoodsInwardNote gin) {
+		try {
+			jdbcTemplate.update(deleteGINQuery,
+					new Object[] { gin.getStatus(), gin.getGinNo() });
+		} catch (DataAccessException dae) {
+
+		}
 		
 	}
 }
