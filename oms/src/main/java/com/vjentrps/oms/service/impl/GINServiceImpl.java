@@ -49,8 +49,8 @@ public class GINServiceImpl  implements GINService{
 	}
 
 	@Override
-	public void updateGINStatus(long ginNo) {
-		 ginDao.updateGINStatus(ginNo);
+	public void updateGINStatus(GoodsInwardNote gin) {
+		 ginDao.updateGINStatus(gin);
 		
 	}
 
