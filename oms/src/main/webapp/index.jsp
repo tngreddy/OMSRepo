@@ -40,7 +40,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>LT</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Admin</b>LTE</span>
+          <span class="logo-lg"><b>OMS</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -51,10 +51,10 @@
           
           <ul class="nav navbar-nav navbar-left">
 			<li><a href="/oms/"><i class="fa fa-home"></i>Home</a></li>
-			<li><a ui-sref="category"><i class="fa fa-shield"></i>Category</a></li>
-			<li><a ui-sref="product"><i class="fa fa-shield">Product</i></a></li>
-			<li><a ui-sref="customer"><i class="fa fa-shield">Customer</i></a></li>
-			<li><a ui-sref="supplier"><i class="fa fa-shield">Supplier</i></a></li>
+			<li><a ui-sref="category"><i class="fa fa-th-large"></i>Category</a></li>
+			<li><a ui-sref="product"><i class="fa fa-star">Product</i></a></li>
+			<li><a ui-sref="customer"><i class="fa fa-users">Customer</i></a></li>
+			<li><a ui-sref="supplier"><i class="fa fa-users">Supplier</i></a></li>
 		</ul>
 				
 				
