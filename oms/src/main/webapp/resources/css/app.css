@@ -1,4 +1,4 @@
-body, #mainWrapper {
+/*body, #mainWrapper {
 	height: 70%;
 	background-color:rgb(245, 245, 245);
 }
@@ -39,4 +39,12 @@ body, .form-control{
 
 .custom-width {
     width: 80px !important;
+}*/
+
+body .content-wrapper {
+	margin-left: 0;
+}
+body #categoryTableWrapper {
+	width: 980px;
+	margin: 0 auto;
 }

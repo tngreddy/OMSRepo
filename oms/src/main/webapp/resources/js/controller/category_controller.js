@@ -2,7 +2,7 @@
 
 omsApp.controller('CategoryController', ['$scope', 'CategoryService', function($scope, CategoryService) {
 			$scope.categories=[];
-                        
+
 			$scope.fetchAllCategories = function(){
               CategoryService.fetchAllCategories()
                   .then(
@@ -14,18 +14,19 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService', function($
             					}
       			       );
           };
-          
+
           $scope.fetchAllCategories();
-           
+
          }]);
 
-$(function () {
+/*$(function () {
   $('#categoryTable').DataTable({
     "paging": true,
-    "lengthChange": false,
-    "searching": false,
+    "lengthChange": true,
+    "searching": true,
     "ordering": true,
     "info": true,
     "autoWidth": false
   });
-});
+	$('#categoryTable').DataTable();
+});*/

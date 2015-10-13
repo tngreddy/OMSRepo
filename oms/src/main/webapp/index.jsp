@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
-		
+
 		<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Font Awesome -->
 	    <link rel="stylesheet" href="<c:url value="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>"/>
@@ -13,13 +13,13 @@
 		<link rel="stylesheet" href="<c:url value="/resources/css/skins/_all-skins.min.css" />" />
 		<!-- bootstrap wysihtml5 - text editor -->
 		<link href="<c:url value="/resources/css/bootstrap3-wysihtml5.min.css" />" rel="stylesheet">
-		
+
 		<!-- DataTables -->
        <link rel="stylesheet" href="<c:url value="/resources/css/dataTables.bootstrap.css" />" >
-    	
+
 	</head>
 <body ng-app="omsApp" class="hold-transition skin-blue sidebar-mini">
-	
+
 	<header class="main-header">
         <!-- Logo -->
         <a href="/oms" class="logo">
@@ -34,7 +34,7 @@
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-          
+
           <ul class="nav navbar-nav navbar-left">
 			<li><a href="/oms/"><i class="fa fa-home"></i>Home</a></li>
 			<li><a ui-sref="category"><i class="fa fa-th-large"></i>Category</a></li>
@@ -42,8 +42,8 @@
 			<li><a ui-sref="customer"><i class="fa fa-users">Customer</i></a></li>
 			<li><a ui-sref="supplier"><i class="fa fa-users">Supplier</i></a></li>
 		</ul>
-				
-				
+
+
            <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- Messages: style can be found in dropdown.less-->
@@ -443,8 +443,79 @@
       </aside> --%>
 
 	<div id="main">
-		<div ui-view></div>
+		<div ui-view>
+			<div class="content-wrapper">
+				<section class="content-header">
+		          <h1>
+		            Dashboard
+		            <small>Control panel</small>
+		          </h1>
+		          <ol class="breadcrumb">
+		            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		            <li class="active">Dashboard</li>
+		          </ol>
+		        </section>
+				<section class="content">
+				<div class="row">
+		            <div class="col-lg-3 col-xs-6">
+		              <!-- small box -->
+		              <div class="small-box bg-aqua">
+		                <div class="inner">
+		                  <h3>150</h3>
+		                  <p>New Orders</p>
+		                </div>
+		                <div class="icon">
+		                  <i class="ion ion-bag"></i>
+		                </div>
+		                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+		              </div>
+		            </div><!-- ./col -->
+		            <div class="col-lg-3 col-xs-6">
+		              <!-- small box -->
+		              <div class="small-box bg-green">
+		                <div class="inner">
+		                  <h3>53<sup style="font-size: 20px">%</sup></h3>
+		                  <p>Bounce Rate</p>
+		                </div>
+		                <div class="icon">
+		                  <i class="ion ion-stats-bars"></i>
+		                </div>
+		                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+		              </div>
+		            </div><!-- ./col -->
+		            <div class="col-lg-3 col-xs-6">
+		              <!-- small box -->
+		              <div class="small-box bg-yellow">
+		                <div class="inner">
+		                  <h3>44</h3>
+		                  <p>User Registrations</p>
+		                </div>
+		                <div class="icon">
+		                  <i class="ion ion-person-add"></i>
+		                </div>
+		                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+		              </div>
+		            </div><!-- ./col -->
+		            <div class="col-lg-3 col-xs-6">
+		              <!-- small box -->
+		              <div class="small-box bg-red">
+		                <div class="inner">
+		                  <h3>65</h3>
+		                  <p>Unique Visitors</p>
+		                </div>
+		                <div class="icon">
+		                  <i class="ion ion-pie-graph"></i>
+		                </div>
+		                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+		              </div>
+		            </div><!-- ./col -->
+		          </div>
+						</section>
+			</div>
+
+		</div>
 	</div>
+
 <!-- jQuery 2.1.4 -->
 <script src="<c:url value="/resources/js/jquery/jQuery-2.1.4.min.js"/>"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -455,8 +526,9 @@
 <script src="<c:url value="/resources/js/angular/angular.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-route.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.11/angular-ui-router.js"></script>
-<script src="<c:url value="/resources/js/datatables/dataTables.bootstrap.js" />"></script>
 <script src="<c:url value="/resources/js/datatables/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/datatables/dataTables.bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/datatables/datatables.min.js" />"></script>
 
 <script src="<c:url value="/resources/js/app.js" />"></script>
 <script src="<c:url value="/resources/js/controller/category_controller.js" />"></script>
