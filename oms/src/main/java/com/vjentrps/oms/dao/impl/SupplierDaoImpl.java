@@ -35,6 +35,9 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 
 	@Value("${GET_SUPPLIER_IDS}")
 	private String getSupplierIdsQuery;
+	
+	@Value("${SUPPLIER_COUNT}")
+	private String supplierCountQuery;
 
 	@Override
 	public void addSupplier(Supplier supplier) {
@@ -114,6 +117,17 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 		return supplier;
 	}
 
+	
+	@Override
+	public int getSupplierCount() {
+		int count = 0;
+		try {
+			count = jdbcTemplate.queryForObject(supplierCountQuery, Integer.class);
+		} catch (DataAccessException dae) {
+
+		}
+		return count;
+	}
 
 
 	private static class SupplierRowMapper implements RowMapper<Supplier> {

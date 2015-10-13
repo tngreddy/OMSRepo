@@ -13,28 +13,33 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CategoryDao;
+import com.vjentrps.oms.dao.GINDao;
 import com.vjentrps.oms.model.Category;
+import com.vjentrps.oms.model.GoodsInwardNote;
 
 @Repository
-public class CategoryDaoImpl extends BaseDao implements CategoryDao {
+public class GINDaoImpl extends BaseDao implements GINDao {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Value("${ADD_CATEGORY}")
-	private String addCategoryQuery;
+	@Value("${CREATE_GIN}")
+	private String createGINQuery;
 
-	@Value("${UPDATE_CATEGORY}")
-	private String updateCategoryQuery;
+	@Value("${UPDATE_GIN}")
+	private String updateGINQuery;
 
-	@Value("${FETCH_CATEGORIES}")
-	private String fetchAllCategoriesQuery;
+	@Value("${FETCH_GINS}")
+	private String fetchAllGINSQuery;
 
-	@Value("${DELETE_CATEGORY}")
-	private String deleteCategoryQuery;
+	@Value("${DELETE_GIN}")
+	private String deleteGINQuery;
 	
-	@Value("${CATEGORY_COUNT}")
-	private String categoryCountQuery;
-
+	@Value("${UPDATE_GIN_STATUS}")
+	private String updateGINStatusQuery;
+	
+	
+	
+/*
 	@Override
 	public void addCategory(Category category) {
 
@@ -105,16 +110,35 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 			return category;
 		}
 
+	}*/
+
+	@Override
+	public Object createGIN(GoodsInwardNote gin) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public int getCategoryCount() {
-		int count = 0;
-		try {
-			count = jdbcTemplate.queryForObject(categoryCountQuery, Integer.class);
-		} catch (DataAccessException dae) {
+	public List<GoodsInwardNote> fetchAllGINs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-		}
-		return count;
+	@Override
+	public void updateGIN(GoodsInwardNote gin) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteGIN(long ginNo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateGINStatus(long ginNo) {
+		// TODO Auto-generated method stub
+		
 	}
 }

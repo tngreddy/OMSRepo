@@ -56,5 +56,13 @@ public class CategoryRestController {
            return "Success";
     }
     
+    @RequestMapping(value="/count",method = RequestMethod.GET)
+    public int getCategoryCount() {
+    	
+    	return categoryService.getCategoryCount();
+ 
+           
+    }
+    
  
 }

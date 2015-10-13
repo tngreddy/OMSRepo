@@ -44,11 +44,24 @@ public class ProductServiceImpl  implements ProductService{
 	public List<Product> getAllproducts() {
 		return productDao.fetchAllproducts();
 	}
+	
+	@Override
+	public Product getProductById(long productId) {
+		
+		return productDao.getProductById(productId);
+	}
 
 	@Override
 	public void updateStock(long productId, long stock) {
 		productDao.updateStock(productId, stock);
 		
 	}
+
+	@Override
+	public int getProductCount() {
+		return productDao.getProductCount();
+	}
+
+	
 
 }

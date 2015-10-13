@@ -108,4 +108,11 @@ public class CustomerRestController {
     }
     
  
+    @RequestMapping(value="/count",method = RequestMethod.GET)
+    public int getCustomerCount() {
+    	
+    	return customerService.getCustomerCount();
+ 
+           
+    }
 }

@@ -13,6 +13,8 @@ public interface CategoryService {
 	 void updateCategory(Category category);
 	 
 	 List<Category> listCategories();
+
+	 int getCategoryCount();
 	 
 	
 }

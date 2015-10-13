@@ -83,8 +83,12 @@ public class SupplierServiceImpl  implements SupplierService{
 
 	@Override
 	public Supplier getSupplierById(long supplierId) {
-		// TODO Auto-generated method stub
 		return supplierDao.getSupplierById(supplierId);
+	}
+
+	@Override
+	public int getSupplierCount() {
+		return supplierDao.getSupplierCount();
 	}
 
 	

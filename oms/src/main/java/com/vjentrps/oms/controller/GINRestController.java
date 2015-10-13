@@ -19,23 +19,23 @@ import com.vjentrps.oms.service.GINService;
 @RequestMapping(value="/service/gin")
 public class GINRestController {
 	
-	/*@Autowired
-	GINService ginService;*/
+	@Autowired
+	GINService ginService;
  
     @RequestMapping(method = RequestMethod.GET)
-    public List<Category> getGINs() {
+    public List<GoodsInwardNote> getGINs() {
               
-        List<Category> categories = new ArrayList<Category>();
+        List<GoodsInwardNote> gins = new ArrayList<GoodsInwardNote>();
    	
-    	//categories = categoryService.listCategories();
-        return categories;
+        	gins = ginService.listGINs();
+        return gins;
     }
     
     
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public String createGIN(GoodsInwardNote gin) {
  
-       //categoryService.addCategory(category);
+    	ginService.createGIN(gin);
        
         return "Success";
     }
@@ -45,7 +45,7 @@ public class GINRestController {
     @RequestMapping(method = RequestMethod.PUT)
     public String updateGIN(GoodsInwardNote gin) {
  
-        //categoryService.updateCategory(category);
+    	ginService.updateGIN(gin);
         
          return "Success";
     }
@@ -53,7 +53,7 @@ public class GINRestController {
     @RequestMapping(value="/{ginNo}",method = RequestMethod.DELETE)
     public String deleteCategory(@PathVariable long ginNo) {
     	
-    	 //categoryService.deleteCategory(categoryId);
+    	ginService.deleteGIN(ginNo);
  
            return "Success";
     }
@@ -61,7 +61,7 @@ public class GINRestController {
     @RequestMapping(value="/{ginNo}",method = RequestMethod.PUT)
     public String updateGINStatus(@PathVariable long ginNo) {
     	
-    	 //categoryService.deleteCategory(categoryId);
+    	ginService.updateGINStatus(ginNo);
  
            return "Success";
     }

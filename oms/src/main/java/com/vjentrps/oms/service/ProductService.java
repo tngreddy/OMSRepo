@@ -16,6 +16,10 @@ public interface ProductService {
 	 List<Product> getAllproducts();
 	 
 	 void updateStock(long productId, long stock);
+
+	Product getProductById(long productId);
+
+	int getProductCount();
 	 
 	
 }

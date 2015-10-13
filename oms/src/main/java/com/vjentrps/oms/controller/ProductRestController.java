@@ -28,6 +28,13 @@ public class ProductRestController {
 		products = productService.getAllproducts();
 		return products;
 	}
+	
+	@RequestMapping(value = "/{productId}", method = RequestMethod.GET)
+	public Product getProduct(@PathVariable long productId) {
+
+		Product product = productService.getProductById(productId);
+		return product;
+	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public String addproduct(Product product) {
@@ -48,7 +55,7 @@ public class ProductRestController {
 		return "Success";
 	}
 
-	@RequestMapping(value = "/{productid}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{productId}", method = RequestMethod.DELETE)
 	public String deleteProduct(@PathVariable int productId) {
 
 		productService.deleteProduct(productId);
@@ -57,12 +64,20 @@ public class ProductRestController {
 	}
 	
 	
-	@RequestMapping(value = "/{productid}/stock/{stock}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{productId}/stock/{stock}", method = RequestMethod.DELETE)
 	public String updateStock(@PathVariable long productId, @PathVariable long stock) {
 
 		productService.updateStock(productId, stock);
 
 		return "Success";
 	}
+	
+	@RequestMapping(value="/count",method = RequestMethod.GET)
+    public int getProductCount() {
+    	
+    	return productService.getProductCount();
+ 
+           
+    }
 
 }

@@ -9,44 +9,49 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vjentrps.oms.dao.CategoryDao;
+import com.vjentrps.oms.dao.GINDao;
 import com.vjentrps.oms.model.Category;
+import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.service.CategoryService;
+import com.vjentrps.oms.service.GINService;
 
 @Service
 @Transactional
-public class CategoryServiceImpl  implements CategoryService{
+public class GINServiceImpl  implements GINService{
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	public CategoryDao categoryDao;
+	private GINDao ginDao;
 	
+		
 	@Override
-	public void addCategory(Category category) {
-		categoryDao.addCategory(category);
+	public void createGIN(GoodsInwardNote gin) {
+		 ginDao.createGIN(gin);
 		
 	}
 
 	@Override
-	public void deleteCategory(long CategoryId) {
-		categoryDao.deleteCategory(CategoryId);
+	public List<GoodsInwardNote> listGINs() {
+		return ginDao.fetchAllGINs();
+	}
+
+	@Override
+	public void updateGIN(GoodsInwardNote gin) {
+		 ginDao.updateGIN(gin);
 		
 	}
 
 	@Override
-	public void updateCategory(Category category) {
-		categoryDao.updateCategory(category);
+	public void deleteGIN(long ginNo) {
+		 ginDao.deleteGIN(ginNo);
 		
 	}
 
 	@Override
-	public List<Category> listCategories() {
-		return categoryDao.fetchAllCategories();
-	}
-
-	@Override
-	public int getCategoryCount() {
-		return categoryDao.getCategoryCount();
+	public void updateGINStatus(long ginNo) {
+		 ginDao.updateGINStatus(ginNo);
+		
 	}
 
 }

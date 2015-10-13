@@ -1,21 +1,19 @@
-package com.vjentrps.oms.service;
+package com.vjentrps.oms.dao;
 
 import java.util.List;
 
 import com.vjentrps.oms.model.GoodsInwardNote;
 
-public interface GINService {
-	
-	void createGIN(GoodsInwardNote gin);
+public interface GINDao {
 
-	List<GoodsInwardNote> listGINs();
+	Object createGIN(GoodsInwardNote gin);
+
+	List<GoodsInwardNote> fetchAllGINs();
 
 	void updateGIN(GoodsInwardNote gin);
 
 	void deleteGIN(long ginNo);
 
 	void updateGINStatus(long ginNo);
-	
-	
 
 }

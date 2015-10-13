@@ -16,6 +16,8 @@ public interface CustomerService {
 
 	Customer getCustomerById(long customerId);
 
+	int getCustomerCount();
+
 	 
 	
 }

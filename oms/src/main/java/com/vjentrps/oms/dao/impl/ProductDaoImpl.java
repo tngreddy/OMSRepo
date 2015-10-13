@@ -29,12 +29,18 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 
 	@Value("${FETCH_PRODUCTS}")
 	private String fetchAllProductsQuery;
+	
+	@Value("${GET_PRODUCT}")
+	private String getProductQuery;
 
 	@Value("${DELETE_PRODUCT}")
 	private String deleteProductQuery;
 	
 	@Value("${UPDATE_STOCK}")
 	private String updateStockQuery;
+	
+	@Value("${PRODUCT_COUNT}")
+	private String productCountQuery;
 
 	
 		
@@ -124,5 +130,36 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 
 		}
 		
+	}
+
+	@Override
+	public Product getProductById(long productId) {
+		
+		Product product = null;
+
+		ProductRowMapper resultSetExtractor = new ProductRowMapper();
+		try {
+			product = jdbcTemplate.queryForObject(getProductQuery,new Object[] { productId },
+					resultSetExtractor);
+		} catch (EmptyResultDataAccessException emptyDataAccessException) {
+			// log.debug();
+
+		} catch (DataAccessException dataAccessException) {
+
+		}
+		return product;
+	}
+
+
+
+	@Override
+	public int getProductCount() {
+		int count = 0;
+		try {
+			count = jdbcTemplate.queryForObject(productCountQuery, Integer.class);
+		} catch (DataAccessException dae) {
+
+		}
+		return count;
 	}
 }

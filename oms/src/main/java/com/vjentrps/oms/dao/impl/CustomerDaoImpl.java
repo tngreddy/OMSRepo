@@ -36,6 +36,9 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	@Value("${GET_CUST_IDS}")
 	private String getCustIdsQuery;
 	
+	@Value("${CUSTOMER_COUNT}")
+	private String customerCountQuery;
+	
 
 	@Override
 	public void addCustomer(Customer customer) {
@@ -116,6 +119,19 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 		}
 		return customer;
 	}
+	
+	
+	@Override
+	public int getCustomerCount() {
+		int count = 0;
+		try {
+			count = jdbcTemplate.queryForObject(customerCountQuery, Integer.class);
+		} catch (DataAccessException dae) {
+
+		}
+		return count;
+	}
+
 	
 	private static class CustomerRowMapper implements RowMapper<Customer> {
 

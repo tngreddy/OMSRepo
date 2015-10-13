@@ -85,4 +85,9 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDao.getCustomerById(customerId);
 	}
 
+	@Override
+	public int getCustomerCount() {
+		return customerDao.getCustomerCount();
+	}
+
 }

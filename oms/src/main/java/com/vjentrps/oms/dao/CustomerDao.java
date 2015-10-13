@@ -18,4 +18,6 @@ public interface CustomerDao {
 	 Customer getCustomerById(long customerId);
 	 
 	 Customer getCustIds(long customerId);
+
+	int getCustomerCount();
 }

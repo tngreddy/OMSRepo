@@ -15,6 +15,8 @@ public interface SupplierService {
 	 List<Supplier> listSuppliers();
 
 	 Supplier getSupplierById(long supplierId);
+
+	int getSupplierCount();
 	 
 	
 }

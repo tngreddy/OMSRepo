@@ -14,4 +14,6 @@ public interface CategoryDao {
 	 
 	 List<Category> fetchAllCategories();
 
+	int getCategoryCount();
+
 }

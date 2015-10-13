@@ -18,4 +18,6 @@ public interface SupplierDao {
 	Supplier getSupplierById(long supplierId);
 	
 	Supplier getSupplierIds(long supplierId);
+
+	int getSupplierCount();
 }

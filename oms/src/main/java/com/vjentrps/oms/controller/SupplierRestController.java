@@ -64,5 +64,12 @@ public class SupplierRestController {
            return "Success";
     }
     
+    @RequestMapping(value="/count",method = RequestMethod.GET)
+    public int getSupplierCount() {
+    	
+    	return supplierService.getSupplierCount();
+ 
+           
+    }
  
 }

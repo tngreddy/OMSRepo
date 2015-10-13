@@ -16,4 +16,8 @@ public interface ProductDao {
 	 
 	 void updateStock(long productId, long stock);
 
+	Product getProductById(long productId);
+
+	int getProductCount();
+
 }
