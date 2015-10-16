@@ -1,12 +1,13 @@
 
-var omsApp = angular.module('omsApp', ['ui.router']);
+var omsApp = angular.module('omsApp', ['ui.router','datatables']);
 
 omsApp.config(function($stateProvider, $urlRouterProvider) {
 	    
 	    $urlRouterProvider.otherwise('/oms/');
 	    
 	    $stateProvider
-	        
+	    
+	     
 	        .state('category', {
 	        	url: '/categoryHome',
 	            templateUrl: 'resources/templates/category.html',

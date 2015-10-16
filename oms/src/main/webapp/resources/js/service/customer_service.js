@@ -15,7 +15,22 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 										return $q.reject(errResponse);
 									}
 							);
-			}	    
+			},
+			
+
+			getCustomerCount: function() {
+			return $http.get('http://localhost:8080/oms/service/customer/count')
+					.then(
+							function(response){
+								return response.data;
+							}, 
+							function(errResponse){
+								console.error('Error while fetching category count');
+								return $q.reject(errResponse);
+							}
+					);
+		    
+			}
 		  
 	};
 
