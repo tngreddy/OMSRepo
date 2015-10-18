@@ -36,7 +36,7 @@
           </a>
 
           <ul class="nav navbar-nav navbar-left">
-			<li><a href="/oms/"><i class="fa fa-home"></i>Home</a></li>
+			<li><a href="/oms"><i class="fa fa-home"></i>Home</a></li>
 			<li><a ui-sref="category"><i class="fa fa-th-large"></i>Category</a></li>
 			<li><a ui-sref="product"><i class="fa fa-star">Product</i></a></li>
 			<li><a ui-sref="customer"><i class="fa fa-users">Customer</i></a></li>
@@ -237,7 +237,7 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"> -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">Gowtham</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -514,7 +514,7 @@
 
 		</div>
 	</div>
-<!-- ... -->
+	<!-- ... -->
 
 <!-- jQuery 2.1.4 -->
 <script src="<c:url value="/resources/js/jquery/jQuery-2.1.4.min.js"/>"></script>
@@ -531,6 +531,7 @@
 <script src="<c:url value="/resources/js/datatables/datatables.min.js" />"></script>
 <script src="<c:url value="/resources/js/datatables/angular-datatables.min.js"/>"></script>
 <script src="<c:url value="/resources/js/datatables/angular-datatables.bootstrap.js"/>"></script>
+<script src="<c:url value="/resources/js/ui-bootstrap-tpls-0.14.2.min.js"/>"></script>
 
 <script src="<c:url value="/resources/js/app.js" />"></script>
 

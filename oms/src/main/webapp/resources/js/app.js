@@ -1,5 +1,5 @@
 
-var omsApp = angular.module('omsApp', ['ui.router','datatables']);
+var omsApp = angular.module('omsApp', ['ui.router','datatables', 'ui.bootstrap']);
 
 omsApp.config(function($stateProvider, $urlRouterProvider) {
 	    
