@@ -3,8 +3,10 @@ omsApp.directive('myTabs', function() {
   return {
     // angular passes the element reference to you
     compile: function(element) {
-    	
-      $(element).DataTable();
+       setTimeout(function(){
+    	  $(element).dataTable();
+    	}, 1000);
+      
     }
   };
 });

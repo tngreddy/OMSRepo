@@ -4,7 +4,7 @@
 	<head>
 		<link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
 
-		<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+		<link href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet">
 		<!-- Font Awesome -->
 	    <link rel="stylesheet" href="<c:url value="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>"/>
 	    <!-- Ionicons -->
@@ -520,7 +520,7 @@
 <script src="<c:url value="/resources/js/jquery/jQuery-2.1.4.min.js"/>"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap/bootstrap.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap/bootstrap3-wysihtml5.all.min.js" />"></script>
 
 <script src="<c:url value="/resources/js/angular/angular.js" />"></script>

@@ -1,6 +1,6 @@
 'use strict';
 
-omsApp.controller('CategoryController', ['$scope', 'CategoryService', function($scope, CategoryService) {
+omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal','$log', function($scope, CategoryService, $uibModal, $log) {
 			$scope.categories=[];
 			$scope.category={categoryId:null,categoryName:''};
 
@@ -31,7 +31,30 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService', function($
       			       );
           };
 
-          $scope.fetchAllCategories();
+          $scope.editCategoryModal = function (size, selectedCategory) {
+
+        	    var modalInstance = $uibModal.open({
+        	      animation: $scope.animationsEnabled,
+        	      templateUrl: 'resources/templates/category/editCategory.html',
+        	      controller: function ($scope, $modalInstance, category) {
+        	           $scope.category = category;
+      	        },
+        	      size: size,
+        	      resolve: {
+        	        category: function () {
+        	          return selectedCategory;
+        	        }
+        	      }
+        	    });
+
+        	    modalInstance.result.then(function (selectedItem) {
+        	      $scope.selected = selectedItem;
+        	    }, function () {
+        	      $log.info('Modal dismissed at: ' + new Date());
+        	    });
+        	  };
+
+          
 
          }]);
 
