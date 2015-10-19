@@ -44,7 +44,7 @@ body, .form-control{
 body .content-wrapper {
 	margin-left: 0;
 }
-body #categoryTableWrapper {
+body .tablecontainer {
 	width: 980px;
 	margin: 0 auto;
 }

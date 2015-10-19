@@ -4,7 +4,7 @@
 	<head>
 		<link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
 
-		<link href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet">
+		<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Font Awesome -->
 	    <link rel="stylesheet" href="<c:url value="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>"/>
 	    <!-- Ionicons -->
