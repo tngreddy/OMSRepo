@@ -31,56 +31,60 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 
 	@Value("${DELETE_CATEGORY}")
 	private String deleteCategoryQuery;
-	
+
 	@Value("${CATEGORY_COUNT}")
 	private String categoryCountQuery;
 
 	@Override
-	public void addCategory(Category category) {
-
+	public int addCategory(Category category) {
+		int success = 0;
 		try {
-			jdbcTemplate.update(addCategoryQuery,
+			return jdbcTemplate.update(addCategoryQuery,
 					new Object[] { category.getCategoryName() });
 		} catch (DataAccessException dae) {
 
 		}
+		return success;
 
 	}
 
 	@Override
-	public void deleteCategory(long CategoryId) {
+	public int deleteCategory(long CategoryId) {
+		int success = 0;
 		try {
-			jdbcTemplate.update(deleteCategoryQuery,
+			success = jdbcTemplate.update(deleteCategoryQuery,
 					new Object[] { CategoryId });
 		} catch (DataAccessException dae) {
 
 		}
+		
+		return success;
 
 	}
 
 	@Override
-	public void updateCategory(Category category) {
+	public int updateCategory(Category category) {
+		int success = 0;
 		try {
-			jdbcTemplate.update(
+			success = jdbcTemplate.update(
 					updateCategoryQuery,
 					new Object[] { category.getCategoryName(),
 							category.getCategoryId() });
 		} catch (DataAccessException dae) {
 
 		}
+		return success;
 
 	}
 
 	@Override
 	public List<Category> fetchAllCategories() {
 
-		Object[] args = {};
-		String sql = fetchAllCategoriesQuery;
 		List<Category> categories = null;
 
 		CategoryRowMapper resultSetExtractor = new CategoryRowMapper();
 		try {
-			categories = (List<Category>) jdbcTemplate.query(sql,
+			categories = (List<Category>) jdbcTemplate.query(fetchAllCategoriesQuery,
 					resultSetExtractor);
 		} catch (EmptyResultDataAccessException emptyDataAccessException) {
 			// log.debug();

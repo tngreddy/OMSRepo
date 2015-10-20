@@ -6,11 +6,11 @@ import com.vjentrps.oms.model.Category;
 
 public interface CategoryDao {
 	
-	 void addCategory(Category category) ;
+	 int addCategory(Category category) ;
 		
-	 void deleteCategory(long CategoryId);
+	 int deleteCategory(long CategoryId);
 	
-	 void updateCategory(Category category);
+	 int updateCategory(Category category);
 	 
 	 List<Category> fetchAllCategories();
 

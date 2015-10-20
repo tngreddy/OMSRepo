@@ -41,15 +41,18 @@ body, .form-control{
     width: 80px !important;
 }*/
 
+body {
+	font-size: 13px;
+}
+
 body .content-wrapper {
 	margin-left: 0;
 }
 body .tablecontainer {
-	width: 980px;
-	margin: 0 auto;
+	margin: 0px 100px 0px;
 }
 
-.modal {
+/* .modal {
     display: block;
 }
 .modal-body:before,
@@ -61,4 +64,9 @@ body .tablecontainer {
 .modal-header:after {
     display: table;
     content: " ";
+} */
+
+.addBtn {
+	width:100%;
+	margin:0px 0px 20px 0px;
 }

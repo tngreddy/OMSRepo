@@ -2,21 +2,25 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
-
+		
+        
 		<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Font Awesome -->
 	    <link rel="stylesheet" href="<c:url value="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>"/>
 	    <!-- Ionicons -->
 	    <link rel="stylesheet" href="<c:url value="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>"/>
 	    <link href="<c:url value="/resources/css/AdminLTE.min.css" />" rel="stylesheet">
-		<link rel="stylesheet" href="<c:url value="/resources/css/skins/_all-skins.min.css" />" />
+		<link rel="stylesheet" href="<c:url value="/resources/css/skins/_all-skins.css" />" />
 		<!-- bootstrap wysihtml5 - text editor -->
 		<link href="<c:url value="/resources/css/bootstrap3-wysihtml5.min.css" />" rel="stylesheet">
 
 		<!-- DataTables -->
        <link rel="stylesheet" href="<c:url value="/resources/css/dataTables.bootstrap.css" />" >
+       
+       <link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
+      
 
+</style>
 	</head>
 <body ng-app="omsApp" class="hold-transition skin-blue sidebar-mini">
 
@@ -37,10 +41,10 @@
 
           <ul class="nav navbar-nav navbar-left">
 			<li><a href="/oms"><i class="fa fa-home"></i>Home</a></li>
-			<li><a ui-sref="category"><i class="fa fa-th-large"></i>Category</a></li>
-			<li><a ui-sref="product"><i class="fa fa-star">Product</i></a></li>
-			<li><a ui-sref="customer"><i class="fa fa-users">Customer</i></a></li>
-			<li><a ui-sref="supplier"><i class="fa fa-users">Supplier</i></a></li>
+			<li><a ui-sref="category"><i class="fa fa-th-large"></i> Category</a></li>
+			<li><a ui-sref="product"><i class="fa fa-star"> Product</i></a></li>
+			<li><a ui-sref="customer"><i class="fa fa-users"> Customer</i></a></li>
+			<li><a ui-sref="supplier"><i class="fa fa-users"> Supplier</i></a></li>
 		</ul>
 
 
@@ -545,7 +549,7 @@
 <script src="<c:url value="/resources/js/service/supplier_service.js" />"></script>
 <script src="<c:url value="/resources/js/service/home_service.js" />"></script>
 <script src="<c:url value="/resources/js/controller/home_controller.js" />"></script>
-<script src="<c:url value="/resources/js/directives/table_directive.js" />"></script>
+<script src="<c:url value="/resources/js/directives/custom_directives.js" />"></script>
 
 </body>
 </html>

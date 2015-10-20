@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,39 +24,56 @@ public class CategoryRestController {
 	CategoryService categoryService;
  
     @RequestMapping(method = RequestMethod.GET)
-    public List<Category> getCategories() {
+    public ResponseEntity<List<Category>> getCategories() {
               
         List<Category> categories = new ArrayList<Category>();
    	
     	categories = categoryService.listCategories();
-        return categories;
+    	
+    	if(categories.isEmpty()){
+            return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
     }
     
     
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String addCategory( @RequestBody Category category) {
+    public ResponseEntity<String> addCategory( @RequestBody Category category) {
  
-       categoryService.addCategory(category);
+       int success = categoryService.addCategory(category);
        
-        return "Success";
+       if(success == 1){
+    	   return new ResponseEntity<String>("Success",HttpStatus.CREATED);
+       } else 
+    	   return new ResponseEntity<String>("Failure",HttpStatus.NO_CONTENT);
+       
+        
     }
     
     
    
     @RequestMapping(method = RequestMethod.PUT)
-    public String updateCategory(Category category) {
+    public ResponseEntity<Void> updateCategory(@RequestBody Category category) {
  
-        categoryService.updateCategory(category);
-        
-         return "Success";
+    	 int success = categoryService.updateCategory(category);
+         
+         if(success == 1){
+      	   return new ResponseEntity<Void>(HttpStatus.CREATED);
+         } else 
+      	   return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+         
+          
     }
     
     @RequestMapping(value="/{categoryId}",method = RequestMethod.DELETE)
-    public String deleteCategory(@PathVariable long categoryId) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable long categoryId) {
     	
-    	 categoryService.deleteCategory(categoryId);
- 
-           return "Success";
+    	int success = categoryService.deleteCategory(categoryId);
+        
+        if(success == 1){
+     	   return new ResponseEntity<Void>(HttpStatus.OK);
+        } else 
+     	   return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
     
     @RequestMapping(value="/count",method = RequestMethod.GET)

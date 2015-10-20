@@ -16,20 +16,44 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
       			       );
           };
 
-          $scope.fetchAllCategories();
 
 
-          $scope.addCategory = function($scopecategory){
+	$scope.addCategory = function(){
               CategoryService.addCategory($scope.category)
                   .then(
       					       function(data) {
-      					    	 $scope.categories = data;
+					$scope.fetchAllCategories();
+				},
+				function(errResponse){
+					console.error('Error while adding category');
+				}
+		);
+	};
+
+	$scope.updateCategory = function(category){
+		CategoryService.updateCategory(category)
+		.then(
+				function(data) {
+					$scope.fetchAllCategories();
       					       },
             					function(errResponse){
-            						console.error('Error while fetching Currencies');
+					console.error('Error while updating category');
             					}
       			       );
           };
+
+	$scope.deleteCategory = function(categoryId){
+		CategoryService.deleteCategory(categoryId)
+		.then(
+				function(data) {
+					$scope.fetchAllCategories();
+				},
+				function(errResponse){
+					console.error('Error while deleting category');
+				}
+		);
+	};
+
 
           /*$scope.editCategoryModal = function (size, selectedCategory) {
 
@@ -58,6 +82,7 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 							$scope.showEditModal = true;
 							$scope.category = category;
 						};
+	$scope.fetchAllCategories();
 
 						$scope.deleteCategoryModal = function(category){
 							$scope.showDeleteModal = true;
@@ -68,55 +93,63 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 
 
 
-				 omsApp.directive('modal', function () {
-				     return {
-				       template: '<div class="modal fade">' +
-				           '<div class="modal-dialog">' +
-				             '<div class="modal-content">' +
-				               '<div class="modal-header">' +
-				                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-				                 '<h4 class="modal-title">{{ title }}</h4>' +
-				               '</div>' +
-				               '<div class="modal-body" ng-transclude></div>' +
-				             '</div>' +
-				           '</div>' +
-				         '</div>',
-				       restrict: 'E',
-				       transclude: true,
-				       replace:true,
-				       scope:true,
-				       link: function postLink(scope, element, attrs) {
-				         scope.title = attrs.title;
 
-				         scope.$watch(attrs.visible, function(value){
-				           if(value == true)
-				             $(element).modal('show');
-				           else
-				             $(element).modal('hide');
-				         });
 
-				         $(element).on('shown.bs.modal', function(){
-				           scope.$apply(function(){
-				             scope.$parent[attrs.visible] = true;
-				           });
-				         });
 
-				         $(element).on('hidden.bs.modal', function(){
-				           scope.$apply(function(){
-				             scope.$parent[attrs.visible] = false;
-				           });
-				         });
-				       }
-				     };
-				   });
-/*$(function () {
-  $('#categoryTable').DataTable({
-    "paging": true,
-    "lengthChange": true,
-    "searching": true,
-    "ordering": true,
-    "info": true,
-    "autoWidth": false
-  });
-	$('#categoryTable').DataTable();
-});*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
