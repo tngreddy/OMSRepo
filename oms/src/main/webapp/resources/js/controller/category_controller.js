@@ -55,11 +55,17 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
         	  };*/
 
 						$scope.editCategoryModal = function (category) {
-							$scope.showModal = true;
+							$scope.showEditModal = true;
+							$scope.category = category;
+						};
+
+						$scope.deleteCategoryModal = function(category){
+							$scope.showDeleteModal = true;
 							$scope.category = category;
 						};
 
          }]);
+
 
 
 				 omsApp.directive('modal', function () {
