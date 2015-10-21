@@ -3,13 +3,13 @@
 omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal','$log', function($scope, CategoryService, $uibModal, $log) {
 			$scope.categories=[];
 			$scope.category={categoryId:null,categoryName:''};
-
+			$scope.load = false;
 			$scope.fetchAllCategories = function(){
               CategoryService.fetchAllCategories()
                   .then(
       					       function(data) {
       					    	 $scope.categories = data;
-      					       },
+      					    	      					    	       					       },
             					function(errResponse){
             						console.error('Error while fetching Currencies');
             					}
@@ -23,6 +23,7 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
                   .then(
       					       function(data) {
 					$scope.fetchAllCategories();
+					
 				},
 				function(errResponse){
 					console.error('Error while adding category');
@@ -47,6 +48,7 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 		.then(
 				function(data) {
 					$scope.fetchAllCategories();
+					$scope.load = !$scope.load;
 				},
 				function(errResponse){
 					console.error('Error while deleting category');

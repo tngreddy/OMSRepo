@@ -17,15 +17,42 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($
           
           $scope.fetchAllCustomers();
            
+
+      	$scope.addCustomer = function(){
+      		CustomerService.addCustomer($scope.customer)
+      		.then(
+      				function(data) {
+      					$scope.fetchAllCustomers();
+
+      				},
+      				function(errResponse){
+      					console.error('Error while adding customer');
+      				}
+      		);
+      	};
+
+      	$scope.updateCustomer = function(customer){
+      		CustomerService.updateCustomer(customer)
+      		.then(
+      				function(data) {
+      					$scope.fetchAllCustomers();
+      				},
+      				function(errResponse){
+      					console.error('Error while updating customer');
+      				}
+      		);
+      	};
+
+      	$scope.deleteCustomer = function(customerId){
+      		CustomerService.deleteCustomer(customerId)
+      		.then(
+      				function(data) {
+      					$scope.fetchAllCustomers();
+      				},
+      				function(errResponse){
+      					console.error('Error while deleting customer');
+      				}
+      		);
+      	};
          }]);
 
-$(function () {
-  $('#categoryTable').DataTable({
-    "paging": true,
-    "lengthChange": false,
-    "searching": false,
-    "ordering": true,
-    "info": true,
-    "autoWidth": false
-  });
-});

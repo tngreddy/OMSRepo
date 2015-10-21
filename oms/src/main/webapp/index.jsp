@@ -17,6 +17,8 @@
 		<!-- DataTables -->
        <link rel="stylesheet" href="<c:url value="/resources/css/dataTables.bootstrap.css" />" >
        
+       <link href="<c:url value="/resources/css/formValidation.min.css" />" rel="stylesheet">
+       
        <link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
       
 
@@ -524,7 +526,7 @@
 <script src="<c:url value="/resources/js/jquery/jQuery-2.1.4.min.js"/>"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<script src="<c:url value="/resources/js/bootstrap/bootstrap.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap/bootstrap3-wysihtml5.all.min.js" />"></script>
 
 <script src="<c:url value="/resources/js/angular/angular.js" />"></script>
@@ -536,9 +538,13 @@
 <script src="<c:url value="/resources/js/datatables/angular-datatables.min.js"/>"></script>
 <script src="<c:url value="/resources/js/datatables/angular-datatables.bootstrap.js"/>"></script>
 <script src="<c:url value="/resources/js/ui-bootstrap-tpls-0.14.2.min.js"/>"></script>
+<script src="<c:url value="/resources/js/formValidation.min.js"/>"></script>
+<script src="<c:url value="/resources/js/framework/bootstrap.min.js" />"></script>
+
 
 <script src="<c:url value="/resources/js/app.js" />"></script>
 
+<script src="<c:url value="/resources/js/directives/custom_directives.js" />"></script>
 <script src="<c:url value="/resources/js/controller/category_controller.js" />"></script>
 <script src="<c:url value="/resources/js/service/category_service.js" />"></script>
 <script src="<c:url value="/resources/js/controller/product_controller.js" />"></script>
@@ -549,7 +555,6 @@
 <script src="<c:url value="/resources/js/service/supplier_service.js" />"></script>
 <script src="<c:url value="/resources/js/service/home_service.js" />"></script>
 <script src="<c:url value="/resources/js/controller/home_controller.js" />"></script>
-<script src="<c:url value="/resources/js/directives/custom_directives.js" />"></script>
 
 </body>
 </html>

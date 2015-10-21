@@ -11,7 +11,22 @@ omsApp.directive('myTabs', function() {
   };
 });
 
-//directive to display modals
+/*omsApp.directive('myTabs', [ function() {
+	return {
+		scope : {
+			load : '='
+		},
+		link : function(scope, element, attrs) {
+			scope.$watch('load', function() {
+				setTimeout(function() {
+					$(element).dataTable();
+				}, 1000);
+			})
+		}
+	};
+} ]);*/
+
+// directive to display modals
 omsApp.directive('modal', function () {
 	return {
 		template: '<div class="modal fade">' +
@@ -49,3 +64,35 @@ omsApp.directive('modal', function () {
 		}
 	};
 });
+
+
+omsApp.directive('validateCategory', function() {
+	  return {
+	    // angular passes the element reference to you
+	    compile: function(element) {
+	    	$(element).formValidation({
+	            framework: 'bootstrap',
+	            icon: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	            excluded: ':disabled',
+	            fields: {
+	            	categoryName: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: 'The categoryName is required'
+	                        }
+	                    }
+	                }
+	            }
+	        })
+	
+	    	      
+	    }
+	  };
+	});
+
+
+    

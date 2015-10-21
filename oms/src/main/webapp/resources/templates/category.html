@@ -11,14 +11,14 @@
 			data-toggle="modal" data-target="#addCategoryModel">Add
 			category</button>
 
-		<table my-tabs id="categoryTable"
+		<table my-tabs load="load" id="categoryTable"
 			class="table table-bordered table-striped">
 			<thead>
                       <tr>
                         <th>CategoryId</th>
                         <th>CategoryName</th>
-					<th width="5%"></th>
-					<th width="5%"></th>
+					<th width="5%">Edit</th>
+					<th width="5%">Delete</th>
                         </tr>
                     </thead>
 				<tbody>
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<!-- Edit categoryName Overlay -->
+<!-- Edit category Overlay -->
 <modal visible="showEditModal">
 <div class="modal-header with-border">
 	<button type="button" class="close" data-dismiss="modal"
@@ -82,12 +82,12 @@
 	<h4 class="modal-title" id="myModalLabel">Edit Category</h4>
 </div>
 <div class="modal-body">
-  <form class="form-horizontal">
+  <form validate-category class="form-horizontal">
     <div class="box-body">
       <div class="form-group">
         <label for="catId" class="col-sm-3 control-label">Edit Category</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" id="editCategory" placeholder="Category Name" ng-model="category.categoryName">
+          <input type="text" class="form-control" name="categoryName" id="editCategory" placeholder="Category Name" ng-model="category.categoryName">
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@
 </div>
 </modal>
 
-<!-- Delete categoryName Overlay -->
+<!-- Delete category Overlay -->
 <modal size="modal-sm" visible="showDeleteModal">
 <div class="modal-header with-border">
 	<button type="button" class="close" data-dismiss="modal"

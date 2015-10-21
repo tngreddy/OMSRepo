@@ -20,6 +20,8 @@
                         <th>UnitOfMeasure</th>
                         <th>UnitBasicRate</th>
                         <th>Stock</th>
+                        <th width="5%">Edit</th>
+					<th width="5%">Delete</th>
                         </tr>
                     </thead>
 				<tbody>
@@ -30,6 +32,9 @@
 						<td><span ng-bind="product.unitOfMeasure"></span></td>
 						<td><span ng-bind="product.unitBasicRate"></span></td>
 						<td><span ng-bind="product.stock"></span></td>
+						<td><button class="btn btn-flat btn-sm btn-warning" ng-click="editCategoryModal(category)"><i class="fa fa-edit "></i></button></td>
+						<td><button class="btn btn-flat btn-sm btn-danger" ng-click="deleteCategoryModal(category)"><i class="fa fa-trash "></i></button></td>
+					
 
 					</tr>
 

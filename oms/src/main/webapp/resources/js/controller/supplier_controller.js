@@ -16,16 +16,44 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
           };
           
           $scope.fetchAllSuppliers();
+          
+
+      	$scope.addSupplier = function(){
+      		SupplierService.addSupplier($scope.supplier)
+      		.then(
+      				function(data) {
+      					$scope.fetchAllSuppliers();
+
+      				},
+      				function(errResponse){
+      					console.error('Error while adding supplier');
+      				}
+      		);
+      	};
+
+      	$scope.updateSupplier = function(supplier){
+      		SupplierService.updateSupplier(supplier)
+      		.then(
+      				function(data) {
+      					$scope.fetchAllSuppliers();
+      				},
+      				function(errResponse){
+      					console.error('Error while updating supplier');
+      				}
+      		);
+      	};
+
+      	$scope.deleteSupplier = function(supplierId){
+      		SupplierService.deleteSupplier(supplierId)
+      		.then(
+      				function(data) {
+      					$scope.fetchAllSuppliers();
+      				},
+      				function(errResponse){
+      					console.error('Error while deleting supplier');
+      				}
+      		);
+      	};
            
          }]);
 
-$(function () {
-  $('#categoryTable').DataTable({
-    "paging": true,
-    "lengthChange": false,
-    "searching": false,
-    "ordering": true,
-    "info": true,
-    "autoWidth": false
-  });
-});
