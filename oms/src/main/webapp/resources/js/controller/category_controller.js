@@ -1,29 +1,29 @@
 'use strict';
 
-omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal','$log', function($scope, CategoryService, $uibModal, $log) {
-			$scope.categories=[];
-			$scope.category={categoryId:null,categoryName:''};
-			$scope.load = false;
-			$scope.fetchAllCategories = function(){
-              CategoryService.fetchAllCategories()
-                  .then(
-      					       function(data) {
-      					    	 $scope.categories = data;
-      					    	      					    	       					       },
-            					function(errResponse){
-            						console.error('Error while fetching Currencies');
-            					}
-      			       );
-          };
+omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal','$log', '$state', '$stateParams', function($scope, CategoryService, $uibModal, $log, $state, $stateParams) {
+	$scope.categories=[];
+	$scope.category={categoryId:null,categoryName:''};
+	$scope.reload = false;
+	$scope.fetchAllCategories = function(){
+		CategoryService.fetchAllCategories()
+		.then(
+				function(data) {
+					$scope.categories = data;
+				},
+				function(errResponse){
+					console.error('Error while fetching Currencies');
+				}
+		);
+	};
 
 
 
 	$scope.addCategory = function(){
-              CategoryService.addCategory($scope.category)
-                  .then(
-      					       function(data) {
-					$scope.fetchAllCategories();
-					
+		CategoryService.addCategory($scope.category)
+		.then(
+				function(data) {
+					$scope.showAddModal = false;
+					$scope.reloadState();	
 				},
 				function(errResponse){
 					console.error('Error while adding category');
@@ -35,20 +35,21 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 		CategoryService.updateCategory(category)
 		.then(
 				function(data) {
-					$scope.fetchAllCategories();
-      					       },
-            					function(errResponse){
+					$scope.showEditModal = false;
+					$scope.reloadState();		
+				},
+				function(errResponse){
 					console.error('Error while updating category');
-            					}
-      			       );
-          };
+				}
+		);
+	};
 
 	$scope.deleteCategory = function(categoryId){
 		CategoryService.deleteCategory(categoryId)
 		.then(
 				function(data) {
-					$scope.fetchAllCategories();
-					$scope.load = !$scope.load;
+					$scope.showDeleteModal = false;
+					$scope.reloadState();			
 				},
 				function(errResponse){
 					console.error('Error while deleting category');
@@ -56,8 +57,9 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 		);
 	};
 
+	$scope.fetchAllCategories();
 
-          /*$scope.editCategoryModal = function (size, selectedCategory) {
+	/*$scope.editCategoryModal = function (size, selectedCategory) {
 
         	    var modalInstance = $uibModal.open({
         	      animation: $scope.animationsEnabled,
@@ -80,18 +82,33 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
         	    });
         	  };*/
 
-						$scope.editCategoryModal = function (category) {
-							$scope.showEditModal = true;
-							$scope.category = category;
-						};
-	$scope.fetchAllCategories();
+	$scope.addCategoryModal = function(){
+		$scope.showAddModal = true;
+	};
+	
+	$scope.editCategoryModal = function (category) {
+		$scope.showEditModal = true;
+		$scope.category = category;
+	};
 
-						$scope.deleteCategoryModal = function(category){
-							$scope.showDeleteModal = true;
-							$scope.category = category;
-						};
+	$scope.deleteCategoryModal = function(category){
+		$scope.showDeleteModal = true;
+		$scope.category = category;
+	};
 
-         }]);
+
+	$scope.reloadState = function() {
+		setTimeout(function(){
+			$state.transitionTo($state.current, $stateParams, {
+				reload: true,
+				inherit: false,
+				notify: true
+			});
+
+		}, 100);
+	};
+
+}]);
 
 
 

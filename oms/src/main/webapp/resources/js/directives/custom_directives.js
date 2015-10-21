@@ -3,7 +3,8 @@ omsApp.directive('myTabs', function() {
   return {
     // angular passes the element reference to you
     compile: function(element) {
-       setTimeout(function(){
+    	
+      setTimeout(function(){
     	  $(element).dataTable();
     	}, 1000);
       
@@ -66,7 +67,7 @@ omsApp.directive('modal', function () {
 });
 
 
-omsApp.directive('validateCategory', function() {
+/*omsApp.directive('validateCategory', function() {
 	  return {
 	    // angular passes the element reference to you
 	    compile: function(element) {
@@ -87,12 +88,18 @@ omsApp.directive('validateCategory', function() {
 	                    }
 	                }
 	            }
-	        })
+	        });
+	    	*/
+/*omsApp.directive('validateCategory', function() {
+	  return {
+	    // angular passes the element reference to you
+	    link: function(element) {
+	    	$(element).formValidation();
 	
 	    	      
 	    }
 	  };
-	});
+	});*/
 
 
     

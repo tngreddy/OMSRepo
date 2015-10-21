@@ -38,14 +38,14 @@ public class CategoryRestController {
     
     
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addCategory( @RequestBody Category category) {
+    public ResponseEntity<Void> addCategory( @RequestBody Category category) {
  
        int success = categoryService.addCategory(category);
        
        if(success == 1){
-    	   return new ResponseEntity<String>("Success",HttpStatus.CREATED);
+    	   return new ResponseEntity<Void>(HttpStatus.CREATED);
        } else 
-    	   return new ResponseEntity<String>("Failure",HttpStatus.NO_CONTENT);
+    	   return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
        
         
     }
