@@ -12,12 +12,16 @@
 	    <link href="<c:url value="/resources/css/AdminLTE.min.css" />" rel="stylesheet">
 		<link rel="stylesheet" href="<c:url value="/resources/css/skins/_all-skins.css" />" />
 		<!-- bootstrap wysihtml5 - text editor -->
-		<link href="<c:url value="/resources/css/bootstrap3-wysihtml5.min.css" />" rel="stylesheet">
+		<%-- <link href="<c:url value="/resources/css/bootstrap3-wysihtml5.min.css" />" rel="stylesheet"> --%>
 
 		<!-- DataTables -->
        <link rel="stylesheet" href="<c:url value="/resources/css/dataTables.bootstrap.css" />" >
        
        <link href="<c:url value="/resources/css/formValidation.min.css" />" rel="stylesheet">
+       <link href="<c:url value="/resources/css/anim-in-out.css" />" rel="stylesheet">
+       <link href="<c:url value="/resources/css/animate.css" />" rel="stylesheet">
+       
+       
        
        <link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
       
@@ -448,8 +452,8 @@
         <!-- /.sidebar -->
       </aside> --%>
 
-	<div id="main">
-		<div ui-view>
+	<div id="main" >
+		<div ui-view >
 			<div class="content-wrapper" ng-controller="HomeController">
 				<section class="content-header">
 		          <h1>
@@ -518,7 +522,7 @@
 						</section>
 			</div>
 
-		</div>
+		
 	</div>
 	<!-- ... -->
 
@@ -531,6 +535,7 @@
 
 <script src="<c:url value="/resources/js/angular/angular.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-route.js" />"></script>
+<script src="<c:url value="/resources/js/angular/angular-animate.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.11/angular-ui-router.js"></script>
 <script src="<c:url value="/resources/js/datatables/jquery.dataTables.min.js" />"></script>
 <script src="<c:url value="/resources/js/datatables/dataTables.bootstrap.min.js" />"></script>
@@ -540,6 +545,7 @@
 <script src="<c:url value="/resources/js/ui-bootstrap-tpls-0.14.2.min.js"/>"></script>
 <script src="<c:url value="/resources/js/formValidation.min.js"/>"></script>
 <script src="<c:url value="/resources/js/framework/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/anim-in-out.js" />"></script>
 
 
 <script src="<c:url value="/resources/js/app.js" />"></script>

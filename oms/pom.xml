@@ -16,20 +16,20 @@
 	<!-- This section outlines the contributors and point of contact for your 
 		project -->
 	<developers>
-		<developer>
-			<id />
-			<name>Santosh Devunuri</name>
-			<email></email>
-			<roles>
-				<role>Consultant</role>
-			</roles>
-		</developer>
-		<developer>
+			<developer>
 			<id />
 			<name>Goutham Tiyyagura</name>
 			<email></email>
 			<roles>
-				<role>Consultant</role>
+				<role>Sr Software Engineer</role>
+			</roles>
+		</developer>
+			<developer>
+			<id />
+			<name>Mahesh Dontula</name>
+			<email></email>
+			<roles>
+				<role>Sr UI Engineer</role>
 			</roles>
 		</developer>
 	</developers>
@@ -96,24 +96,6 @@
 		</dependency>
 
 
-		<!-- tiles dependencies -->
-
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-core</artifactId>
-			<version>${tiles.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-jsp</artifactId>
-			<version>${tiles.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-api</artifactId>
-			<version>${tiles.version}</version>
-		</dependency>
-
 		<!-- datasource -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -159,13 +141,6 @@
 			<version>2.5</version>
 		</dependency>
 
-		<!-- quartz -->
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>1.8.5</version>
-		</dependency>
-
 		<!-- java validation api -->
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -186,13 +161,6 @@
 			<version>1.5.3</version>
 		</dependency>
 
-
-		<!-- Mail -->
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
-		</dependency>
 
 		<!-- jstl -->
 
@@ -218,13 +186,6 @@
 			<groupId>tomcat</groupId>
 			<artifactId>catalina-root</artifactId>
 			<version>5.0.16</version>
-		</dependency>
-
-		<!-- google charts -->
-		<dependency>
-			<groupId>com.googlecode.charts4j</groupId>
-			<artifactId>charts4j</artifactId>
-			<version>1.3</version>
 		</dependency>
 
 		<dependency>
