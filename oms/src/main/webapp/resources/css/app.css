@@ -45,12 +45,24 @@ body {
 	font-size: 13px;
 }
 
+body .mainWrapper {
+	background-color: #BBB;
+}
 body .content-wrapper {
 	margin-left: 0;
 }
 body .tablecontainer {
-	
-	margin: 0px 20px 0px;
+	margin: 0px 15px 0px;
+	background-color: #FFF;
+	padding-top: 20px;
+}
+body #categoryTable_wrapper {
+	width: 960px;
+	margin: 0 auto;
+}
+.tablecontainer #buttonContainer {
+	margin-right: 180px;
+	margin-bottom: 20px;
 }
 
 /* .modal {
@@ -68,7 +80,7 @@ body .tablecontainer {
 } */
 
 /* [ui-view].ng-leave {
-  animation: fadeOut 0.5s; 
+  animation: fadeOut 0.5s;
 }
 
 [ui-view].ng-enter {
@@ -76,7 +88,7 @@ body .tablecontainer {
 } */
 
 .animated-view.well{
- height: 65px; 
+ height: 65px;
 }
 
 .ui-view-container {
@@ -109,7 +121,7 @@ body .tablecontainer {
 
 .ng-leave {
   opacity: 1;
-  /*padding-left: 0px;*/  
+  /*padding-left: 0px;*/
   -webkit-transform:translate3d(0, 0, 12);
   -moz-transform:translate3d(0, 0, 12);
   transform:translate3d(0, 0, 12);
@@ -121,9 +133,4 @@ body .tablecontainer {
   -webkit-transform:translate3d(0, 0, 0);
   -moz-transform:translate3d(0, 0, 0);
   transform:translate3d(0, 0, 0);
-}
-
-.addBtn {
-	width:100%;
-	margin:0px 0px 20px 0px;
 }
