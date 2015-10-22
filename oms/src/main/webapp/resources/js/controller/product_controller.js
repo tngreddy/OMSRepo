@@ -54,4 +54,10 @@ omsApp.controller('ProductController', ['$scope', 'ProductService', function($sc
 		);
 	};
 
+	//Method to show delete overlay
+	$scope.deleteProductModal = function(product){
+		$scope.showDeleteModal = true;
+		$scope.product = product;
+	};
+
 }]);

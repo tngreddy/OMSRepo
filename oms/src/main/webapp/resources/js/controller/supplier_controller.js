@@ -54,6 +54,13 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
       				}
       		);
       	};
+      	
+      	
+      //Method to show delete overlay
+    	$scope.deleteSupplierModal = function(supplier){
+    		$scope.showDeleteModal = true;
+    		$scope.supplier = supplier;
+    	};
            
          }]);
 

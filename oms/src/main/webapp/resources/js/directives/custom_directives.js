@@ -12,21 +12,6 @@ omsApp.directive('myTabs', function() {
   };
 });
 
-/*omsApp.directive('myTabs', [ function() {
-	return {
-		scope : {
-			load : '='
-		},
-		link : function(scope, element, attrs) {
-			scope.$watch('load', function() {
-				setTimeout(function() {
-					$(element).dataTable();
-				}, 1000);
-			})
-		}
-	};
-} ]);*/
-
 // directive to display modals
 omsApp.directive('modal', function () {
 	return {
@@ -102,4 +87,39 @@ omsApp.directive('modal', function () {
 	});*/
 
 
+//directive to display modals
+/*omsApp.directive('deleteModalContent', function () {
+	return {
+		template: '<div class="modal-header with-border">'+
+		'<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+			'<span aria-hidden="true">&times;</span>'+
+		'</button>'+
+		'<h4 class="modal-title" id="myModalLabel">Delete {{type}}</h4>'+
+	'</div>'+
+	'<div class="modal-body">'+
+	  '<form class="form-horizontal">'+
+	    '<div class="box-body">'+
+	     '<div class="form-group">'+
+	        '<div class="col-sm-12 text-center">'+
+	         ' Do you want to delete this {{type}} <strong>{{value}}</strong>?'+
+	        '</div>'+
+	     '</div>'+
+	    '</div>'+
+	  '</form>'+
+	  '</div>'+
+	  '<div class="modal-footer">'+
+	      '<button type="button" class="btn btn-flat btn-success" data-dismiss="modal">No</button>'+
+	      '<button type="button" class="btn btn-flat btn-danger" ng-click="{{method}}">Yes</button>'+
+	    '</div>',
+		restrict: 'E',
+		replace:false,
+		scope:true,
+		link: function postLink(scope, element, attrs) {
+			scope.heading = attrs.heading;
+			scope.type = attrs.type;
+			scope.value = scope.$eval(attrs.value);
+			scope.method = scope.$eval(attrs.method);
+		}
+	};
+});*/
     

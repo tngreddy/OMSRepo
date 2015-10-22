@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		
+		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
         
 		<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Font Awesome -->
@@ -20,6 +20,7 @@
        <link href="<c:url value="/resources/css/formValidation.min.css" />" rel="stylesheet">
        <link href="<c:url value="/resources/css/anim-in-out.css" />" rel="stylesheet">
        <link href="<c:url value="/resources/css/animate.css" />" rel="stylesheet">
+       <link href='//fonts.googleapis.com/css?family=Roboto:500,100,400italic,700italic,700' rel='stylesheet' type='text/css'>
        
        
        
