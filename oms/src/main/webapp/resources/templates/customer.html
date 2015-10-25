@@ -7,6 +7,10 @@
 		
 		<div>
 		<div class="tablecontainer">
+		
+	<button type="button" class="btn btn-flat bg-olive " ng-click="addCustomerModal()">
+  Add Customer
+</button>
 
 			<table my-tabs class="table table-bordered table-striped">
 			<thead>
@@ -53,6 +57,63 @@
 	</div>
 	
 	
+
+<!-- Add Customer overlay -->
+<modal visible="showAddModal">
+<div class="modal-header with-border">
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-title" id="myModalLabel">Add Customer</h4>
+</div>
+<div class="modal-body">
+  <form id="addCustomerForm" class="form-horizontal">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="catId" class="col-sm-3 control-label">Category Name</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" name="customerName" id="editCategory" placeholder="Category Name" ng-model="customer.customerName" required/>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-flat btn-primary" ng-click="addCustomer(customer)">Add</button>
+</div>
+</modal>
+
+<!-- Edit customer Overlay -->
+<modal visible="showEditModal">
+<div class="modal-header with-border">
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-title" id="myModalLabel">Edit Customer</h4>
+</div>
+<div class="modal-body">
+  <form validate-category id="editCustomerForm" class="form-horizontal">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="catId" class="col-sm-3 control-label">Category Name</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" name="categoryName" id="editCategory" placeholder="Category Name" ng-model="category.categoryName"
+                data-fv-row=".col-sm-9"
+                data-fv-notempty="true"
+                data-fv-notempty-message="Category name is required" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-flat btn-primary" ng-click="updateCustomer(customer)">Update</button>
+</div>
+</modal>
 
 <!-- Delete customer Overlay -->
 <modal size="modal-sm" visible="showDeleteModal">

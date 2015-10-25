@@ -84,6 +84,7 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 
 	$scope.addCategoryModal = function(){
 		$scope.showAddModal = true;
+		
 	};
 	
 	$scope.editCategoryModal = function (category) {

@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.model.Category;
+import com.vjentrps.oms.model.Error;
+import com.vjentrps.oms.model.ErrorsEnum;
+import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.service.CategoryService;
+import com.vjentrps.oms.util.CommonUtil;
 
 @RestController
 @RequestMapping(value="/service/category")
@@ -22,58 +26,59 @@ public class CategoryRestController {
 	
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	CommonUtil commonUtil;
+	
  
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Category>> getCategories() {
+    public ResponseDTO getCategories() {
               
         List<Category> categories = new ArrayList<Category>();
    	
     	categories = categoryService.listCategories();
     	
     	if(categories.isEmpty()){
-            return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+    		return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
         }
-        return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
+        return new ResponseDTO(categories);
     }
     
     
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addCategory( @RequestBody Category category) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseDTO addCategory( @RequestBody Category category) {
  
        int success = categoryService.addCategory(category);
        
-       if(success == 1){
-    	   return new ResponseEntity<Void>(HttpStatus.CREATED);
-       } else 
-    	   return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-       
-        
+       if(success == 0){
+    	   return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+       }
+       return new ResponseDTO();
     }
     
     
    
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Void> updateCategory(@RequestBody Category category) {
+    public ResponseDTO updateCategory(@RequestBody Category category) {
  
     	 int success = categoryService.updateCategory(category);
          
-         if(success == 1){
-      	   return new ResponseEntity<Void>(HttpStatus.CREATED);
-         } else 
-      	   return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-         
+    	 if(success == 0){
+      	   return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+         }
+         return new ResponseDTO();
           
     }
     
     @RequestMapping(value="/{categoryId}",method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteCategory(@PathVariable long categoryId) {
+    public ResponseDTO deleteCategory(@PathVariable long categoryId) {
     	
     	int success = categoryService.deleteCategory(categoryId);
         
-        if(success == 1){
-     	   return new ResponseEntity<Void>(HttpStatus.OK);
-        } else 
-     	   return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    	if(success == 0){
+       	   return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+          }
+          return new ResponseDTO();
     }
     
     @RequestMapping(value="/count",method = RequestMethod.GET)

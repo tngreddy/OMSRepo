@@ -56,6 +56,16 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
       	};
       	
       	
+      	$scope.addSupplierModal = function(){
+    		$scope.showAddModal = true;
+    		
+    	};
+    	
+    	$scope.editSupplierModal = function(supplier) {
+    		$scope.showEditModal = true;
+    		$scope.supplier = supplier;
+    	};
+      	
       //Method to show delete overlay
     	$scope.deleteSupplierModal = function(supplier){
     		$scope.showDeleteModal = true;

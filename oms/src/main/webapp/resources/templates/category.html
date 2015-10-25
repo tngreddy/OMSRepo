@@ -43,18 +43,15 @@
 		aria-label="Close">
 		<span aria-hidden="true">&times;</span>
 	</button>
-	<h4 class="modal-title" id="myModalLabel">Edit Category</h4>
+	<h4 class="modal-title" id="myModalLabel">Add Category</h4>
 </div>
 <div class="modal-body">
   <form id="addCategoryForm" class="form-horizontal">
     <div class="box-body">
       <div class="form-group">
-        <label for="catId" class="col-sm-3 control-label">Add Category</label>
+        <label for="catId" class="col-sm-3 control-label">Category Name</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" name="categoryName" id="editCategory" placeholder="Category Name" ng-model="category.categoryName"
-                data-fv-row=".col-sm-9"
-                data-fv-notempty="true"
-                data-fv-notempty-message="Category name is required" />
+          <input type="text" class="form-control" name="categoryName" id="editCategory" placeholder="Category Name" ng-model="category.categoryName" required/>
         </div>
       </div>
     </div>
@@ -79,7 +76,7 @@
   <form validate-category id="editCategoryForm" class="form-horizontal">
     <div class="box-body">
       <div class="form-group">
-        <label for="catId" class="col-sm-3 control-label">Edit Category</label>
+        <label for="catId" class="col-sm-3 control-label">Category Name</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" name="categoryName" id="editCategory" placeholder="Category Name" ng-model="category.categoryName"
                 data-fv-row=".col-sm-9"

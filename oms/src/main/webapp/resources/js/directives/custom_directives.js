@@ -6,7 +6,7 @@ omsApp.directive('myTabs', function() {
     	
       setTimeout(function(){
     	  $(element).dataTable();
-    	}, 1000);
+    	}, 500);
       
     }
   };

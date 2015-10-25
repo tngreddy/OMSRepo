@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CategoryDao;
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Category;
 
 @Repository
@@ -78,7 +79,7 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 	}
 
 	@Override
-	public List<Category> fetchAllCategories() {
+	public List<Category> fetchAllCategories() throws OmsServiceException {
 
 		List<Category> categories = null;
 
@@ -90,7 +91,7 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 			// log.debug();
 
 		} catch (DataAccessException dataAccessException) {
-
+			throw new OmsServiceException(dataAccessException);
 		}
 		return categories;
 

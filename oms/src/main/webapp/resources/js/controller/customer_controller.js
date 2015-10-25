@@ -56,6 +56,16 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($
 	};
 
 
+	$scope.addCustomerModal = function(){
+		$scope.showAddModal = true;
+		
+	};
+	
+	$scope.editCustomerModal = function(customer) {
+		$scope.showEditModal = true;
+		$scope.customer = customer;
+	};
+	
 	//Method to show delete overlay
 	$scope.deleteCustomerModal = function(customer){
 		$scope.showDeleteModal = true;
