@@ -8,7 +8,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 			return $http.get('http://localhost:8080/oms/service/product/')
 			.then(
 					function(response){
-						return response.data;
+						return response.data.object;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching products');
@@ -30,7 +30,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 			);
 
 		},
-		updateProduct: function(Product) {
+		updateProduct: function(product) {
 			return $http.put('http://localhost:8080/oms/service/product/', product)
 			.then(
 					function(response){

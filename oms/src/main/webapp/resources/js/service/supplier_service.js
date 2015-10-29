@@ -8,7 +8,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 					return $http.get('http://localhost:8080/oms/service/supplier/')
 							.then(
 									function(response){
-										return response.data;
+										return response.data.object;
 									}, 
 									function(errResponse){
 										console.error('Error while fetching suppliers');

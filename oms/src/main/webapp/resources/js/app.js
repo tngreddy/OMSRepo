@@ -1,5 +1,5 @@
 
-var omsApp = angular.module('omsApp', ['ui.router','datatables', 'ui.bootstrap','ngAnimate','anim-in-out']);
+var omsApp = angular.module('omsApp', ['ui.router','datatables', 'ui.bootstrap','ngAnimate','anim-in-out','angularValidator']);
 
 omsApp.config(function($stateProvider, $urlRouterProvider) {
 	    
@@ -33,6 +33,9 @@ omsApp.config(function($stateProvider, $urlRouterProvider) {
 	        });
 	        
 	});
+
+
+
 
 
 

@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.model.Supplier;
 import com.vjentrps.oms.service.SupplierService;
 
@@ -21,47 +23,47 @@ public class SupplierRestController {
 	SupplierService supplierService;
  
     @RequestMapping(method = RequestMethod.GET)
-    public List<Supplier> getSuppliers() {
+    public ResponseDTO getSuppliers() {
               
         List<Supplier> suppliers = new ArrayList<Supplier>();
    	
         suppliers = supplierService.listSuppliers();
-        return suppliers;
+        return new ResponseDTO(suppliers);
     }
     
     @RequestMapping(value="/{supplierId}",method = RequestMethod.GET)
-    public Supplier getSupplier(@PathVariable long supplierId) {
+    public ResponseDTO getSupplier(@PathVariable long supplierId) {
               
         Supplier supplier = supplierService.getSupplierById(supplierId);
    	
-        return supplier;
+        return new ResponseDTO(supplier);
     }
     
     
     
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String addSupplier(Supplier supplier) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseDTO addSupplier(@RequestBody Supplier supplier) {
  
        supplierService.addSupplier(supplier);
        
-        return "Success";
+        return new ResponseDTO();
     }
     
    
     @RequestMapping(method = RequestMethod.PUT)
-    public String updateSupplier(Supplier supplier) {
+    public ResponseDTO updateSupplier(@RequestBody Supplier supplier) {
  
         supplierService.updateSupplier(supplier);
         
-         return "Success";
+         return new ResponseDTO();
     }
     
     @RequestMapping(value="/{supplierId}",method = RequestMethod.DELETE)
-    public String deleteSupplier(@PathVariable long supplierId) {
+    public ResponseDTO deleteSupplier(@PathVariable long supplierId) {
     	
     	 supplierService.deleteSupplier(supplierId);
  
-           return "Success";
+         return new ResponseDTO();
     }
     
     @RequestMapping(value="/count",method = RequestMethod.GET)

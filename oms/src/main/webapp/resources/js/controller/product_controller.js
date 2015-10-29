@@ -1,7 +1,25 @@
 'use strict';
 
-omsApp.controller('ProductController', ['$scope', 'ProductService', function($scope, ProductService) {
+omsApp.controller('ProductController', ['$scope', 'ProductService','CategoryService', function($scope, ProductService, CategoryService) {
 	$scope.products=[];
+	$scope.categories=[];
+	$scope.product = {productId:null,productName:'',categoryName:''};
+	
+
+	$scope.fetchAllCategories = function(){
+
+		CategoryService.fetchAllCategories()
+		.then(
+				function(data) {
+					$scope.categories = data;
+				},
+				function(errResponse){
+					console.error('Error while fetching Currencies');
+				}
+		);
+	};
+
+	$scope.fetchAllCategories();
 
 	$scope.fetchAllProducts = function(){
 		ProductService.fetchAllProducts()
@@ -21,7 +39,8 @@ omsApp.controller('ProductController', ['$scope', 'ProductService', function($sc
 		ProductService.addProduct($scope.product)
 		.then(
 				function(data) {
-					$scope.fetchAllProducts();
+					$scope.showaAddModal = false;
+					$scope.reloadState();	
 
 				},
 				function(errResponse){
@@ -34,7 +53,8 @@ omsApp.controller('ProductController', ['$scope', 'ProductService', function($sc
 		ProductService.updateProduct(product)
 		.then(
 				function(data) {
-					$scope.fetchAllProducts();
+					$scope.showEditModal = false;
+					$scope.reloadState();	
 				},
 				function(errResponse){
 					console.error('Error while updating product');
@@ -46,7 +66,8 @@ omsApp.controller('ProductController', ['$scope', 'ProductService', function($sc
 		ProductService.deleteProduct(productId)
 		.then(
 				function(data) {
-					$scope.fetchAllProducts();
+					$scope.showDeleteModal = false;
+					$scope.reloadState();	
 				},
 				function(errResponse){
 					console.error('Error while deleting product');
@@ -54,13 +75,13 @@ omsApp.controller('ProductController', ['$scope', 'ProductService', function($sc
 		);
 	};
 
-	
+
 
 	$scope.addProductModal = function(){
 		$scope.showAddModal = true;
-		
+		$scope.product = {productId:null,productName:'',categoryName:''};
 	};
-	
+
 	$scope.editProductModal = function(product) {
 		$scope.showEditModal = true;
 		$scope.product = product;
@@ -72,4 +93,15 @@ omsApp.controller('ProductController', ['$scope', 'ProductService', function($sc
 		$scope.product = product;
 	};
 
+	
+	$scope.reloadState = function() {
+		setTimeout(function(){
+			$state.transitionTo($state.current, $stateParams, {
+				reload: true,
+				inherit: false,
+				notify: true
+			});
+
+		}, 100);
+	};
 }]);

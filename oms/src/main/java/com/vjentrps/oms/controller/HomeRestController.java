@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.HomeResponseDTO;
 import com.vjentrps.oms.service.CategoryService;
 import com.vjentrps.oms.service.CustomerService;
@@ -30,13 +31,24 @@ public class HomeRestController {
  
     @RequestMapping(value="/count" ,method = RequestMethod.GET)
     public HomeResponseDTO getCounts() {
-              
-         	HomeResponseDTO homeResponseDTO = new HomeResponseDTO();
-         	homeResponseDTO.setCategoryCount(categoryService.getCategoryCount());
+    	HomeResponseDTO homeResponseDTO = new HomeResponseDTO();
+    	try {      
+         	
+         	
+				homeResponseDTO.setCategoryCount(categoryService.getCategoryCount());
+			
          	homeResponseDTO.setProductCount(productService.getProductCount());
          	homeResponseDTO.setCustomerCount(customerService.getCustomerCount());
          	homeResponseDTO.setSupplierCount(supplierService.getSupplierCount());
-         	
+    	} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	 catch (Exception e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
     	
         return homeResponseDTO;
     }

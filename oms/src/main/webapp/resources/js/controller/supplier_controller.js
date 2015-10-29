@@ -1,7 +1,8 @@
 'use strict';
 
-omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($scope, SupplierService) {
+omsApp.controller('SupplierController', ['$scope', 'SupplierService','$state', '$stateParams', function($scope, SupplierService ,$state, $stateParams) {
 			$scope.suppliers=[];
+			$scope.supplier={};
                         
 			$scope.fetchAllSuppliers = function(){
 				SupplierService.fetchAllSuppliers()
@@ -22,7 +23,8 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
       		SupplierService.addSupplier($scope.supplier)
       		.then(
       				function(data) {
-      					$scope.fetchAllSuppliers();
+      					$scope.showAddModal = false;
+    					$scope.reloadState();	
 
       				},
       				function(errResponse){
@@ -35,7 +37,8 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
       		SupplierService.updateSupplier(supplier)
       		.then(
       				function(data) {
-      					$scope.fetchAllSuppliers();
+      					$scope.showEditModal = false;
+    					$scope.reloadState();	
       				},
       				function(errResponse){
       					console.error('Error while updating supplier');
@@ -47,7 +50,8 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
       		SupplierService.deleteSupplier(supplierId)
       		.then(
       				function(data) {
-      					$scope.fetchAllSuppliers();
+      					$scope.showDeleteModal = false;
+    					$scope.reloadState();	
       				},
       				function(errResponse){
       					console.error('Error while deleting supplier');
@@ -58,6 +62,7 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
       	
       	$scope.addSupplierModal = function(){
     		$scope.showAddModal = true;
+    		$scope.supplier = {};
     		
     	};
     	
@@ -72,5 +77,15 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService', function($
     		$scope.supplier = supplier;
     	};
            
+    	$scope.reloadState = function() {
+    		setTimeout(function(){
+    			$state.transitionTo($state.current, $stateParams, {
+    				reload: true,
+    				inherit: false,
+    				notify: true
+    			});
+
+    		}, 100);
+    	};
          }]);
 

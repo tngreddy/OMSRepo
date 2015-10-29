@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CategoryDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Category;
 
@@ -37,34 +38,30 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 	private String categoryCountQuery;
 
 	@Override
-	public int addCategory(Category category) {
-		int success = 0;
+	public int addCategory(Category category) throws OmsDataAccessException {
 		try {
 			return jdbcTemplate.update(addCategoryQuery,
 					new Object[] { category.getCategoryName() });
 		} catch (DataAccessException dae) {
-
-		}
-		return success;
-
-	}
-
-	@Override
-	public int deleteCategory(long CategoryId) {
-		int success = 0;
-		try {
-			success = jdbcTemplate.update(deleteCategoryQuery,
-					new Object[] { CategoryId });
-		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
-		return success;
+	}
+
+	@Override
+	public int deleteCategory(long CategoryId) throws OmsDataAccessException {
+		try {
+			return jdbcTemplate.update(deleteCategoryQuery,
+					new Object[] { CategoryId });
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		
 
 	}
 
 	@Override
-	public int updateCategory(Category category) {
+	public int updateCategory(Category category) throws OmsDataAccessException {
 		int success = 0;
 		try {
 			success = jdbcTemplate.update(
@@ -72,14 +69,14 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 					new Object[] { category.getCategoryName(),
 							category.getCategoryId() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return success;
 
 	}
 
 	@Override
-	public List<Category> fetchAllCategories() throws OmsServiceException {
+	public List<Category> fetchAllCategories() throws OmsDataAccessException {
 
 		List<Category> categories = null;
 
@@ -90,8 +87,8 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 		} catch (EmptyResultDataAccessException emptyDataAccessException) {
 			// log.debug();
 
-		} catch (DataAccessException dataAccessException) {
-			throw new OmsServiceException(dataAccessException);
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return categories;
 
@@ -113,12 +110,12 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 	}
 
 	@Override
-	public int getCategoryCount() {
+	public int getCategoryCount() throws OmsDataAccessException {
 		int count = 0;
 		try {
 			count = jdbcTemplate.queryForObject(categoryCountQuery, Integer.class);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return count;
 	}

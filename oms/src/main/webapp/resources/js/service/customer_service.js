@@ -8,7 +8,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 					return $http.get('http://localhost:8080/oms/service/customer/')
 							.then(
 									function(response){
-										return response.data;
+										return response.data.object;
 									}, 
 									function(errResponse){
 										console.error('Error while fetching customers');

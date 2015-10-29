@@ -5,6 +5,7 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 	$scope.category={categoryId:null,categoryName:''};
 	$scope.reload = false;
 	$scope.fetchAllCategories = function(){
+		
 		CategoryService.fetchAllCategories()
 		.then(
 				function(data) {
@@ -83,6 +84,7 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
         	  };*/
 
 	$scope.addCategoryModal = function(){
+		$scope.category={categoryId:null,categoryName:''};
 		$scope.showAddModal = true;
 		
 	};

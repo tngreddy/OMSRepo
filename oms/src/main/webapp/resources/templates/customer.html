@@ -1,17 +1,17 @@
  
- <div class="panel panel-default">
+ <div class="panel panel-default custompanel">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
 			<span class="lead">List of Customers </span>
 		</div>
 		
 		<div>
-		<div class="tablecontainer">
 		
-	<button type="button" class="btn btn-flat bg-olive " ng-click="addCustomerModal()">
-  Add Customer
-</button>
-
+		
+	<div class="addbuttoncontainer"><button type="button" class="btn btn-flat bg-olive " ng-click="addCustomerModal()">
+  <i class="fa fa-user-plus"></i> Add customer</button>
+ </div>
+<div class="tablecontainer">
 			<table my-tabs class="table table-bordered table-striped">
 			<thead>
                       <tr>
@@ -19,10 +19,7 @@
                         <th>CustomerName</th>
                         <th>TIN_NO</th>
                         <th>CST_NO</th>
-                        <th>ContactPerson</th>
-                        <th>ContactDesignation</th>
-                        <th>PhoneNo</th>
-                        <th>MobileNo</th>
+                        <th>Contact info</th>
                         <th>Address</th>
                         <th width="5%">Edit</th>
 					    <th width="5%">Delete</th>
@@ -34,10 +31,10 @@
 						<td><span ng-bind="customer.customerName"></span></td>
 						<td><span ng-bind="customer.tinNo"></span></td>
 						<td><span ng-bind="customer.cstNo"></span></td>
-						<td><span ng-bind="customer.contact.contactPerson"></span></td>
-						<td><span ng-bind="customer.contact.contactDesignation"></span></td>
-						<td><span ng-bind="customer.contact.phoneNo"></span></td>
-						<td><span ng-bind="customer.contact.mobileNo"></span></td>
+						<td><span ng-bind="customer.contact.contactPerson"></span></br>
+						<span ng-bind="customer.contact.contactDesignation"></span></br>
+						<span ng-bind="customer.contact.phoneNo"></span></br>
+						<span ng-bind="customer.contact.mobileNo"></span></td>
 						<td><span ng-bind="customer.contact.address.addressLine1"></span></br>
 						<span ng-bind="customer.contact.address.addressLine2"></span></br>
 						<span ng-bind="customer.contact.address.city"></span></br>
@@ -57,9 +54,11 @@
 	</div>
 	
 	
-
 <!-- Add Customer overlay -->
-<modal visible="showAddModal">
+<modal size="modal-lg" visible="showAddModal">
+<form novalidate angular-validator 
+	angular-validator-submit="addCustomer()" name="addCustomerForm"
+	class="form-horizontal">
 <div class="modal-header with-border">
 	<button type="button" class="close" data-dismiss="modal"
 		aria-label="Close">
@@ -68,25 +67,195 @@
 	<h4 class="modal-title" id="myModalLabel">Add Customer</h4>
 </div>
 <div class="modal-body">
-  <form id="addCustomerForm" class="form-horizontal">
     <div class="box-body">
+    <div class="formsplit" style="border-right: 1px solid gainsboro">
       <div class="form-group">
-        <label for="catId" class="col-sm-3 control-label">Category Name</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="customerName" id="editCategory" placeholder="Category Name" ng-model="customer.customerName" required/>
+        <label class="col-sm-4 control-label">Customer Name</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="customerName" 
+						placeholder="Customer Name"
+						ng-model="customer.customerName"
+						required-message="'Customer Name is required'" required />
+				
         </div>
       </div>
+      <div class="form-group">
+		<label class="col-sm-4 control-label">TIN NO</label>
+        <div class="col-sm-7">
+         <input type="text" class="form-control" 
+					    validate-on="dirty"
+						name="tinNo" 
+						placeholder="TIN NO"
+						ng-model="customer.tinNo"
+						required-message="'TIN NO is required'" required />
+				
+        </div>
+        </div>
+        
+        <div class="form-group">
+		<label class="col-sm-4 control-label">CST NO</label>
+        <div class="col-sm-7">
+         <input type="text" class="form-control" 
+					    validate-on="dirty"
+						name="cstNo" 
+						placeholder="CST NO"
+						ng-model="customer.cstNo"
+						required-message="'CST NO is required'" required />
+				
+        </div>
+        </div>
+        
+        <div class="form-group">
+        <label class="col-sm-4 control-label">Contact Person</label>
+        <div class="col-sm-7">
+         <input type="text" min="0"
+					    class="form-control" 
+					    validate-on="dirty"
+						name="contactPerson" 
+						placeholder="Contact Person"
+						ng-model="customer.contact.contactPerson"
+						required-message="'Contact Person is required'" required />
+				
+        </div>
+       </div>
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Contact Designation</label>
+        <div class="col-sm-7">
+         <input type="text" min="0"
+					    class="form-control" 
+					    validate-on="dirty"
+						name="contactDesignation" 
+						placeholder="Contact Designation"
+						ng-model="customer.contact.contactDesignation"
+						required-message="'Contact Designation is required'" required />
+				
+        </div>
+       </div>
+       
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Phone Number</label>
+        <div class="col-sm-7">
+         <input type="text" min="0"
+					    class="form-control" 
+					    validate-on="dirty"
+						name="phoneNo" 
+						placeholder="Phone Number"
+						ng-model="customer.contact.phoneNo"
+						ng-maxlength="10"
+						ng-minlength="10"
+						ng-pattern="/^\d+$/"
+						invalid-message = "'Phone Number should be of 10 digits'"
+						required-message="'Phone Number is required'" required />
+				
+        </div>
+       </div>
+       
+        <div class="form-group">
+        <label class="col-sm-4 control-label">Mobile Number</label>
+        <div class="col-sm-7">
+         <input type="text" min="0" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="mobileNo" 
+						placeholder="Mobile Number"
+						ng-model="customer.contact.mobileNo"
+						ng-maxlength="10"
+						ng-minlength="10"
+						ng-pattern="/^\d+$/"
+						invalid-message = "'Mobile Number should be of 10 digits'"
+						required-message="'Mobile Number is required'" required />
+				
+        </div>
+       </div>
+      </div>
+      
+       <div class="formsplit"><br>
+       
+        <div class="form-group">
+        <label class="col-sm-4 control-label">Address Line1</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="addressLine1" 
+						placeholder="Address Line1"
+						ng-model="customer.contact.address.addressLine1"
+						required-message="'Address Line1 is required'" required />
+				
+        </div>
+       </div>
+       
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Address Line2</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					   	name="addressLine2" 
+						placeholder="Address Line2"
+						ng-model="customer.contact.address.addressLine2 "/>
+				
+        </div>
+       </div>
+       
+          <div class="form-group">
+        <label class="col-sm-4 control-label">City</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="city" 
+						placeholder="City"
+						ng-model="customer.contact.address.city"
+						required-message="'City is required'" required />
+				
+        </div>
+       </div>
+       
+        <div class="form-group">
+        <label class="col-sm-4 control-label">State</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="state" 
+						placeholder="State"
+						ng-model="customer.contact.address.state"
+						required-message="'State is required'" required />
+				
+        </div>
+       </div>
+       
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Pin Code</label>
+        <div class="col-sm-7">
+         <input type="number" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="pinCode" 
+						placeholder="Pin Code"
+						ng-model="customer.contact.address.pinCode"
+						required-message="'Pin Code is required'" required />
+				
+        </div>
+       </div>
+       </div>
+      </div>
     </div>
-  </form>
-</div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-flat btn-primary" ng-click="addCustomer(customer)">Add</button>
+	<button type="submit" class="btn btn-flat btn-primary">   Add   </button>
 </div>
+</form>
 </modal>
 
 <!-- Edit customer Overlay -->
-<modal visible="showEditModal">
+<modal size="modal-lg" visible="showEditModal">
+<form novalidate angular-validator 
+	angular-validator-submit="updateCustomer(customer)" name="editCustomerForm"
+	class="form-horizontal">
 <div class="modal-header with-border">
 	<button type="button" class="close" data-dismiss="modal"
 		aria-label="Close">
@@ -95,24 +264,188 @@
 	<h4 class="modal-title" id="myModalLabel">Edit Customer</h4>
 </div>
 <div class="modal-body">
-  <form validate-category id="editCustomerForm" class="form-horizontal">
     <div class="box-body">
+    <div class="formsplit" style="border-right: 1px solid gainsboro">
       <div class="form-group">
-        <label for="catId" class="col-sm-3 control-label">Category Name</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="categoryName" id="editCategory" placeholder="Category Name" ng-model="category.categoryName"
-                data-fv-row=".col-sm-9"
-                data-fv-notempty="true"
-                data-fv-notempty-message="Category name is required" />
+        <label class="col-sm-4 control-label">Customer Name</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="customerName" 
+						placeholder="Customer Name"
+						ng-model="customer.customerName"
+						required-message="'Customer Name is required'" required />
+				
         </div>
       </div>
+      <div class="form-group">
+		<label class="col-sm-4 control-label">TIN NO</label>
+        <div class="col-sm-7">
+         <input type="text" class="form-control" 
+					    validate-on="dirty"
+						name="tinNo" 
+						placeholder="TIN NO"
+						ng-model="customer.tinNo"
+						required-message="'TIN NO is required'" required />
+				
+        </div>
+        </div>
+        
+        <div class="form-group">
+		<label class="col-sm-4 control-label">CST NO</label>
+        <div class="col-sm-7">
+         <input type="text" class="form-control" 
+					    validate-on="dirty"
+						name="cstNo" 
+						placeholder="CST NO"
+						ng-model="customer.cstNo"
+						required-message="'CST NO is required'" required />
+				
+        </div>
+        </div>
+        
+        <div class="form-group">
+        <label class="col-sm-4 control-label">Contact Person</label>
+        <div class="col-sm-7">
+         <input type="text" min="0"
+					    class="form-control" 
+					    validate-on="dirty"
+						name="contactPerson" 
+						placeholder="Contact Person"
+						ng-model="customer.contact.contactPerson"
+						required-message="'Contact Person is required'" required />
+				
+        </div>
+       </div>
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Contact Designation</label>
+        <div class="col-sm-7">
+         <input type="text" min="0"
+					    class="form-control" 
+					    validate-on="dirty"
+						name="contactDesignation" 
+						placeholder="Contact Designation"
+						ng-model="customer.contact.contactDesignation"
+						required-message="'Contact Designation is required'" required />
+				
+        </div>
+       </div>
+       
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Phone Number</label>
+        <div class="col-sm-7">
+         <input type="text" min="0"
+					    class="form-control" 
+					    validate-on="dirty"
+						name="phoneNo" 
+						placeholder="Phone Number"
+						ng-model="customer.contact.phoneNo"
+						ng-maxlength="10"
+						ng-minlength="10"
+						ng-pattern="/^\d+$/"
+						invalid-message = "'Phone Number should be of 10 digits'"
+						required-message="'Phone Number is required'" required />
+				
+        </div>
+       </div>
+       
+        <div class="form-group">
+        <label class="col-sm-4 control-label">Mobile Number</label>
+        <div class="col-sm-7">
+         <input type="text" min="0" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="mobileNo" 
+						placeholder="Mobile Number"
+						ng-model="customer.contact.mobileNo"
+						ng-maxlength="10"
+						ng-minlength="10"
+						ng-pattern="/^\d+$/"
+						invalid-message = "'Mobile Number should be of 10 digits'"
+						required-message="'Mobile Number is required'" required />
+				
+        </div>
+       </div>
+      </div>
+      
+       <div class="formsplit"><br>
+       
+        <div class="form-group">
+        <label class="col-sm-4 control-label">Address Line1</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="addressLine1" 
+						placeholder="Address Line1"
+						ng-model="customer.contact.address.addressLine1"
+						required-message="'Address Line1 is required'" required />
+				
+        </div>
+       </div>
+       
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Address Line2</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					   	name="addressLine2" 
+						placeholder="Address Line2"
+						ng-model="customer.contact.address.addressLine2 "/>
+				
+        </div>
+       </div>
+       
+          <div class="form-group">
+        <label class="col-sm-4 control-label">City</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="city" 
+						placeholder="City"
+						ng-model="customer.contact.address.city"
+						required-message="'City is required'" required />
+				
+        </div>
+       </div>
+       
+        <div class="form-group">
+        <label class="col-sm-4 control-label">State</label>
+        <div class="col-sm-7">
+         <input type="text" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="state" 
+						placeholder="State"
+						ng-model="customer.contact.address.state"
+						required-message="'State is required'" required />
+				
+        </div>
+       </div>
+       
+       <div class="form-group">
+        <label class="col-sm-4 control-label">Pin Code</label>
+        <div class="col-sm-7">
+         <input type="number" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="pinCode" 
+						placeholder="Pin Code"
+						ng-model="customer.contact.address.pinCode"
+						required-message="'Pin Code is required'" required />
+				
+        </div>
+       </div>
+       </div>
+      </div>
     </div>
-  </form>
-</div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-flat btn-primary" ng-click="updateCustomer(customer)">Update</button>
+	<button type="submit" class="btn btn-flat btn-primary">Update</button>
 </div>
+</form>
 </modal>
 
 <!-- Delete customer Overlay -->
@@ -137,7 +470,7 @@
   </form>
   </div>
   <div class="modal-footer">
-      <button type="button" class="btn btn-flat btn-success" data-dismiss="modal">No</button>
+      <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">No</button>
       <button type="button" class="btn btn-flat btn-danger" ng-click="deleteCustomer(customer.customerId)">Yes</button>
     </div>
 </modal>	

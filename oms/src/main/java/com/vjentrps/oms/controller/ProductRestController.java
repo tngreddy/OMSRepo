@@ -6,11 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.model.Product;
+import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.service.ProductService;
 
 @RestController
@@ -21,12 +23,12 @@ public class ProductRestController {
 	ProductService productService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Product> getProducts() {
+	public ResponseDTO getProducts() {
 
 		List<Product> products = new ArrayList<Product>();
 
 		products = productService.getAllproducts();
-		return products;
+		return new ResponseDTO(products);
 	}
 	
 	@RequestMapping(value = "/{productId}", method = RequestMethod.GET)
@@ -36,40 +38,35 @@ public class ProductRestController {
 		return product;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String addproduct(Product product) {
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseDTO addproduct(@RequestBody Product product) {
 
-		product.setProductName("Wireless123");
-		product.setUnitBasicRate(5);
-		product.setUnitOfMeasure(8);
-		//product.setCategoryId(2);
-		product.setStock(50);
 		productService.addProduct(product);
-		return "Success";
+		return new ResponseDTO();
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public String updateProduct(Product product) {
+	public ResponseDTO updateProduct(@RequestBody Product product) {
 
 		productService.updateProduct(product);
-		return "Success";
+		return new ResponseDTO();
 	}
 
 	@RequestMapping(value = "/{productId}", method = RequestMethod.DELETE)
-	public String deleteProduct(@PathVariable int productId) {
+	public ResponseDTO deleteProduct(@PathVariable int productId) {
 
 		productService.deleteProduct(productId);
 
-		return "Success";
+		return new ResponseDTO();
 	}
 	
 	
 	@RequestMapping(value = "/{productId}/stock/{stock}", method = RequestMethod.DELETE)
-	public String updateStock(@PathVariable long productId, @PathVariable long stock) {
+	public ResponseDTO updateStock(@PathVariable long productId, @PathVariable long stock) {
 
 		productService.updateStock(productId, stock);
 
-		return "Success";
+		return new ResponseDTO();
 	}
 	
 	@RequestMapping(value="/count",method = RequestMethod.GET)

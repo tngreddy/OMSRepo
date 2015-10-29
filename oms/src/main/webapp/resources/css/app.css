@@ -1,3 +1,4 @@
+
 /*body, #mainWrapper {
 	height: 70%;
 	background-color:rgb(245, 245, 245);
@@ -37,6 +38,8 @@ body, .form-control{
   box-shadow: 0 0 30px black;
 }
 
+#1F2533
+
 .custom-width {
     width: 80px !important;
 }*/
@@ -44,27 +47,53 @@ body, .form-control{
 body {
 	font-size: 13px;
 	font-family: Roboto;
+	background-color:rgba(237,237,237,.5)
 	
 }
 
-body .mainWrapper {
-	background-color: #BBB;
-}
 body .content-wrapper {
 	margin-left: 0;
 }
 body .tablecontainer {
-	margin: 0px 15px 0px;
+	margin: 0px 20px 0px;
 	background-color: #FFF;
-	padding-top: 20px;
 }
 body #categoryTable_wrapper {
 	width: 960px;
 	margin: 0 auto;
 }
-.tablecontainer #buttonContainer {
+.tablecontainer{
 	margin-right: 180px;
 	margin-bottom: 20px;
+}
+
+
+.navbar-nav>li:hover{
+	background-color: #337AB7;
+}
+
+.navbar-nav>li>a{
+	font-size: 14px;
+	font-family: Roboto;
+}
+
+.custompanel {
+	
+	width: 1208px;
+   margin: -2px auto;
+  }
+
+.addbuttoncontainer {
+    height: 74px;
+    width: 100%;
+    align-content: center;
+    padding: 20px;
+}
+
+.addbuttoncontainer>button {
+    float:right;
+}
+    
 }
 
 /* .modal {
@@ -135,4 +164,22 @@ body #categoryTable_wrapper {
   -webkit-transform:translate3d(0, 0, 0);
   -moz-transform:translate3d(0, 0, 0);
   transform:translate3d(0, 0, 0);
+}
+
+
+input.ng-valid {
+  border: 1px solid green;
+}
+
+select.ng-valid {
+  border: 1px solid green;
+}
+
+.margin-bottom {
+    margin-bottom:15px;
+}
+
+.formsplit{
+	width:50%;
+	float:left;
 }

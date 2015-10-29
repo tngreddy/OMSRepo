@@ -1,7 +1,8 @@
 'use strict';
 
-omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($scope, CustomerService) {
+omsApp.controller('CustomerController', ['$scope', 'CustomerService', '$state', '$stateParams', function($scope, CustomerService, $state, $stateParams) {
 	$scope.customers=[];
+	$scope.customer={};
 
 	$scope.fetchAllCustomers = function(){
 		CustomerService.fetchAllCustomers()
@@ -22,7 +23,8 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($
 		CustomerService.addCustomer($scope.customer)
 		.then(
 				function(data) {
-					$scope.fetchAllCustomers();
+					$scope.showAddModal = false;
+					$scope.reloadState();	
 
 				},
 				function(errResponse){
@@ -35,7 +37,8 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($
 		CustomerService.updateCustomer(customer)
 		.then(
 				function(data) {
-					$scope.fetchAllCustomers();
+					$scope.showEditModal = false;
+					$scope.reloadState();	
 				},
 				function(errResponse){
 					console.error('Error while updating customer');
@@ -47,7 +50,8 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($
 		CustomerService.deleteCustomer(customerId)
 		.then(
 				function(data) {
-					$scope.fetchAllCustomers();
+					$scope.showDeleteModal = false;
+					$scope.reloadState();
 				},
 				function(errResponse){
 					console.error('Error while deleting customer');
@@ -58,6 +62,7 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($
 
 	$scope.addCustomerModal = function(){
 		$scope.showAddModal = true;
+		$scope.customer = {};
 		
 	};
 	
@@ -72,5 +77,16 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', function($
 		$scope.customer = customer;
 	};
 
+	
+	$scope.reloadState = function() {
+		setTimeout(function(){
+			$state.transitionTo($state.current, $stateParams, {
+				reload: true,
+				inherit: false,
+				notify: true
+			});
+
+		}, 100);
+	};
 }]);
 

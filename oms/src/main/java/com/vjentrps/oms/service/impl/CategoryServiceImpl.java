@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vjentrps.oms.dao.CategoryDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.service.CategoryService;
 
@@ -22,31 +24,51 @@ public class CategoryServiceImpl  implements CategoryService{
 	public CategoryDao categoryDao;
 	
 	@Override
-	public int addCategory(Category category) {
-		return categoryDao.addCategory(category);
+	public int addCategory(Category category) throws OmsServiceException {
+		try {
+			return categoryDao.addCategory(category);
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 		
 	}
 
 	@Override
-	public int deleteCategory(long CategoryId) {
-		return categoryDao.deleteCategory(CategoryId);
+	public int deleteCategory(long CategoryId) throws OmsServiceException {
+		try {
+			return categoryDao.deleteCategory(CategoryId);
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 		
 	}
 
 	@Override
-	public int updateCategory(Category category) {
-		return categoryDao.updateCategory(category);
+	public int updateCategory(Category category) throws OmsServiceException{
+		try {
+			return categoryDao.updateCategory(category);
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 		
 	}
 
 	@Override
-	public List<Category> listCategories() {
-		return categoryDao.fetchAllCategories();
+	public List<Category> listCategories() throws OmsServiceException {
+		try {
+			return categoryDao.fetchAllCategories();
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 	}
 
 	@Override
-	public int getCategoryCount() {
-		return categoryDao.getCategoryCount();
+	public int getCategoryCount() throws OmsServiceException {
+		try {
+			return categoryDao.getCategoryCount();
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 	}
 
 }

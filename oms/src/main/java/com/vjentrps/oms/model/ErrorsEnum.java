@@ -2,7 +2,8 @@ package com.vjentrps.oms.model;
 
 public enum ErrorsEnum {
 	
-	TECHNICAL_EXCEPTION(1000);
+	SERVICE_DOWN(1000),
+	TECHNICAL_EXCEPTION(1001);
 	
 	
 	private int code;

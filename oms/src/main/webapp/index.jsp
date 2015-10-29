@@ -20,7 +20,7 @@
        <link href="<c:url value="/resources/css/formValidation.min.css" />" rel="stylesheet">
        <link href="<c:url value="/resources/css/anim-in-out.css" />" rel="stylesheet">
        <link href="<c:url value="/resources/css/animate.css" />" rel="stylesheet">
-       <link href='//fonts.googleapis.com/css?family=Roboto:500,100,400italic,700italic,700' rel='stylesheet' type='text/css'>
+       <link href='//fonts.googleapis.com/css?family=Roboto:400,100,400italic,700italic,700' rel='stylesheet' type='text/css'>
        
        
        
@@ -47,12 +47,12 @@
           </a>
 
           <ul class="nav navbar-nav navbar-left">
-			<li><a href="/oms"><i class="fa fa-home"></i>Home</a></li>
+			<li><a href="/oms"><i class="fa fa-home"></i> Home</a></li>
 			<li><a ui-sref="category"><i class="fa fa-th-large"></i> Category</a></li>
-			<li><a ui-sref="product"><i class="fa fa-star"> Product</i></a></li>
-			<li><a ui-sref="customer"><i class="fa fa-users"> Customer</i></a></li>
-			<li><a ui-sref="supplier"><i class="fa fa-users"> Supplier</i></a></li>
-		</ul>
+			<li><a ui-sref="product"><i class="fa fa-star"></i> Product</a></li>
+			<li><a ui-sref="customer"><i class="fa fa-user"></i> Customer</a></li>
+			<li><a ui-sref="supplier"><i class="fa fa-user"></i> Supplier</a></li>
+			 			</ul>
 
 
            <div class="navbar-custom-menu">
@@ -537,6 +537,7 @@
 <script src="<c:url value="/resources/js/angular/angular.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-route.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-animate.js" />"></script>
+<script src="<c:url value="/resources/js/angular/angular-validator.js" />"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.11/angular-ui-router.js"></script>
 <script src="<c:url value="/resources/js/datatables/jquery.dataTables.min.js" />"></script>
 <script src="<c:url value="/resources/js/datatables/dataTables.bootstrap.min.js" />"></script>
@@ -547,6 +548,7 @@
 <script src="<c:url value="/resources/js/formValidation.min.js"/>"></script>
 <script src="<c:url value="/resources/js/framework/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/anim-in-out.js" />"></script>
+
 
 
 <script src="<c:url value="/resources/js/app.js" />"></script>
