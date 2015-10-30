@@ -5,8 +5,39 @@ omsApp.directive('myTabs', function() {
     compile: function(element) {
     	
       setTimeout(function(){
-    	  $(element).dataTable();
-    	}, 500);
+    	var table = $(element).DataTable( {
+    		  
+    	        buttons: [
+    	          'copy',
+    	                 
+    	            {
+    	                extend: 'pdf',
+    	                exportOptions: {
+    	                    columns: ':visible'
+    	                }
+    	            },
+    	            {
+    	                extend: 'excel',
+    	                exportOptions: {
+    	                    columns: ':visible'
+    	                }
+    	            },
+    	            {
+    	                extend: 'print',
+    	                exportOptions: {
+    	                    columns: ':visible'
+    	                }
+    	            },
+    	             'colvis'
+    	            
+    	            
+    	        ]
+    	       	    } );
+    	
+    	table.buttons().container()
+        .appendTo( $('.addbuttoncontainer') );
+      
+      }, 500);
       
     }
   };
