@@ -6,7 +6,7 @@ import com.vjentrps.oms.model.GoodsInwardNote;
 
 public interface GINDao {
 
-	void createGIN(GoodsInwardNote gin);
+	int createGIN(GoodsInwardNote gin);
 
 	List<GoodsInwardNote> fetchAllGINs();
 

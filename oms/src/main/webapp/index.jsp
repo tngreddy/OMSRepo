@@ -37,15 +37,17 @@
 <body ng-app="omsApp" class="hold-transition skin-blue sidebar-mini">
 
 	<header class="main-header">
-        <!-- Logo -->
+       
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-fixed-top" role="navigation">
+        
+         <!-- Logo -->
         <a href="/oms" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>LT</span>
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg"><b>OMS</b></span>
         </a>
-        <!-- Header Navbar: style can be found in header.less -->
-        <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
@@ -57,10 +59,27 @@
 			<li><a ui-sref="product"><i class="fa fa-star"></i> Product</a></li>
 			<li><a ui-sref="customer"><i class="fa fa-user"></i> Customer</a></li>
 			<li><a ui-sref="supplier"><i class="fa fa-user"></i> Supplier</a></li>
-			 			</ul>
+			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-exchange"></i> Transaction<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a ui-sref="gin"></i>GIN</a></li>
+						<li><a ui-sref="rin"></i>RIN</a></li>
+						<li><a ui-sref="goc"></i>GOC</a></li>
+						<li><a ui-sref="grc"></i>GRC</a></li>
+						<li><a ui-sref="po"></i>PO</a></li>
+					</ul>
+			</li>
+			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-file-text"></i> Reports<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a ui-sref="productStock"></i>Product Stock</a></li>
+						<li><a ui-sref="stockRecord"></i>Stock Record</a></li>
+					</ul>
+			</li>
+		  </ul>
+		  
 
 
-          <!--  <div class="navbar-custom-menu">
+
+        <!--    <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               Messages: style can be found in dropdown.less
               <li class="dropdown messages-menu">
@@ -292,8 +311,8 @@
                 <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
               </li>
             </ul>
-          </div> -->
-        </nav>
+          </div> 
+        </nav>-->
       </header>
      <%-- <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
@@ -460,7 +479,7 @@
 
 	<div id="main" >
 		<div ui-view >
-			<div class="content-wrapper" ng-controller="HomeController">
+			<div class="content-wrapper" ng-controller="CommonController">
 				<section class="content-header">
 		          <h1>
 		            Dashboard
@@ -579,8 +598,19 @@
 <script src="<c:url value="/resources/js/service/customer_service.js" />"></script>
 <script src="<c:url value="/resources/js/controller/supplier_controller.js" />"></script>
 <script src="<c:url value="/resources/js/service/supplier_service.js" />"></script>
-<script src="<c:url value="/resources/js/service/home_service.js" />"></script>
-<script src="<c:url value="/resources/js/controller/home_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/common_service.js" />"></script>
+<script src="<c:url value="/resources/js/controller/common_controller.js" />"></script>
+<script src="<c:url value="/resources/js/controller/gin_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/gin_service.js" />"></script>
+<script src="<c:url value="/resources/js/controller/goc_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/goc_service.js" />"></script>
+<script src="<c:url value="/resources/js/controller/rin_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/rin_service.js" />"></script>
+<script src="<c:url value="/resources/js/controller/grc_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/grc_service.js" />"></script>
+<script src="<c:url value="/resources/js/controller/reports_controller.js" />"></script>
+<script src="<c:url value="/resources/js/service/reports_service.js" />"></script>
+
 
 </body>
 </html>

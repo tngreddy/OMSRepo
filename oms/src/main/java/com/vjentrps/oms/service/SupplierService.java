@@ -2,6 +2,7 @@ package com.vjentrps.oms.service;
 
 import java.util.List;
 
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Supplier;
 
 public interface SupplierService {
@@ -17,6 +18,8 @@ public interface SupplierService {
 	 Supplier getSupplierById(long supplierId);
 
 	int getSupplierCount();
+
+	List<BasicInfo> getSuppliersBasicInfo();
 	 
 	
 }

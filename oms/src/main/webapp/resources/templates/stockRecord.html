@@ -1,0 +1,47 @@
+
+  <div class="panel panel-default custompanel">
+		<!-- Default panel contents -->
+		<div class="panel-heading">
+			<span class="lead">Stock Records</span>
+		</div>
+		
+<div class="addbuttoncontainer">
+ </div>
+ 
+<div class="tablecontainer">
+			<table my-tabs class="table table-bordered table-striped">
+			<thead>
+                      <tr>
+                        <th>Record Id</th>
+                        <th>Trans Doc Ref</th>
+                        <th>From/To</th>
+                        <th>Good In</th>
+                        <th>Good Out</th>
+                        <th>Good Balance</th>
+                        <th>Def In</th>
+                        <th>Def Out</th>
+                        <th>Def Balance</th>
+                        <th>Created Date</th>
+                        </tr>
+                    </thead>
+				<tbody>
+					<tr ng-repeat="stockRecord in stockRecordList">
+						<td><span ng-bind="stockRecord.recordId"></span></td>
+						<td><span ng-bind="stockRecord.transDocRef"></span></td>
+						<td><span ng-bind="stockRecord.fromTo"></span></td>
+						<td><span ng-bind="stockRecord.goodIn"></span></td>
+						<td><span ng-bind="stockRecord.goodOut"></span></td>
+						<td><span ng-bind="stockRecord.goodBalance"></span></td>
+						<td><span ng-bind="stockRecord.defIn"></span></td>
+						<td><span ng-bind="stockRecord.defOut"></span></td>
+						<td><span ng-bind="stockRecord.defBalance"></span></td>
+						<td><span ng-bind="stockRecord.createdDate"></span></td>
+
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>	
+		
+

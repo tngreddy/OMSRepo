@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vjentrps.oms.dao.ProductDao;
+import com.vjentrps.oms.dao.StockDao;
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.service.ProductService;
 
@@ -21,15 +23,23 @@ public class ProductServiceImpl  implements ProductService{
 	@Autowired
 	public ProductDao productDao;
 	
+	@Autowired
+	public StockDao stockDao;
+	
 
 	@Override
 	public void addProduct(Product product) {
-		productDao.addProduct(product);
 		
+		long productId = productDao.addProduct(product);
+		if (productId > 0) {
+			stockDao.addProductStock(productId);
+		}
 	}
 
 	@Override
 	public void deleteProduct(long productId) {
+		
+		stockDao.deleteProductStock(productId);
 		productDao.deleteProduct(productId);
 		
 	}
@@ -51,15 +61,15 @@ public class ProductServiceImpl  implements ProductService{
 		return productDao.getProductById(productId);
 	}
 
-	@Override
-	public void updateStock(long productId, long stock) {
-		productDao.updateStock(productId, stock);
-		
-	}
 
 	@Override
 	public int getProductCount() {
 		return productDao.getProductCount();
+	}
+
+	@Override
+	public List<BasicInfo> getProductsBasicInfo() {
+		return productDao.getProductsBasicInfo();
 	}
 
 	

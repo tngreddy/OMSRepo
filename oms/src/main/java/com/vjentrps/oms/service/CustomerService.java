@@ -2,6 +2,7 @@ package com.vjentrps.oms.service;
 
 import java.util.List;
 
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Customer;
 
 public interface CustomerService {
@@ -17,6 +18,8 @@ public interface CustomerService {
 	Customer getCustomerById(long customerId);
 
 	int getCustomerCount();
+
+	List<BasicInfo> getCustomersBasicInfo();
 
 	 
 	

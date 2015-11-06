@@ -1,6 +1,6 @@
 'use strict';
 
-omsApp.controller('ProductController', ['$scope', 'ProductService','CategoryService', function($scope, ProductService, CategoryService) {
+omsApp.controller('ProductController', ['$scope', 'ProductService','CategoryService', '$state', '$stateParams', function($scope, ProductService, CategoryService,$state, $stateParams) {
 	$scope.products=[];
 	$scope.categories=[];
 	$scope.product = {productId:null,productName:'',categoryName:''};

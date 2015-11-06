@@ -55,7 +55,40 @@
 
 	<util:map id="errorMessages" key-type="java.lang.Integer"
 		value-type="java.lang.String">
-		<entry key="1000" value="Oops some thing went wrong, try refreshing the page " />
+		<entry key="1000"
+			value="Oops some thing went wrong, try refreshing the page " />
 	</util:map>
+
+	<bean id="ginIdIncrementer"
+		class="org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer">
+		<property name="incrementerName" value="gin_sequence" />
+		<property name="columnName" value="value" />
+	<!-- 	<property name="cacheSize" value="5" /> -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="rinIdIncrementer"
+		class="org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer">
+		<property name="incrementerName" value="rin_sequence" />
+		<property name="columnName" value="value" />
+		<!-- <property name="cacheSize" value="5" /> -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="grcIdIncrementer"
+		class="org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer">
+		<property name="incrementerName" value="grc_sequence" />
+		<property name="columnName" value="value" />
+	<!-- 	<property name="cacheSize" value="5" /> -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="gocIdIncrementer"
+		class="org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer">
+		<property name="incrementerName" value="goc_sequence" />
+		<property name="columnName" value="value" />
+		<!-- <property name="cacheSize" value="5" /> -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 
 </beans>

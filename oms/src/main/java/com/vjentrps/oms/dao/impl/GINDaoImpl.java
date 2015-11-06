@@ -1,7 +1,10 @@
 package com.vjentrps.oms.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,13 +12,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.dao.GINDao;
-import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.model.GoodsInwardNote;
+import com.vjentrps.oms.model.Product;
 
 @Repository
 public class GINDaoImpl extends BaseDao implements GINDao {
@@ -38,54 +44,75 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 	private String updateGINStatusQuery;
 	
 	
-	
-/*
-	@Override
-	public void addCategory(Category category) {
+	private static class GINRowMapper implements RowMapper<GoodsInwardNote> {
 
-		try {
-			jdbcTemplate.update(createGINQuery,
-					new Object[] { category.getCategoryName() });
-		} catch (DataAccessException dae) {
+		public GoodsInwardNote mapRow(ResultSet resultSet, int arg1)
+				throws SQLException {
 
+			GoodsInwardNote gin = new GoodsInwardNote();
+			gin.setGinNo(resultSet.getString("gin_no"));
+			gin.setGinDate(resultSet.getString("gin_date"));
+			gin.setFrom(resultSet.getString("_from"));
+			gin.setFromName(resultSet.getString("from_name"));
+			gin.setDocRefNo(resultSet.getString("doc_ref_no"));
+			gin.setDocDate(resultSet.getString("doc_date"));
+			gin.setGoodIn(resultSet.getInt("good_in"));
+			gin.setDefectiveIn(resultSet.getInt("def_in"));
+			gin.setStatus(resultSet.getString("status"));
+			Product product = new Product();
+			product.setProductId(resultSet.getLong("product_id"));
+			product.setProductName(resultSet.getString("product_name"));
+			gin.setProduct(product);
+			return gin;
 		}
 
 	}
 
 	@Override
-	public void deleteCategory(long CategoryId) {
+	public int createGIN(final GoodsInwardNote gin) {
+		
+		/*KeyHolder keyHolder = new GeneratedKeyHolder();
 		try {
-			jdbcTemplate.update(deleteCategoryQuery,
-					new Object[] { CategoryId });
+		jdbcTemplate.update(
+		    new PreparedStatementCreator() {
+		        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+		            PreparedStatement ps =
+		                connection.prepareStatement(createGINQuery,Statement.RETURN_GENERATED_KEYS);
+		            ps.setString(1, gin.getGinNo());
+		            ps.setString(2, gin.getFrom());
+		            ps.setString(3, gin.getFromName());
+		            ps.setString(4, gin.getDocRefNo());
+		            ps.setString(5, gin.getDocDate());
+		            ps.setLong(6, gin.getProduct().getProductId());
+		            ps.setLong(7,  gin.getGoodIn());
+		            ps.setLong(8, gin.getDefectiveIn());
+		            ps.setString(9, gin.getStatus());
+		            return ps;
+		        }
+		    },
+		    keyHolder);
 		} catch (DataAccessException dae) {
 
 		}
-
-	}
-
-	@Override
-	public void updateCategory(Category category) {
+		return String.valueOf(keyHolder.getKey());*/
+		int success = 0;
+		
 		try {
-			jdbcTemplate.update(
-					updateCategoryQuery,
-					new Object[] { category.getCategoryName(),
-							category.getCategoryId() });
+			success = jdbcTemplate.update(createGINQuery,
+					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromName(), gin.getDocRefNo(), gin.getDocDate(), gin.getProduct().getProductId(), gin.getGoodIn(), gin.getDefectiveIn(), gin.getStatus() });
 		} catch (DataAccessException dae) {
 
 		}
-
+		return success;
 	}
 
 	@Override
-	public List<Category> fetchAllCategories() {
+	public List<GoodsInwardNote> fetchAllGINs() {
+		List<GoodsInwardNote> gins = null;
 
-		Object[] args = {};
-		String sql = fetchAllCategoriesQuery;
-		List<Category> categories = null;
-
-		CategoryRowMapper resultSetExtractor = new CategoryRowMapper();
+		GINRowMapper resultSetExtractor = new GINRowMapper();
 		try {
-			categories = (List<Category>) jdbcTemplate.query(sql,
+			gins = (List<GoodsInwardNote>) jdbcTemplate.query(fetchAllGINSQuery,
 					resultSetExtractor);
 		} catch (EmptyResultDataAccessException emptyDataAccessException) {
 			// log.debug();
@@ -93,39 +120,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 		} catch (DataAccessException dataAccessException) {
 
 		}
-		return categories;
-
-	}
-
-	private static class CategoryRowMapper implements RowMapper<Category> {
-
-		public Category mapRow(ResultSet resultSet, int arg1)
-				throws SQLException {
-
-			Category category = new Category();
-
-			category.setCategoryId(resultSet.getInt("category_id"));
-			category.setCategoryName(resultSet.getString("category_name"));
-
-			return category;
-		}
-
-	}*/
-
-	@Override
-	public void createGIN(GoodsInwardNote gin) {
-		try {
-			jdbcTemplate.update(createGINQuery,
-					new Object[] { gin.getProduct().getProductId(), gin.getGoodIn(), gin.getDefectiveIn(), gin.getStatus() });
-		} catch (DataAccessException dae) {
-
-		}
-	}
-
-	@Override
-	public List<GoodsInwardNote> fetchAllGINs() {
-		// TODO Auto-generated method stub
-		return null;
+		return gins;
 	}
 
 	@Override

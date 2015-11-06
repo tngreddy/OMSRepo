@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.model.Address;
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Contact;
 import com.vjentrps.oms.model.Customer;
 import com.vjentrps.oms.model.ResponseDTO;
@@ -76,5 +77,14 @@ public class CustomerRestController {
     	return new ResponseDTO(customerService.getCustomerCount());
  
            
+    }
+    
+    @RequestMapping(value="/{basicInfo",method = RequestMethod.GET)
+    public ResponseDTO getCustomersBasicInfo() {
+              
+        List<BasicInfo> customers = new ArrayList<BasicInfo>();
+   	
+        customers = customerService.getCustomersBasicInfo();
+        return new ResponseDTO(customers);
     }
 }

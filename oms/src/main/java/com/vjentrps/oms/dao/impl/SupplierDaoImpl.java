@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.SupplierDao;
 import com.vjentrps.oms.model.Address;
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Contact;
 import com.vjentrps.oms.model.Supplier;
 
@@ -23,6 +24,9 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 
 	@Value("${FETCH_SUPPLIERS}")
 	private String fetchAllSuppliersQuery;
+	
+	@Value("${FETCH_SUPPLIERS_BASIC_INFO}")
+	private String fetchSuppliersBasicInfoQuery;
 
 	@Value("${GET_SUPPLIER}")
 	private String getSupplierQuery;
@@ -177,6 +181,38 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 			return supplier;
 		}
 
+	}
+	
+	private static class SupplierBasicInfoRowMapper implements RowMapper<BasicInfo> {
+
+
+		public BasicInfo mapRow(ResultSet resultSet, int arg1)
+				throws SQLException {
+
+			BasicInfo supplier = new BasicInfo();
+			supplier.setId(resultSet.getLong("supplier_id"));
+			supplier.setName(resultSet.getString("supplier_name"));
+
+			return supplier;
+		}
+
+	}
+
+	@Override
+	public List<BasicInfo> getSuppliersBasicInfo() {
+		List<BasicInfo> suppliers = null;
+
+		SupplierBasicInfoRowMapper resultSetExtractor = new SupplierBasicInfoRowMapper();
+		try {
+			suppliers = (List<BasicInfo>) jdbcTemplate.query(fetchSuppliersBasicInfoQuery,
+					resultSetExtractor);
+		} catch (EmptyResultDataAccessException emptyDataAccessException) {
+			// log.debug();
+
+		} catch (DataAccessException dataAccessException) {
+
+		}
+		return suppliers;
 	}
 
 

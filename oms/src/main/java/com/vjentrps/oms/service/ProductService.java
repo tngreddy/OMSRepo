@@ -2,6 +2,7 @@ package com.vjentrps.oms.service;
 
 import java.util.List;
 
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.model.Product;
 
@@ -15,11 +16,11 @@ public interface ProductService {
 	 
 	 List<Product> getAllproducts();
 	 
-	 void updateStock(long productId, long stock);
-
 	Product getProductById(long productId);
 
 	int getProductCount();
+
+	List<BasicInfo> getProductsBasicInfo();
 	 
 	
 }

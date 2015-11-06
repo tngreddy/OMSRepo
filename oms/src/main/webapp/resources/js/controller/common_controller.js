@@ -1,10 +1,10 @@
 'use strict';
 
-omsApp.controller('HomeController', ['$scope', 'HomeService', function($scope, HomeService) {
+omsApp.controller('CommonController', ['$scope', 'CommonService', function($scope, CommonService) {
 			
 			$scope.getCounts = function(){
 				$scope.homeResponseDto ;
-              HomeService.fetchCounts()
+              CommonService.fetchCounts()
                   .then(
       					       function(data) {
       					    	 $scope.homeResponseDto=data;

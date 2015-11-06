@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vjentrps.oms.dao.AddressDao;
-import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.dao.ContactDao;
 import com.vjentrps.oms.dao.CustomerDao;
-import com.vjentrps.oms.model.Category;
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Customer;
-import com.vjentrps.oms.service.CategoryService;
 import com.vjentrps.oms.service.CustomerService;
 
 @Service
@@ -88,6 +86,11 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public int getCustomerCount() {
 		return customerDao.getCustomerCount();
+	}
+
+	@Override
+	public List<BasicInfo> getCustomersBasicInfo() {
+		return customerDao.getCustomersBasicInfo();
 	}
 
 }

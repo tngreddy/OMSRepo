@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.model.Supplier;
 import com.vjentrps.oms.service.SupplierService;
@@ -72,6 +73,15 @@ public class SupplierRestController {
     	return supplierService.getSupplierCount();
  
            
+    }
+    
+    @RequestMapping( value="/basicInfo", method = RequestMethod.GET)
+    public ResponseDTO getSuppliersBasicInfo() {
+              
+        List<BasicInfo> suppliers = new ArrayList<BasicInfo>();
+   	
+        suppliers = supplierService.getSuppliersBasicInfo();
+        return new ResponseDTO(suppliers);
     }
  
 }

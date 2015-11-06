@@ -228,12 +228,13 @@
        <div class="form-group">
         <label class="col-sm-4 control-label">Pin Code</label>
         <div class="col-sm-7">
-         <input type="number" 
+         <input type="number" min="0"
 					    class="form-control" 
 					    validate-on="dirty"
 						name="pinCode" 
 						placeholder="Pin Code"
 						ng-model="supplier.contact.address.pinCode"
+						invalid-message="'Pin Code should be a postive number'"
 						required-message="'Pin Code is required'" required />
 				
         </div>
@@ -426,12 +427,13 @@
        <div class="form-group">
         <label class="col-sm-4 control-label">Pin Code</label>
         <div class="col-sm-7">
-         <input type="number" 
+         <input type="number" min="0"
 					    class="form-control" 
 					    validate-on="dirty"
 						name="pinCode" 
 						placeholder="Pin Code"
 						ng-model="supplier.contact.address.pinCode"
+						invalid-message="'Pin Code should be a postive number'"
 						required-message="'Pin Code is required'" required />
 				
         </div>

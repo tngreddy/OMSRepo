@@ -2,11 +2,12 @@ package com.vjentrps.oms.dao;
 
 import java.util.List;
 
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Product;
 
 public interface ProductDao {
 	
-	 void addProduct(Product product) ;
+	 long addProduct(Product product) ;
 		
 	 void deleteProduct(long productId);
 	
@@ -14,10 +15,10 @@ public interface ProductDao {
 	 
 	 List<Product> fetchAllproducts();
 	 
-	 void updateStock(long productId, long stock);
-
 	Product getProductById(long productId);
 
 	int getProductCount();
+
+	List<BasicInfo> getProductsBasicInfo();
 
 }

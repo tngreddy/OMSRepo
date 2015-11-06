@@ -183,7 +183,6 @@ a:focus {
     -o-transition: margin-left .3s ease-in-out;
     transition: margin-left .3s ease-in-out;
     margin-bottom: 0;
-    margin-left: 230px;
     border: none;
     min-height: 50px;
     border-radius: 0
@@ -277,7 +276,7 @@ a:focus {
     font-size: 20px;
     line-height: 50px;
     text-align: center;
-    width: 230px;
+    width: 160px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 0 15px;
     font-weight: 300;

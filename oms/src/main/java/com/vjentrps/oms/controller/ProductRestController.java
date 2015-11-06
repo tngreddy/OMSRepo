@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.service.ProductService;
@@ -61,14 +62,14 @@ public class ProductRestController {
 	}
 	
 	
-	@RequestMapping(value = "/{productId}/stock/{stock}", method = RequestMethod.DELETE)
+/*	@RequestMapping(value = "/{productId}/stock/{stock}", method = RequestMethod.DELETE)
 	public ResponseDTO updateStock(@PathVariable long productId, @PathVariable long stock) {
 
 		productService.updateStock(productId, stock);
 
 		return new ResponseDTO();
 	}
-	
+*/	
 	@RequestMapping(value="/count",method = RequestMethod.GET)
     public int getProductCount() {
     	
@@ -76,5 +77,14 @@ public class ProductRestController {
  
            
     }
+	
+	@RequestMapping(value = "/basicInfo" , method = RequestMethod.GET)
+	public ResponseDTO getProductInfoMap() {
+
+		List<BasicInfo> products = new ArrayList<BasicInfo>();
+
+		products = productService.getProductsBasicInfo();
+		return new ResponseDTO(products);
+	}
 
 }

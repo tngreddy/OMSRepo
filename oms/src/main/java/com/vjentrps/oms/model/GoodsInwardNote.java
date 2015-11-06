@@ -1,18 +1,24 @@
+
 package com.vjentrps.oms.model;
 
 public class GoodsInwardNote {
 	
-	private long ginNo;
+	private String ginNo;
 	private String ginDate;
+	private String from;
+	private String fromName;
+	private String docRefNo;
+	private String docDate;
 	private Product product;
 	private int goodIn;
 	private int defectiveIn;
 	private String status;
 	
-	public long getGinNo() {
+
+	public String getGinNo() {
 		return ginNo;
 	}
-	public void setGinNo(long ginNo) {
+	public void setGinNo(String ginNo) {
 		this.ginNo = ginNo;
 	}
 	public String getGinDate() {
@@ -20,6 +26,31 @@ public class GoodsInwardNote {
 	}
 	public void setGinDate(String ginDate) {
 		this.ginDate = ginDate;
+	}
+	public String getFrom() {
+		return from;
+	}
+	public void setFrom(String from) {
+		this.from = from;
+	}
+	
+	public String getFromName() {
+		return fromName;
+	}
+	public void setFromName(String fromName) {
+		this.fromName = fromName;
+	}
+	public String getDocRefNo() {
+		return docRefNo;
+	}
+	public void setDocRefNo(String docRefNo) {
+		this.docRefNo = docRefNo;
+	}
+	public String getDocDate() {
+		return docDate;
+	}
+	public void setDocDate(String docDate) {
+		this.docDate = docDate;
 	}
 	public Product getProduct() {
 		return product;
@@ -45,6 +76,8 @@ public class GoodsInwardNote {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	
 	
 	
 	

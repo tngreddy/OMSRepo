@@ -13,6 +13,7 @@ import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.dao.ContactDao;
 import com.vjentrps.oms.dao.CustomerDao;
 import com.vjentrps.oms.dao.SupplierDao;
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.model.Customer;
 import com.vjentrps.oms.model.Supplier;
@@ -89,6 +90,11 @@ public class SupplierServiceImpl  implements SupplierService{
 	@Override
 	public int getSupplierCount() {
 		return supplierDao.getSupplierCount();
+	}
+
+	@Override
+	public List<BasicInfo> getSuppliersBasicInfo() {
+		return supplierDao.getSuppliersBasicInfo();
 	}
 
 	

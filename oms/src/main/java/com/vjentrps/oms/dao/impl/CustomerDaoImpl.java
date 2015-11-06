@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CustomerDao;
 import com.vjentrps.oms.model.Address;
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Contact;
 import com.vjentrps.oms.model.Customer;
 
@@ -23,6 +24,9 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	
 	@Value("${FETCH_CUSTOMERS}")
 	private String fetchAllCustomersQuery;
+	
+	@Value("${FETCH_CUSTOMERS_BASIC_INFO}")
+	private String fetchCustomersBasicInfoQuery;
 	
 	@Value("${GET_CUSTOMER}")
 	private String getCustomerQuery;
@@ -181,6 +185,37 @@ private static class CustomerIdsRowMapper implements RowMapper<Customer> {
 		}
 
 	}
+
+private static class CustomerBasicInfoRowMapper implements RowMapper<BasicInfo> {
+
+	
+	public BasicInfo mapRow(ResultSet resultSet, int arg1)
+			throws SQLException {
+
+		BasicInfo customer = new BasicInfo();
+		customer.setId(resultSet.getLong("customer_id"));
+		customer.setName(resultSet.getString("customer_name"));
+		return customer;
+	}
+
+}
+
+@Override
+public List<BasicInfo> getCustomersBasicInfo() {
+	List<BasicInfo> customers = null;
+
+	CustomerBasicInfoRowMapper resultSetExtractor = new CustomerBasicInfoRowMapper();
+	try {
+		customers = (List<BasicInfo>) jdbcTemplate.query(fetchCustomersBasicInfoQuery,
+				resultSetExtractor);
+	} catch (EmptyResultDataAccessException emptyDataAccessException) {
+		// log.debug();
+
+	} catch (DataAccessException dataAccessException) {
+
+	}
+	return customers;
+}
 
 
 

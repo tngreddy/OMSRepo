@@ -2,17 +2,20 @@ package com.vjentrps.oms.model;
 
 public class GoodsOutwardChallan {
 	
-	private long gocNo;
+	private String gocNo;
 	private String gocDate;
+	private String to;
+	private String toName;
+	private String docRefNo;
+	private String docDate;
 	private Product product;
 	private int goodOut;
-	private int defectiveOut;
+	private int defOut;
 	private String status;
-	
-	public long getGocNo() {
+	public String getGocNo() {
 		return gocNo;
 	}
-	public void setGocNo(long gocNo) {
+	public void setGocNo(String gocNo) {
 		this.gocNo = gocNo;
 	}
 	public String getGocDate() {
@@ -20,6 +23,30 @@ public class GoodsOutwardChallan {
 	}
 	public void setGocDate(String gocDate) {
 		this.gocDate = gocDate;
+	}
+	public String getTo() {
+		return to;
+	}
+	public void setTo(String to) {
+		this.to = to;
+	}
+	public String getToName() {
+		return toName;
+	}
+	public void setToName(String toName) {
+		this.toName = toName;
+	}
+	public String getDocRefNo() {
+		return docRefNo;
+	}
+	public void setDocRefNo(String docRefNo) {
+		this.docRefNo = docRefNo;
+	}
+	public String getDocDate() {
+		return docDate;
+	}
+	public void setDocDate(String docDate) {
+		this.docDate = docDate;
 	}
 	public Product getProduct() {
 		return product;
@@ -33,11 +60,11 @@ public class GoodsOutwardChallan {
 	public void setGoodOut(int goodOut) {
 		this.goodOut = goodOut;
 	}
-	public int getDefectiveOut() {
-		return defectiveOut;
+	public int getDefOut() {
+		return defOut;
 	}
-	public void setDefectiveOut(int defectiveOut) {
-		this.defectiveOut = defectiveOut;
+	public void setDefOut(int defOut) {
+		this.defOut = defOut;
 	}
 	public String getStatus() {
 		return status;
@@ -45,9 +72,6 @@ public class GoodsOutwardChallan {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
-	
 	
 	
 

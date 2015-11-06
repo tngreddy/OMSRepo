@@ -2,6 +2,7 @@ package com.vjentrps.oms.dao;
 
 import java.util.List;
 
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Customer;
 
 
@@ -20,4 +21,6 @@ public interface CustomerDao {
 	 Customer getCustIds(long customerId);
 
 	int getCustomerCount();
+
+	List<BasicInfo> getCustomersBasicInfo();
 }

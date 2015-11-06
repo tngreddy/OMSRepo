@@ -1,0 +1,37 @@
+
+  <div class="panel panel-default custompanel">
+		<!-- Default panel contents -->
+		<div class="panel-heading">
+			<span class="lead">Products Stock </span>
+		</div>
+		
+<div class="addbuttoncontainer">
+ </div>
+ 
+<div class="tablecontainer">
+			<table my-tabs class="table table-bordered table-striped">
+			<thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Product Name</th>
+                        <th>Good Balance</th>
+                        <th>Def Balance</th>
+                        <th>Last Modified</th>
+                        </tr>
+                    </thead>
+				<tbody>
+					<tr ng-repeat="productStock in productsStockList">
+						<td><span ng-bind="productStock.id"></span></td>
+						<td><span ng-bind="productStock.product.productName"></span></td>
+						<td><span ng-bind="productStock.goodBalance"></span></td>
+						<td><span ng-bind="productStock.defBalance"></span></td>
+						<td><span ng-bind="productStock.lastModified"></span></td>
+
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>	
+		
+
