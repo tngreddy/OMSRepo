@@ -1,10 +1,8 @@
 package com.vjentrps.oms.controller;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,25 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
+import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
 import com.vjentrps.oms.model.ResponseDTO;
-import com.vjentrps.oms.service.GOCService;
 
 @RestController
 @RequestMapping(value="/service/goc")
-public class GOCRestController {
+public class GOCRestController extends BaseRestController{
 	
-	@Autowired
-	GOCService gocService;
-	
- 
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseDTO getGOCs() {
     	
         List<GoodsOutwardChallan> gocs = new ArrayList<GoodsOutwardChallan>();
    	
-        	gocs = gocService.listGOCs();
+        	try {
+				gocs = gocService.listGOCs();
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
         return new ResponseDTO(gocs);
     }
     
@@ -41,9 +41,11 @@ public class GOCRestController {
     	goc.setStatus("pending");
     	try {
 			gocService.createGOC(goc);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}  catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
+    	catch (Exception e) {
+    		return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
        
         return new ResponseDTO();
@@ -54,7 +56,12 @@ public class GOCRestController {
     @RequestMapping(method = RequestMethod.PUT)
     public String updateGOC(@RequestBody GoodsOutwardChallan goc) {
  
-    	gocService.updateGOC(goc);
+    	try {
+			gocService.updateGOC(goc);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
          return "Success";
     }
@@ -62,7 +69,12 @@ public class GOCRestController {
     @RequestMapping(value="/{gocNo}",method = RequestMethod.DELETE)
     public String deleteCategory(@PathVariable long gocNo) {
     	
-    	gocService.deleteGOC(gocNo);
+    	try {
+			gocService.deleteGOC(gocNo);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
            return "Success";
     }
@@ -73,7 +85,12 @@ public class GOCRestController {
     	GoodsOutwardChallan goc = new GoodsOutwardChallan();
     	goc.setGocNo(gocNo);
     	goc.setStatus(Constants.CLOSED);
-    	gocService.updateGOCStatus(goc);
+    	try {
+			gocService.updateGOCStatus(goc);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
            return "Success";
     }

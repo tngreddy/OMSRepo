@@ -1,15 +1,16 @@
 'use strict';
 
-omsApp.controller('ReportsController', ['$scope', 'ReportsService', '$state', function($scope, ReportsService, $state) {
+omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonService',  '$state', function($scope, ReportsService, CommonService, $state) {
 	$scope.productsStockList=[];
 	$scope.stockRecordList=[];
-	var prodStock = 'productStock';
+	var prodStock = 'stockSummary';
 	var stkRecord = 'stockRecord';
+	$scope.basicInfoMap = {};
+	$scope.productsInfo={};
+	var products = "PRODUCTS";
 	
 	$scope.fetchAllProductsStock = function(){
-		
-		
-		
+	
 		ReportsService.fetchAllProductsStock()
 		.then(
 				function(data) {
@@ -33,12 +34,31 @@ omsApp.controller('ReportsController', ['$scope', 'ReportsService', '$state', fu
 				}
 		);
 	};
+	
+	$scope.fetchBasicInfoToPopulate = function(){
+
+		CommonService.fetchInfoToPopulate()
+		.then(
+				function(data) {
+					$scope.basicInfoMap = data;
+					$scope.productsInfo = $scope.basicInfoMap[products];
+				},
+				function(errResponse){
+					console.error('Error while fetching basicInfo');
+				}
+		);
+	};
 
 	if($state.current.name == prodStock) {
+		$scope.fetchBasicInfoToPopulate();
 		$scope.fetchAllProductsStock();
+		
 	} else if ($state.current.name == stkRecord) {
+		$scope.fetchBasicInfoToPopulate();
 		$scope.fetchAllStockRecords();
 	}
+	
+
 		
 }]);
 

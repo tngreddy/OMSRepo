@@ -5,7 +5,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchAllProducts: function() {
-			return $http.get('http://localhost:8080/oms/service/product/')
+			return $http.get('http://ntiyyagura:8080/oms/service/product/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 		},
 
 		addProduct: function(product) {
-			return $http.post('http://localhost:8080/oms/service/product/', product)
+			return $http.post('http://ntiyyagura:8080/oms/service/product/', product)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 
 		},
 		updateProduct: function(product) {
-			return $http.put('http://localhost:8080/oms/service/product/', product)
+			return $http.put('http://ntiyyagura:8080/oms/service/product/', product)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteProduct: function(productId) {
-			return $http.delete('http://localhost:8080/oms/service/product/'+productId)
+			return $http.delete('http://ntiyyagura:8080/oms/service/product/'+productId)
 			.then(
 					function(response){
 						return response.data;
@@ -59,7 +59,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 		},
 
 		getProductCount: function() {
-			return $http.get('http://localhost:8080/oms/service/product/count')
+			return $http.get('http://ntiyyagura:8080/oms/service/product/count')
 			.then(
 					function(response){
 						return response.data;

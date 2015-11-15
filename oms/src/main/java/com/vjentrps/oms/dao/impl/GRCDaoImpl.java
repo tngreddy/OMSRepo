@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.GRCDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
 import com.vjentrps.oms.model.Product;
 
@@ -62,7 +63,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 	}
 
 	@Override
-	public int createGRC(final GoodsReturnableChallan grc) {
+	public int createGRC(final GoodsReturnableChallan grc) throws OmsDataAccessException {
 		
 		int success = 0;
 		
@@ -70,24 +71,21 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			success = jdbcTemplate.update(createGRCQuery,
 					new Object[] { grc.getGrcNo(), grc.getTo(), grc.getToName(), grc.getDocRefNo(), grc.getDocDate(), grc.getProduct().getProductId(), grc.getGoodOut(), grc.getDefOut(), grc.getStatus() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return success;
 	}
 
 	@Override
-	public List<GoodsReturnableChallan> fetchAllGRCs() {
+	public List<GoodsReturnableChallan> fetchAllGRCs() throws OmsDataAccessException {
 		List<GoodsReturnableChallan> grcs = null;
 
 		GRCRowMapper resultSetExtractor = new GRCRowMapper();
 		try {
 			grcs = (List<GoodsReturnableChallan>) jdbcTemplate.query(fetchAllGRCSQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return grcs;
 	}

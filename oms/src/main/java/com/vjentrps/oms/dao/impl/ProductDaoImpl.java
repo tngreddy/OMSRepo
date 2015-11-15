@@ -19,6 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.ProductDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.model.Product;
@@ -39,6 +40,11 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 	
 	@Value("${FETCH_PRODUCTS_BASIC_INFO}")
 	private String fetchProductsBasicInfoQuery;
+	
+	
+	
+	@Value("${FETCH_CAT_PROD_BASIC_INFO}")
+	private String fetchCatProdInfoQuery;
 	
 	@Value("${GET_PRODUCT}")
 	private String getProductQuery;
@@ -86,9 +92,21 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 
 	}
 
+	
+	private static class CatProdInfoRowMapper implements RowMapper<BasicInfo> {
+
+		public BasicInfo mapRow(ResultSet resultSet, int arg1)
+				throws SQLException {
+			BasicInfo product = new BasicInfo();
+			product.setId(resultSet.getLong("category_id"));
+			product.setName(resultSet.getString("product_name"));
+			return product;
+		}
+
+	}
 
 	@Override
-	public long addProduct(final Product product) {
+	public long addProduct(final Product product) throws OmsDataAccessException {
 		
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -107,7 +125,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		    },
 		    keyHolder);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return (Long) keyHolder.getKey();
 				
@@ -116,31 +134,31 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 	
 
 	@Override
-	public void updateProduct(Product product) {
+	public void updateProduct(Product product) throws OmsDataAccessException{
 		try {
 			jdbcTemplate.update(
 					updateProductQuery,
 					new Object[] { product.getProductName(), product.getCategory().getCategoryId(), product.getUnitOfMeasure(), product.getUnitBasicRate(),
 							 product.getProductId() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}
 	
 	@Override
-	public void deleteProduct(long productId) {
+	public void deleteProduct(long productId) throws OmsDataAccessException{
 		try {
 			jdbcTemplate.update(deleteProductQuery,
 					new Object[] { productId });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}
 
 	@Override
-	public List<Product> fetchAllproducts() {
+	public List<Product> fetchAllproducts() throws OmsDataAccessException{
 		
 		String sql = fetchAllProductsQuery;
 		List<Product> products = null;
@@ -149,18 +167,15 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		try {
 			products = (List<Product>) jdbcTemplate.query(sql,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return products;
 	}
 
 
 	@Override
-	public Product getProductById(long productId) {
+	public Product getProductById(long productId) throws OmsDataAccessException{
 		
 		Product product = null;
 
@@ -168,11 +183,8 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		try {
 			product = jdbcTemplate.queryForObject(getProductQuery,new Object[] { productId },
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		}  catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return product;
 	}
@@ -180,12 +192,12 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 
 
 	@Override
-	public int getProductCount() {
+	public int getProductCount() throws OmsDataAccessException{
 		int count = 0;
 		try {
 			count = jdbcTemplate.queryForObject(productCountQuery, Integer.class);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return count;
 	}
@@ -193,18 +205,30 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 
 
 	@Override
-	public List<BasicInfo> getProductsBasicInfo() {
+	public List<BasicInfo> getProductsBasicInfo() throws OmsDataAccessException {
 		List<BasicInfo> products = null;
 
 		ProductBasicInfoRowMapper resultSetExtractor = new ProductBasicInfoRowMapper();
 		try {
 			products = (List<BasicInfo>) jdbcTemplate.query(fetchProductsBasicInfoQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
+		}  catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return products;
+	}
+	
+	
+	@Override
+	public List<BasicInfo> catProdInfo() throws OmsDataAccessException {
+		List<BasicInfo> products = null;
 
-		} catch (DataAccessException dataAccessException) {
-
+		CatProdInfoRowMapper resultSetExtractor = new CatProdInfoRowMapper();
+		try {
+			products = (List<BasicInfo>) jdbcTemplate.query(fetchCatProdInfoQuery,
+					resultSetExtractor);
+		}  catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return products;
 	}

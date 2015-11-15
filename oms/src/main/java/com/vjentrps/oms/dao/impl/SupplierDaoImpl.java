@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.SupplierDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.Address;
 import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Contact;
@@ -44,40 +45,40 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 	private String supplierCountQuery;
 
 	@Override
-	public void addSupplier(Supplier supplier) {
+	public void addSupplier(Supplier supplier) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(addSupplierQuery,
 					new Object[] { supplier.getSupplierName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getContact().getContactId() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 
 	}
 
 	@Override
-	public void deleteSupplier(long supplierId) {
+	public void deleteSupplier(long supplierId) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(deleteSupplierQuery,
 					new Object[] { supplierId });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 
 	}
 
 	@Override
-	public void updateSupplier(Supplier supplier) {
+	public void updateSupplier(Supplier supplier) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateSupplierQuery,
 					new Object[] { supplier.getSupplierName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getSupplierId()});
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 
 	}
 
 	@Override
-	public List<Supplier> fetchAllSuppliers() {
+	public List<Supplier> fetchAllSuppliers() throws OmsDataAccessException {
 		String sql = fetchAllSuppliersQuery;
 		List<Supplier> suppliers = null;
 
@@ -85,50 +86,47 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 		try {
 			suppliers = (List<Supplier>) jdbcTemplate.query(sql,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return suppliers;
 	}
 
 
 	@Override
-	public Supplier getSupplierById(long supplierId) {
+	public Supplier getSupplierById(long supplierId) throws OmsDataAccessException {
 		Supplier supplier = null;
 		SupplierRowMapper resultSetExtractor = new SupplierRowMapper();
 		try {
 			supplier = (Supplier) jdbcTemplate.queryForObject(getSupplierQuery,
 					new Object[] { supplierId }, resultSetExtractor);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return supplier;
 	}
 
 	@Override
-	public Supplier getSupplierIds(long supplierId) {
+	public Supplier getSupplierIds(long supplierId) throws OmsDataAccessException {
 		Supplier supplier = null;
 		SupplierIdsRowMapper resultSetExtractor = new SupplierIdsRowMapper();
 		try {
 			supplier = (Supplier) jdbcTemplate.queryForObject(getSupplierIdsQuery,
 					new Object[] { supplierId }, resultSetExtractor);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return supplier;
 	}
 
 	
 	@Override
-	public int getSupplierCount() {
+	public int getSupplierCount() throws OmsDataAccessException{
 		int count = 0;
 		try {
 			count = jdbcTemplate.queryForObject(supplierCountQuery, Integer.class);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return count;
 	}
@@ -199,18 +197,15 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 	}
 
 	@Override
-	public List<BasicInfo> getSuppliersBasicInfo() {
+	public List<BasicInfo> getSuppliersBasicInfo() throws OmsDataAccessException {
 		List<BasicInfo> suppliers = null;
 
 		SupplierBasicInfoRowMapper resultSetExtractor = new SupplierBasicInfoRowMapper();
 		try {
 			suppliers = (List<BasicInfo>) jdbcTemplate.query(fetchSuppliersBasicInfoQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return suppliers;
 	}

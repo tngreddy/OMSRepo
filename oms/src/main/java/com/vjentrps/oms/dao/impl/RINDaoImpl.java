@@ -1,27 +1,20 @@
 package com.vjentrps.oms.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.dao.RINDao;
-import com.vjentrps.oms.model.ReturnedInwardNote;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.Product;
+import com.vjentrps.oms.model.ReturnedInwardNote;
 
 @Repository
 public class RINDaoImpl extends BaseDao implements RINDao {
@@ -69,7 +62,7 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 	}
 
 	@Override
-	public int createRIN(final ReturnedInwardNote rin) {
+	public int createRIN(final ReturnedInwardNote rin) throws OmsDataAccessException {
 		
 		/*KeyHolder keyHolder = new GeneratedKeyHolder();
 		try {
@@ -101,24 +94,21 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 			success = jdbcTemplate.update(createRINQuery,
 					new Object[] { rin.getRinNo(), rin.getFrom(), rin.getFromName(), rin.getDocRefNo(), rin.getDocDate(), rin.getProduct().getProductId(), rin.getGoodIn(), rin.getDefIn(), rin.getStatus() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return success;
 	}
 
 	@Override
-	public List<ReturnedInwardNote> fetchAllRINs() {
+	public List<ReturnedInwardNote> fetchAllRINs() throws OmsDataAccessException {
 		List<ReturnedInwardNote> rins = null;
 
 		RINRowMapper resultSetExtractor = new RINRowMapper();
 		try {
 			rins = (List<ReturnedInwardNote>) jdbcTemplate.query(fetchAllRINSQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return rins;
 	}

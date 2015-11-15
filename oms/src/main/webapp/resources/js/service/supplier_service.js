@@ -5,7 +5,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 	return {
 		
 			fetchAllSuppliers: function() {
-					return $http.get('http://localhost:8080/oms/service/supplier/')
+					return $http.get('http://ntiyyagura:8080/oms/service/supplier/')
 							.then(
 									function(response){
 										return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 			},
 			
 			addSupplier: function(supplier) {
-				return $http.post('http://localhost:8080/oms/service/supplier/', supplier)
+				return $http.post('http://ntiyyagura:8080/oms/service/supplier/', supplier)
 				.then(
 						function(response){
 							return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 
 			},
 			updateSupplier: function(supplier) {
-				return $http.put('http://localhost:8080/oms/service/supplier/', supplier)
+				return $http.put('http://ntiyyagura:8080/oms/service/supplier/', supplier)
 				.then(
 						function(response){
 							return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 			},
 
 			deleteSupplier: function(supplierId) {
-				return $http.delete('http://localhost:8080/oms/service/supplier/'+supplierId)
+				return $http.delete('http://ntiyyagura:8080/oms/service/supplier/'+supplierId)
 				.then(
 						function(response){
 							return response.data;
@@ -59,7 +59,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 			},
 			
 			getSupplierCount: function() {
-				return $http.get('http://localhost:8080/oms/service/supplier/count')
+				return $http.get('http://ntiyyagura:8080/oms/service/supplier/count')
 						.then(
 								function(response){
 									return response.data;
@@ -73,5 +73,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 				}
 		  
 	};
+	
+	
 
 }]);

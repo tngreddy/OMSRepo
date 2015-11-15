@@ -5,10 +5,10 @@ omsApp.factory('CommonService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchCounts: function() {
-			return $http.get('http://localhost:8080/oms/service/common/count')
+			return $http.get('http://ntiyyagura:8080/oms/service/common/count')
 			.then(
 					function(response){
-						return response.data;
+						return response.data.object;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching counts');
@@ -18,7 +18,7 @@ omsApp.factory('CommonService', ['$http', '$q', function($http, $q){
 		},
 
 		fetchInfoToPopulate: function() {
-			return $http.get('http://localhost:8080/oms/service/common/basicInfo')
+			return $http.get('http://ntiyyagura:8080/oms/service/common/basicInfo')
 			.then(
 					function(response){
 						return response.data.object;

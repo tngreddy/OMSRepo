@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CustomerDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.Address;
 import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Contact;
@@ -45,39 +46,39 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	
 
 	@Override
-	public void addCustomer(Customer customer) {
+	public void addCustomer(Customer customer) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(addCustomerQuery,
 					new Object[] { customer.getCustomerName(), customer.getTinNo(), customer.getCstNo(), customer.getContact().getContactId() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}
 
 	@Override
-	public void deleteCustomer(long customerId) {
+	public void deleteCustomer(long customerId)  throws OmsDataAccessException{
 		try {
 		jdbcTemplate.update(deleteCustomerQuery,
 				new Object[] { customerId });
 	} catch (DataAccessException dae) {
-
+		throw new OmsDataAccessException(dae);
 	}
 	}
 		
 
 	@Override
-	public void updateCustomer(Customer customer) {
+	public void updateCustomer(Customer customer) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateCustomerQuery,
 					new Object[] { customer.getCustomerName(), customer.getTinNo(), customer.getCstNo(), customer.getCustomerId()});
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 	}
 
 	@Override
-	public List<Customer> fetchAllCustomers() {
+	public List<Customer> fetchAllCustomers() throws OmsDataAccessException{
 		String sql = fetchAllCustomersQuery;
 		List<Customer> customers = null;
 
@@ -85,31 +86,28 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 		try {
 			customers = (List<Customer>) jdbcTemplate.query(sql,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return customers;
 	}
 	
 	
 	@Override
-	public Customer getCustomerById(long customerId) {
+	public Customer getCustomerById(long customerId) throws OmsDataAccessException{
 		Customer customer = null;
 		CustomerRowMapper resultSetExtractor = new CustomerRowMapper();
 		try {
 			customer = (Customer) jdbcTemplate.queryForObject(getCustomerQuery,
 					new Object[] { customerId }, resultSetExtractor);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return customer;
 	}
 
 	@Override
-	public Customer getCustIds(long customerId) {
+	public Customer getCustIds(long customerId) throws OmsDataAccessException {
 		Customer customer = null;
 		CustomerIdsRowMapper resultSetExtractor = new CustomerIdsRowMapper();
 		try {
@@ -119,19 +117,19 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 			
 			
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return customer;
 	}
 	
 	
 	@Override
-	public int getCustomerCount() {
+	public int getCustomerCount() throws OmsDataAccessException{
 		int count = 0;
 		try {
 			count = jdbcTemplate.queryForObject(customerCountQuery, Integer.class);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return count;
 	}
@@ -201,18 +199,15 @@ private static class CustomerBasicInfoRowMapper implements RowMapper<BasicInfo> 
 }
 
 @Override
-public List<BasicInfo> getCustomersBasicInfo() {
+public List<BasicInfo> getCustomersBasicInfo() throws OmsDataAccessException{
 	List<BasicInfo> customers = null;
 
 	CustomerBasicInfoRowMapper resultSetExtractor = new CustomerBasicInfoRowMapper();
 	try {
 		customers = (List<BasicInfo>) jdbcTemplate.query(fetchCustomersBasicInfoQuery,
 				resultSetExtractor);
-	} catch (EmptyResultDataAccessException emptyDataAccessException) {
-		// log.debug();
-
-	} catch (DataAccessException dataAccessException) {
-
+	} catch (DataAccessException dae) {
+		throw new OmsDataAccessException(dae);
 	}
 	return customers;
 }

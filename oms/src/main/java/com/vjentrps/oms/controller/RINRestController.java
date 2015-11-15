@@ -1,10 +1,8 @@
 package com.vjentrps.oms.controller;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,25 +10,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
+import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.model.ReturnedInwardNote;
-import com.vjentrps.oms.service.RINService;
 
 @RestController
 @RequestMapping(value="/service/rin")
-public class RINRestController {
+public class RINRestController extends BaseRestController{
 	
-	@Autowired
-	RINService rinService;
-	
+
  
     @RequestMapping(method = RequestMethod.GET)
     public ResponseDTO getRINs() {
     	
         List<ReturnedInwardNote> rins = new ArrayList<ReturnedInwardNote>();
    	
-        	rins = rinService.listRINs();
+        	try {
+				rins = rinService.listRINs();
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
         return new ResponseDTO(rins);
     }
     
@@ -41,9 +42,10 @@ public class RINRestController {
     	rin.setStatus("pending");
     	try {
 			rinService.createRIN(rin);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}  catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
        
         return new ResponseDTO();
@@ -54,7 +56,12 @@ public class RINRestController {
     @RequestMapping(method = RequestMethod.PUT)
     public String updateRIN(@RequestBody ReturnedInwardNote rin) {
  
-    	rinService.updateRIN(rin);
+    	try {
+			rinService.updateRIN(rin);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
          return "Success";
     }
@@ -62,7 +69,12 @@ public class RINRestController {
     @RequestMapping(value="/{rinNo}",method = RequestMethod.DELETE)
     public String deleteRIN(@PathVariable String rinNo) {
     	
-    	rinService.deleteRIN(rinNo);
+    	try {
+			rinService.deleteRIN(rinNo);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
            return "Success";
     }
@@ -73,7 +85,12 @@ public class RINRestController {
     	ReturnedInwardNote rin = new ReturnedInwardNote();
     	rin.setRinNo(rinNo);
     	rin.setStatus(Constants.CLOSED);
-    	rinService.updateRINStatus(rin);
+    	try {
+			rinService.updateRINStatus(rin);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
            return "Success";
     }

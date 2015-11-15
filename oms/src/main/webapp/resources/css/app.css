@@ -70,6 +70,7 @@ body #categoryTable_wrapper {
 
 .navbar-nav>li:hover {
 	background-color: #337AB7;
+	
 }
 
 .navbar-nav>li>a {
@@ -88,7 +89,7 @@ body #categoryTable_wrapper {
 	padding-bottom: 20px;
 }
 
-.addbuttoncontainer {
+.addbuttoncontainer, .filtercontainer {
 	height: 74px;
 	width: 100%;
 	align-content: center;
@@ -206,7 +207,11 @@ select.ng-valid {
 }
 
 .buttons-copy:hover {
-	background-color: #f0ad4e;
-	border-color: #eea236;
+	background-color: #3D9970;
+	border-color: #317D5B;
 	color: white;
+}
+
+.lead {
+	font-weight:400;
 }

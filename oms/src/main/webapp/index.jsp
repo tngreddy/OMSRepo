@@ -1,3 +1,4 @@
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,16 +62,16 @@
 			<li><a ui-sref="supplier"><i class="fa fa-user"></i> Supplier</a></li>
 			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-exchange"></i> Transaction<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a ui-sref="gin"></i>GIN</a></li>
-						<li><a ui-sref="rin"></i>RIN</a></li>
-						<li><a ui-sref="goc"></i>GOC</a></li>
-						<li><a ui-sref="grc"></i>GRC</a></li>
-						<li><a ui-sref="po"></i>PO</a></li>
+						<li><a ui-sref="gin"><i class="fa fa-arrow-left"></i> GIN</a></li> 
+						<li><a ui-sref="rin"><i class="fa fa-arrow-left"></i> RIN</a></li>
+						<li><a ui-sref="goc"><i class="fa fa-arrow-right"></i> GOC</a></li>
+						<li><a ui-sref="grc"><i class="fa fa-arrow-right"></i> GRC</a></li>
+						<li><a ui-sref="po"><i class="fa fa-arrow-right"></i> PO</a></li>
 					</ul>
 			</li>
 			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-file-text"></i> Reports<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a ui-sref="productStock"></i>Product Stock</a></li>
+						<li><a ui-sref="stockSummary"></i>Stock Summary</a></li>
 						<li><a ui-sref="stockRecord"></i>Stock Record</a></li>
 					</ul>
 			</li>

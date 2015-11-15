@@ -4,6 +4,7 @@ public class StockRecord {
 	
 	private long recordId;
 	private String transDocRef;
+	private Product product;
 	private String fromTo;
 	private long goodIn;
 	private long goodOut;
@@ -75,6 +76,14 @@ public class StockRecord {
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	
 	
 	
 	

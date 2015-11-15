@@ -3,39 +3,45 @@ package com.vjentrps.oms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.BasicInfo;
+import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.model.Supplier;
-import com.vjentrps.oms.service.SupplierService;
 
 @RestController
 @RequestMapping(value="/service/supplier")
-public class SupplierRestController {
+public class SupplierRestController extends BaseRestController {
 	
-	@Autowired
-	SupplierService supplierService;
- 
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseDTO getSuppliers() {
               
         List<Supplier> suppliers = new ArrayList<Supplier>();
    	
-        suppliers = supplierService.listSuppliers();
+        try {
+			suppliers = supplierService.listSuppliers();
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
         return new ResponseDTO(suppliers);
     }
     
     @RequestMapping(value="/{supplierId}",method = RequestMethod.GET)
     public ResponseDTO getSupplier(@PathVariable long supplierId) {
               
-        Supplier supplier = supplierService.getSupplierById(supplierId);
+        Supplier supplier = null;
+		try {
+			supplier = supplierService.getSupplierById(supplierId);
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
    	
         return new ResponseDTO(supplier);
     }
@@ -45,7 +51,11 @@ public class SupplierRestController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseDTO addSupplier(@RequestBody Supplier supplier) {
  
-       supplierService.addSupplier(supplier);
+       try {
+		supplierService.addSupplier(supplier);
+	} catch (OmsServiceException e) {
+		return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+	}
        
         return new ResponseDTO();
     }
@@ -54,7 +64,11 @@ public class SupplierRestController {
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseDTO updateSupplier(@RequestBody Supplier supplier) {
  
-        supplierService.updateSupplier(supplier);
+        try {
+			supplierService.updateSupplier(supplier);
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
         
          return new ResponseDTO();
     }
@@ -62,7 +76,11 @@ public class SupplierRestController {
     @RequestMapping(value="/{supplierId}",method = RequestMethod.DELETE)
     public ResponseDTO deleteSupplier(@PathVariable long supplierId) {
     	
-    	 supplierService.deleteSupplier(supplierId);
+    	 try {
+			supplierService.deleteSupplier(supplierId);
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
  
          return new ResponseDTO();
     }
@@ -70,7 +88,13 @@ public class SupplierRestController {
     @RequestMapping(value="/count",method = RequestMethod.GET)
     public int getSupplierCount() {
     	
-    	return supplierService.getSupplierCount();
+    	try {
+			return supplierService.getSupplierCount();
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
  
            
     }
@@ -80,7 +104,11 @@ public class SupplierRestController {
               
         List<BasicInfo> suppliers = new ArrayList<BasicInfo>();
    	
-        suppliers = supplierService.getSuppliersBasicInfo();
+        try {
+			suppliers = supplierService.getSuppliersBasicInfo();
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
         return new ResponseDTO(suppliers);
     }
  

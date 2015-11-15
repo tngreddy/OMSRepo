@@ -54,8 +54,8 @@ omsApp.config(function($stateProvider, $urlRouterProvider) {
 	            controller: 'GOCController'
 	        })
 	        
-	        .state('productStock', {
-	        	url: '/productStock',
+	        .state('stockSummary', {
+	        	url: '/stockSummary',
 	            templateUrl: 'resources/templates/productStock.html',
 	            controller: 'ReportsController'
 	        })

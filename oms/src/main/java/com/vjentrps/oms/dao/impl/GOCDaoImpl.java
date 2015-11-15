@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.GOCDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
 import com.vjentrps.oms.model.Product;
 
@@ -62,7 +63,7 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 	}
 
 	@Override
-	public int createGOC(final GoodsOutwardChallan goc) {
+	public int createGOC(final GoodsOutwardChallan goc) throws OmsDataAccessException {
 		
 		int success = 0;
 		
@@ -70,24 +71,21 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 			success = jdbcTemplate.update(createGOCQuery,
 					new Object[] { goc.getGocNo(), goc.getTo(), goc.getToName(), goc.getDocRefNo(), goc.getDocDate(), goc.getProduct().getProductId(), goc.getGoodOut(), goc.getDefOut(), goc.getStatus() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return success;
 	}
 
 	@Override
-	public List<GoodsOutwardChallan> fetchAllGOCs() {
+	public List<GoodsOutwardChallan> fetchAllGOCs() throws OmsDataAccessException {
 		List<GoodsOutwardChallan> gocs = null;
 
 		GOCRowMapper resultSetExtractor = new GOCRowMapper();
 		try {
 			gocs = (List<GoodsOutwardChallan>) jdbcTemplate.query(fetchAllGOCSQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return gocs;
 	}

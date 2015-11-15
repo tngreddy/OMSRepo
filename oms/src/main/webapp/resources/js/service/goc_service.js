@@ -5,7 +5,7 @@ omsApp.factory('GOCService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchAllGOCs: function() {
-			return $http.get('http://localhost:8080/oms/service/goc/')
+			return $http.get('http://ntiyyagura:8080/oms/service/goc/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('GOCService', ['$http', '$q', function($http, $q){
 		},
 
 		createGOC: function(goc) {
-			return $http.post('http://localhost:8080/oms/service/goc/', goc)
+			return $http.post('http://ntiyyagura:8080/oms/service/goc/', goc)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('GOCService', ['$http', '$q', function($http, $q){
 
 		},
 		updateGOC: function(goc) {
-			return $http.put('http://localhost:8080/oms/service/goc/', goc)
+			return $http.put('http://ntiyyagura:8080/oms/service/goc/', goc)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('GOCService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteGOC: function(gocNo) {
-			return $http.delete('http://localhost:8080/oms/service/goc/'+gocNo)
+			return $http.delete('http://ntiyyagura:8080/oms/service/goc/'+gocNo)
 			.then(
 					function(response){
 						return response.data;

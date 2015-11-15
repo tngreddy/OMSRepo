@@ -1,31 +1,24 @@
 package com.vjentrps.oms.controller;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vjentrps.oms.model.Category;
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
+import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.ResponseDTO;
-import com.vjentrps.oms.service.CategoryService;
-import com.vjentrps.oms.service.GINService;
 
 @RestController
 @RequestMapping(value="/service/gin")
-public class GINRestController {
-	
-	@Autowired
-	GINService ginService;
+public class GINRestController extends BaseRestController{
 	
  
     @RequestMapping(method = RequestMethod.GET)
@@ -33,7 +26,11 @@ public class GINRestController {
     	
         List<GoodsInwardNote> gins = new ArrayList<GoodsInwardNote>();
    	
-        	gins = ginService.listGINs();
+        	try {
+				gins = ginService.listGINs();
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
         return new ResponseDTO(gins);
     }
     
@@ -44,9 +41,10 @@ public class GINRestController {
     	gin.setStatus("pending");
     	try {
 			ginService.createGIN(gin);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
        
         return new ResponseDTO();
@@ -57,7 +55,12 @@ public class GINRestController {
     @RequestMapping(method = RequestMethod.PUT)
     public String updateGIN(@RequestBody GoodsInwardNote gin) {
  
-    	ginService.updateGIN(gin);
+    	try {
+			ginService.updateGIN(gin);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
          return "Success";
     }
@@ -65,7 +68,12 @@ public class GINRestController {
     @RequestMapping(value="/{ginNo}",method = RequestMethod.DELETE)
     public String deleteCategory(@PathVariable long ginNo) {
     	
-    	ginService.deleteGIN(ginNo);
+    	try {
+			ginService.deleteGIN(ginNo);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
            return "Success";
     }
@@ -76,7 +84,12 @@ public class GINRestController {
     	GoodsInwardNote gin = new GoodsInwardNote();
     	gin.setGinNo(ginNo);
     	gin.setStatus(Constants.CLOSED);
-    	ginService.updateGINStatus(gin);
+    	try {
+			ginService.updateGINStatus(gin);
+		} catch (OmsServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
            return "Success";
     }

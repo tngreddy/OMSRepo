@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
-import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Category;
 
 @Repository
@@ -119,4 +118,6 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 		}
 		return count;
 	}
+
+
 }

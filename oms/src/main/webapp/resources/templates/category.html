@@ -2,7 +2,7 @@
 <div class="panel panel-default mainWrapper custompanel">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
-			<span class="lead">List of Categories </span>
+			<span class="lead">Categories</span>
 		</div>
 
 <div class="addbuttoncontainer"><button type="button" class="btn btn-flat bg-olive " ng-click="addCategoryModal()">
@@ -10,8 +10,8 @@
  </div>
         
 		<div class="tablecontainer">
-		<table my-tabs id="categoryTable"
-			class="table table-bordered table-striped">
+		<table my-tabs fetch-method="fetchAllCategories()" id="categoryTable"
+			class="table table-bordered table-striped" >
 			<thead>
                       <tr>
                         <th>CategoryId</th>
@@ -50,7 +50,7 @@
 		<div class="box-body">
 			<div class="form-group">
 				<label for="catId" class="col-sm-3 control-label">Category Name</label>
-				<div class="col-sm-9">
+				<div class="col-sm-8">
 					<input type="text" 
 					    class="form-control" 
 					    validate-on="dirty"
@@ -86,7 +86,7 @@
     <div class="box-body">
       <div class="form-group">
         <label for="catId" class="col-sm-3 control-label">Category Name</label>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
           <input type="text" 
            class="form-control" 
            validate-on="dirty"

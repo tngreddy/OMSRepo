@@ -4,16 +4,38 @@
 		<div class="panel-heading">
 			<span class="lead">Stock Records</span>
 		</div>
-		
+
+<div class="filtercontainer">
+<label class="col-sm-3 control-label">Product</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="categoryName"
+							ng-model="categoryName" validate-on="dirty"
+							>
+							<option	ng-repeat="product in productsInfo" value="{{product.name}}">{{product.name}}</option>
+						</select>
+						</div>
+
+
+<label class="col-sm-3 control-label">Product</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="productName"
+							ng-model="productName" validate-on="dirty"
+							required-message="'Product Name is required'" required>
+							<option	ng-repeat="product in productsInfo" value="{{product.name}}">{{product.name}}</option>
+						</select>
+						</div>
+</div>
+</div>
 <div class="addbuttoncontainer">
  </div>
  
 <div class="tablecontainer">
-			<table my-tabs class="table table-bordered table-striped">
+			<table  class="table table-bordered table-striped">
 			<thead>
                       <tr>
                         <th>Record Id</th>
                         <th>Trans Doc Ref</th>
+                        <th>Product Name</th>
                         <th>From/To</th>
                         <th>Good In</th>
                         <th>Good Out</th>
@@ -25,9 +47,10 @@
                         </tr>
                     </thead>
 				<tbody>
-					<tr ng-repeat="stockRecord in stockRecordList">
+					<tr ng-repeat="stockRecord in stockRecordList | filter:productName">
 						<td><span ng-bind="stockRecord.recordId"></span></td>
 						<td><span ng-bind="stockRecord.transDocRef"></span></td>
+						<td><span ng-bind="stockRecord.product.productName"></span></td>
 						<td><span ng-bind="stockRecord.fromTo"></span></td>
 						<td><span ng-bind="stockRecord.goodIn"></span></td>
 						<td><span ng-bind="stockRecord.goodOut"></span></td>

@@ -5,7 +5,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchAllRINs: function() {
-			return $http.get('http://localhost:8080/oms/service/rin/')
+			return $http.get('http://ntiyyagura:8080/oms/service/rin/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 		},
 
 		createRIN: function(rin) {
-			return $http.post('http://localhost:8080/oms/service/rin/', rin)
+			return $http.post('http://ntiyyagura:8080/oms/service/rin/', rin)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 
 		},
 		updateRIN: function(rin) {
-			return $http.put('http://localhost:8080/oms/service/rin/', rin)
+			return $http.put('http://ntiyyagura:8080/oms/service/rin/', rin)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteRIN: function(rinNo) {
-			return $http.delete('http://localhost:8080/oms/service/rin/'+rinNo)
+			return $http.delete('http://ntiyyagura:8080/oms/service/rin/'+rinNo)
 			.then(
 					function(response){
 						return response.data;

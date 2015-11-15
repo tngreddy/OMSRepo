@@ -5,7 +5,7 @@ omsApp.factory('ReportsService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchAllProductsStock: function() {
-			return $http.get('http://localhost:8080/oms/service/reports/productStock')
+			return $http.get('http://ntiyyagura:8080/oms/service/reports/productStock')
 			.then(
 					function(response){
 						return response.data.object;
@@ -17,7 +17,7 @@ omsApp.factory('ReportsService', ['$http', '$q', function($http, $q){
 			);
 		},
 		fetchAllStockRecords: function() {
-			return $http.get('http://localhost:8080/oms/service/reports/stockRecord')
+			return $http.get('http://ntiyyagura:8080/oms/service/reports/stockRecord')
 			.then(
 					function(response){
 						return response.data.object;

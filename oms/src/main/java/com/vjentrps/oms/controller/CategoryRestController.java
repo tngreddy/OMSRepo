@@ -3,10 +3,6 @@ package com.vjentrps.oms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,22 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Category;
-import com.vjentrps.oms.model.Error;
 import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.ResponseDTO;
-import com.vjentrps.oms.service.CategoryService;
-import com.vjentrps.oms.util.CommonUtil;
 
 @RestController
 @RequestMapping(value="/service/category")
-public class CategoryRestController {
-
-	@Autowired
-	CategoryService categoryService;
-
-	@Autowired
-	CommonUtil commonUtil;
-
+public class CategoryRestController extends BaseRestController{
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseDTO getCategories() {

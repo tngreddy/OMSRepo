@@ -15,10 +15,9 @@ import com.vjentrps.oms.service.ReportsService;
 
 @RestController
 @RequestMapping(value="/service/reports")
-public class ReportsRestController {
+public class ReportsRestController extends BaseRestController {
 
-	@Autowired
-	ReportsService reportsService;
+
 
 	@RequestMapping(value="/productStock" ,method = RequestMethod.GET)
 	public ResponseDTO getProductStock() {

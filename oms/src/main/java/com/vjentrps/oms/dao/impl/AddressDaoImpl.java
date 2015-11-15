@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.AddressDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.Address;
 
 @Repository
@@ -33,7 +34,7 @@ public class AddressDaoImpl extends BaseDao implements AddressDao {
 
 	
 	@Override
-	public long addAddress(final Address address) {
+	public long addAddress(final Address address) throws OmsDataAccessException {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		try {
@@ -52,7 +53,7 @@ public class AddressDaoImpl extends BaseDao implements AddressDao {
 		    },
 		    keyHolder);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return (Long) keyHolder.getKey();
 		
@@ -60,24 +61,24 @@ public class AddressDaoImpl extends BaseDao implements AddressDao {
 
 
 	@Override
-	public void deleteAddress(long addressId) {
+	public void deleteAddress(long addressId) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(deleteAddressQuery,
 					new Object[] { addressId });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}
 
 
 	@Override
-	public void updateAddress(Address address) {
+	public void updateAddress(Address address) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateAddressQuery,
 					new Object[] { address.getAddressLine1(), address.getAddressLine2(), address.getCity(), address.getState(), address.getPinCode(), address.getAddressId() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}

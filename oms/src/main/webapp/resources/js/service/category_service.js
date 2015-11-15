@@ -5,7 +5,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchAllCategories: function() {
-			return $http.get('http://localhost:8080/oms/service/category/')
+			return $http.get('http://ntiyyagura:8080/oms/service/category/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 		},
 
 		addCategory: function(category) {
-			return $http.post('http://localhost:8080/oms/service/category/', category)
+			return $http.post('http://ntiyyagura:8080/oms/service/category/', category)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 
 		},
 		updateCategory: function(category) {
-			return $http.put('http://localhost:8080/oms/service/category/', category)
+			return $http.put('http://ntiyyagura:8080/oms/service/category/', category)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteCategory: function(categoryId) {
-			return $http.delete('http://localhost:8080/oms/service/category/'+categoryId)
+			return $http.delete('http://ntiyyagura:8080/oms/service/category/'+categoryId)
 			.then(
 					function(response){
 						return response.data;
@@ -58,7 +58,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 
 		},
 		getCategoryCount: function() {
-			return $http.get('http://localhost:8080/oms/service/category/count')
+			return $http.get('http://ntiyyagura:8080/oms/service/category/count')
 			.then(
 					function(response){
 						return response.data;

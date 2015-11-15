@@ -5,7 +5,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchAllGRCs: function() {
-			return $http.get('http://localhost:8080/oms/service/grc/')
+			return $http.get('http://ntiyyagura:8080/oms/service/grc/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 		},
 
 		createGRC: function(grc) {
-			return $http.post('http://localhost:8080/oms/service/grc/', grc)
+			return $http.post('http://ntiyyagura:8080/oms/service/grc/', grc)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 
 		},
 		updateGRC: function(grc) {
-			return $http.put('http://localhost:8080/oms/service/grc/', grc)
+			return $http.put('http://ntiyyagura:8080/oms/service/grc/', grc)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteGRC: function(grcNo) {
-			return $http.delete('http://localhost:8080/oms/service/grc/'+grcNo)
+			return $http.delete('http://ntiyyagura:8080/oms/service/grc/'+grcNo)
 			.then(
 					function(response){
 						return response.data;

@@ -1,26 +1,30 @@
 package com.vjentrps.oms.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.model.Product;
 
 public interface ProductService {
 	
-	void addProduct(Product product) ;
+	void addProduct(Product product) throws OmsServiceException;
 	
-	 void deleteProduct(long productId);
+	 void deleteProduct(long productId) throws OmsServiceException;
 	
-	 void updateProduct(Product product);
+	 void updateProduct(Product product) throws OmsServiceException;
 	 
-	 List<Product> getAllproducts();
+	 List<Product> getAllproducts() throws OmsServiceException;
 	 
-	Product getProductById(long productId);
+	Product getProductById(long productId) throws OmsServiceException;
 
-	int getProductCount();
+	int getProductCount() throws OmsServiceException;
 
-	List<BasicInfo> getProductsBasicInfo();
+	List<BasicInfo> getProductsBasicInfo() throws OmsServiceException;
+
+	Map<String, Object> getCatProductsMap() throws OmsServiceException;
 	 
 	
 }

@@ -4,6 +4,7 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 	$scope.categories=[];
 	$scope.category={categoryId:null,categoryName:''};
 	$scope.reload = false;
+	
 	$scope.fetchAllCategories = function(){
 		
 		CategoryService.fetchAllCategories()

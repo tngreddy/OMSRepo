@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.AddressDao;
 import com.vjentrps.oms.dao.ContactDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.Contact;
 
 @Repository
@@ -34,7 +35,7 @@ public class ContactDaoImpl extends BaseDao implements ContactDao {
 
 	
 	@Override
-	public long addContact(final Contact contact) {
+	public long addContact(final Contact contact) throws OmsDataAccessException {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		try {
@@ -53,31 +54,31 @@ public class ContactDaoImpl extends BaseDao implements ContactDao {
 		    },
 		    keyHolder);
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return (Long) keyHolder.getKey();
 	}
 
 
 	@Override
-	public void deleteContact(long contactId) {
+	public void deleteContact(long contactId) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(deleteContactQuery,
 					new Object[] { contactId });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}
 
 
 	@Override
-	public void updateContact(Contact contact) {
+	public void updateContact(Contact contact) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateContactQuery,
 					new Object[] { contact.getContactPerson(), contact.getContactDesignation(), contact.getPhoneNo(), contact.getMobileNo(), contact.getContactId()});
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}

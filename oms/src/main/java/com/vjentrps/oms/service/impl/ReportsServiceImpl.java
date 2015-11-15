@@ -28,13 +28,21 @@ public class ReportsServiceImpl  implements ReportsService{
 	public StockDao stockDao;
 	
 	@Override
-	public List<ProductStock> fetchProductStock() {
-		return stockDao.getAllProductStock();
+	public List<ProductStock> fetchProductStock() throws OmsServiceException {
+		try {
+			return stockDao.getAllProductStock();
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 	}
 
 	@Override
-	public List<StockRecord> fetchStockRecords() {
-		return stockDao.getAllStockRecords();
+	public List<StockRecord> fetchStockRecords() throws OmsServiceException {
+		try {
+			return stockDao.getAllStockRecords();
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 	}
 
 }

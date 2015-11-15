@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vjentrps.oms.dao.GINDao;
 import com.vjentrps.oms.dao.StockDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.Product;
@@ -38,50 +40,72 @@ public class GINServiceImpl implements GINService {
 	DataFieldMaxValueIncrementer ginIdIncrementer;
 
 	@Override
-	public void createGIN(GoodsInwardNote gin) throws ParseException {
+	public void createGIN(GoodsInwardNote gin) throws OmsServiceException, ParseException {
 
 		if (null != gin && null != gin.getProduct()) {
-
+			try {
+				
+			ProductStock productStock = stockDao.getProductStock(gin.getProduct().getProductId());
 			gin.setGinNo(CommonUtil.buildTransId(CommonConstants.GIN, ginIdIncrementer.nextStringValue()));
 			
 			gin.setDocDate(CommonUtil.formatDate(gin.getDocDate()));
+			
+			
 			int success = ginDao.createGIN(gin);
 
-			if(success > 0) {
+			if(success > 0 && null != productStock) {
 
-				ProductStock productStock = stockDao.getProductStock(gin.getProduct().getProductId());
-
-				if (null != productStock) {
 					StockRecord stockRecord = CommonUtil.buildStockRecord(gin, productStock, CommonConstants.GIN);
 					stockDao.addStockRecord(stockRecord);
 					stockDao.updateProductStock(productStock);
-				}
 
+			}
+			} catch (OmsDataAccessException e) {
+				throw new OmsServiceException(e);
 			}
 		}
 
 	}
 
 	@Override
-	public List<GoodsInwardNote> listGINs() {
-		return ginDao.fetchAllGINs();
+	public List<GoodsInwardNote> listGINs() throws OmsServiceException {
+		try {
+			return ginDao.fetchAllGINs();
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
 	}
 
 	@Override
 	public void updateGIN(GoodsInwardNote gin) {
-		ginDao.updateGIN(gin);
+		try {
+			ginDao.updateGIN(gin);
+		} catch (OmsDataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void deleteGIN(long ginNo) {
-		ginDao.deleteGIN(ginNo);
+		try {
+			ginDao.deleteGIN(ginNo);
+		} catch (OmsDataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void updateGINStatus(GoodsInwardNote gin) {
-		ginDao.updateGINStatus(gin);
+		try {
+			ginDao.updateGINStatus(gin);
+		} catch (OmsDataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

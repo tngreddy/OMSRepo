@@ -5,7 +5,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 	return {
 		
 			fetchAllCustomers: function() {
-					return $http.get('http://localhost:8080/oms/service/customer/')
+					return $http.get('http://ntiyyagura:8080/oms/service/customer/')
 							.then(
 									function(response){
 										return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 			},
 			
 			addCustomer: function(customer) {
-				return $http.post('http://localhost:8080/oms/service/customer/', customer)
+				return $http.post('http://ntiyyagura:8080/oms/service/customer/', customer)
 				.then(
 						function(response){
 							return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 
 			},
 			updateCustomer: function(customer) {
-				return $http.put('http://localhost:8080/oms/service/customer/', customer)
+				return $http.put('http://ntiyyagura:8080/oms/service/customer/', customer)
 				.then(
 						function(response){
 							return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 			},
 
 			deleteCustomer: function(customerId) {
-				return $http.delete('http://localhost:8080/oms/service/customer/'+customerId)
+				return $http.delete('http://ntiyyagura:8080/oms/service/customer/'+customerId)
 				.then(
 						function(response){
 							return response.data;
@@ -59,7 +59,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 			},
 
 			getCustomerCount: function() {
-			return $http.get('http://localhost:8080/oms/service/customer/count')
+			return $http.get('http://ntiyyagura:8080/oms/service/customer/count')
 					.then(
 							function(response){
 								return response.data;

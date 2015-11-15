@@ -2,9 +2,20 @@
   <div class="panel panel-default custompanel">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
-			<span class="lead">Products Stock </span>
+			<span class="lead">Stock Summary </span>
 		</div>
-		
+<div class="filtercontainer">
+
+				<label class="col-sm-3 control-label">Product</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="productName"
+							ng-model="productName" validate-on="dirty"
+							required-message="'Product Name is required'" required>
+							<option	ng-repeat="product in productsInfo" value="{{product.name}}">{{product.name}}</option>
+						</select>
+						</div>
+</div>
+
 <div class="addbuttoncontainer">
  </div>
  
@@ -13,16 +24,18 @@
 			<thead>
                       <tr>
                         <th>Id</th>
-                        <th>Product Name</th>
+                        <th>Product</th>
+                        <th>Category</th>
                         <th>Good Balance</th>
                         <th>Def Balance</th>
                         <th>Last Modified</th>
                         </tr>
                     </thead>
 				<tbody>
-					<tr ng-repeat="productStock in productsStockList">
+					<tr ng-repeat="productStock in productsStockList | filter:productName">
 						<td><span ng-bind="productStock.id"></span></td>
 						<td><span ng-bind="productStock.product.productName"></span></td>
+						<td><span ng-bind="productStock.product.category.categoryName"></span></td>
 						<td><span ng-bind="productStock.goodBalance"></span></td>
 						<td><span ng-bind="productStock.defBalance"></span></td>
 						<td><span ng-bind="productStock.lastModified"></span></td>

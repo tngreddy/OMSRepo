@@ -8,11 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.StockDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
+import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
@@ -72,6 +73,10 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
+			Category category = new Category();
+			category.setCategoryId(resultSet.getLong("category_id"));
+			category.setCategoryName(resultSet.getString("category_name"));
+			product.setCategory(category);
 			productStock.setProduct(product);
 
 			return productStock;
@@ -96,6 +101,11 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			stockRecord.setDefBalance(resultSet.getLong("def_balance"));
 			stockRecord.setCreatedDate(resultSet.getString("created_date"));
 			
+			Product product = new Product();
+			product.setProductId(resultSet.getLong("product_id"));
+			product.setProductName(resultSet.getString("product_name"));
+			
+			stockRecord.setProduct(product);
 			return stockRecord;
 		}
 
@@ -104,72 +114,69 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 
 	
 	@Override
-	public void addStockRecord(StockRecord stockRecord) {
+	public void addStockRecord(StockRecord stockRecord) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(
 					addStockRecordQuery,
-					new Object[] { stockRecord.getTransDocRef(),
+					new Object[] { stockRecord.getTransDocRef(), stockRecord.getProduct().getProductId(), 
 							stockRecord.getFromTo(), stockRecord.getGoodIn(),
 							stockRecord.getGoodOut(),
 							stockRecord.getGoodBalance(),
 							stockRecord.getDefIn(), stockRecord.getDefOut(),
 							stockRecord.getDefBalance() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 
 	}
 
 
 	@Override
-	public void addProductStock(long product_id) {
+	public void addProductStock(long product_id) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(
 					addProductStockQuery,
 					new Object[] { product_id });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}
 
 	@Override
-	public void updateProductStock(ProductStock productStock) {
+	public void updateProductStock(ProductStock productStock) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(
 					updateProductStockQuery,
 					new Object[] {productStock.getGoodBalance(), productStock.getDefBalance(), productStock.getProduct().getProductId()});
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 	}
 
 
 	@Override
-	public void deleteProductStock(long productId) {
+	public void deleteProductStock(long productId) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(deleteProductStockQuery,
 					new Object[] { productId });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}
 
 
 	@Override
-	public ProductStock getProductStock(long productId) {
+	public ProductStock getProductStock(long productId) throws OmsDataAccessException {
 		ProductStock productStock = null;
 
 		PrdStockRowMapper resultSetExtractor = new PrdStockRowMapper();
 		try {
 			productStock = jdbcTemplate.queryForObject(getProductStockQuery,new Object[] { productId },
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return productStock;
 		
@@ -177,36 +184,30 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 
 
 	@Override
-	public List<ProductStock> getAllProductStock() {
+	public List<ProductStock> getAllProductStock() throws OmsDataAccessException {
 		List<ProductStock> productStocks = null;
 
 		ProductStockRowMapper resultSetExtractor = new ProductStockRowMapper();
 		try {
 			productStocks = (List<ProductStock>) jdbcTemplate.query(fetchAllProductStockQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-				dataAccessException.printStackTrace();
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return productStocks;
 	}
 
 
 	@Override
-	public List<StockRecord> getAllStockRecords() {
+	public List<StockRecord> getAllStockRecords() throws OmsDataAccessException {
 		List<StockRecord> stockRecords = null;
 
 		StockRecordRowMapper resultSetExtractor = new StockRecordRowMapper();
 		try {
 			stockRecords = (List<StockRecord>) jdbcTemplate.query(fetchAllStockRecordsQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return stockRecords;
 	}

@@ -1,10 +1,8 @@
 package com.vjentrps.oms.controller;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,25 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
+import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
 import com.vjentrps.oms.model.ResponseDTO;
-import com.vjentrps.oms.service.GRCService;
 
 @RestController
 @RequestMapping(value="/service/grc")
-public class GRCRestController {
+public class GRCRestController extends BaseRestController{
 	
-	@Autowired
-	GRCService grcService;
-	
- 
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseDTO getGRCs() {
     	
         List<GoodsReturnableChallan> grcs = new ArrayList<GoodsReturnableChallan>();
    	
-        	grcs = grcService.listGRCs();
+        	try {
+				grcs = grcService.listGRCs();
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
         return new ResponseDTO(grcs);
     }
     
@@ -40,10 +40,13 @@ public class GRCRestController {
  
     	grc.setStatus("pending");
     	try {
-			grcService.createGRC(grc);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				grcService.createGRC(grc);
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+		} catch (Exception e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
        
         return new ResponseDTO();
@@ -52,30 +55,42 @@ public class GRCRestController {
       
    
     @RequestMapping(method = RequestMethod.PUT)
-    public String updateGRC(@RequestBody GoodsReturnableChallan grc) {
+    public ResponseDTO updateGRC(@RequestBody GoodsReturnableChallan grc) {
  
-    	grcService.updateGRC(grc);
+    	try {
+			grcService.updateGRC(grc);
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
         
-         return "Success";
+         return new ResponseDTO();
     }
     
     @RequestMapping(value="/{grcNo}",method = RequestMethod.DELETE)
-    public String deleteCategory(@PathVariable String grcNo) {
+    public ResponseDTO deleteGRC(@PathVariable String grcNo) {
     	
-    	grcService.deleteGRC(grcNo);
+    	try {
+			grcService.deleteGRC(grcNo);
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
  
-           return "Success";
+           return new ResponseDTO();
     }
     
     @RequestMapping(value="/{grcNo}",method = RequestMethod.PUT)
-    public String updateGRCStatus(@PathVariable String grcNo) {
+    public ResponseDTO updateGRCStatus(@PathVariable String grcNo) {
     	
     	GoodsReturnableChallan grc = new GoodsReturnableChallan();
     	grc.setGrcNo(grcNo);
     	grc.setStatus(Constants.CLOSED);
-    	grcService.updateGRCStatus(grc);
+    	try {
+			grcService.updateGRCStatus(grc);
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
  
-           return "Success";
+           return new ResponseDTO();
     }
     
  

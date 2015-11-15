@@ -1,6 +1,7 @@
 package com.vjentrps.oms.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Category;
@@ -16,6 +17,7 @@ public interface CategoryService {
 	 List<Category> listCategories() throws OmsServiceException;
 
 	 int getCategoryCount() throws OmsServiceException;
+
 	 
 	
 }

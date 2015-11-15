@@ -10,8 +10,8 @@ import com.vjentrps.oms.model.StockRecord;
 
 public interface ReportsService {
 	 
-	 List<ProductStock> fetchProductStock();
+	 List<ProductStock> fetchProductStock() throws OmsServiceException;
 	 
-	 List<StockRecord> fetchStockRecords();  
+	 List<StockRecord> fetchStockRecords() throws OmsServiceException;  
 	
 }

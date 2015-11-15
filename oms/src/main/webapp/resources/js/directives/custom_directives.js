@@ -1,6 +1,7 @@
 //directive to initiate datatables
 omsApp.directive('myTabs', function() {
   return {
+	  
     // angular passes the element reference to you
     compile: function(element) {
     	
@@ -37,7 +38,7 @@ omsApp.directive('myTabs', function() {
     	table.buttons().container()
         .appendTo( $('.addbuttoncontainer') );
       
-      }, 500);
+      }, 1000);
       
     }
   };

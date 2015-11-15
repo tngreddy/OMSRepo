@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.dao.GINDao;
+import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.Product;
 
@@ -69,7 +70,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 	}
 
 	@Override
-	public int createGIN(final GoodsInwardNote gin) {
+	public int createGIN(final GoodsInwardNote gin) throws OmsDataAccessException {
 		
 		/*KeyHolder keyHolder = new GeneratedKeyHolder();
 		try {
@@ -101,24 +102,21 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 			success = jdbcTemplate.update(createGINQuery,
 					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromName(), gin.getDocRefNo(), gin.getDocDate(), gin.getProduct().getProductId(), gin.getGoodIn(), gin.getDefectiveIn(), gin.getStatus() });
 		} catch (DataAccessException dae) {
-
+			throw new OmsDataAccessException(dae);
 		}
 		return success;
 	}
 
 	@Override
-	public List<GoodsInwardNote> fetchAllGINs() {
+	public List<GoodsInwardNote> fetchAllGINs() throws OmsDataAccessException {
 		List<GoodsInwardNote> gins = null;
 
 		GINRowMapper resultSetExtractor = new GINRowMapper();
 		try {
 			gins = (List<GoodsInwardNote>) jdbcTemplate.query(fetchAllGINSQuery,
 					resultSetExtractor);
-		} catch (EmptyResultDataAccessException emptyDataAccessException) {
-			// log.debug();
-
-		} catch (DataAccessException dataAccessException) {
-
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		return gins;
 	}

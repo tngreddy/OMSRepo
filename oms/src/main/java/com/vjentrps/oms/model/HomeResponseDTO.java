@@ -6,6 +6,7 @@ public class HomeResponseDTO {
 	private int productCount;
 	private int customerCount;
 	private int supplierCount;
+	
 	public int getCategoryCount() {
 		return categoryCount;
 	}

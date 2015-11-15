@@ -57,6 +57,8 @@
 		value-type="java.lang.String">
 		<entry key="1000"
 			value="Oops some thing went wrong, try refreshing the page " />
+		<entry key="1001"
+			value="Oops there is technical glitch, try again " />
 	</util:map>
 
 	<bean id="ginIdIncrementer"

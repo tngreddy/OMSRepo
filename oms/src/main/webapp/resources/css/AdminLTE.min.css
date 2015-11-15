@@ -873,11 +873,12 @@ a:focus {
     color: #5e5e5e
 }
 .dropdown-menu {
-    box-shadow: none;
-    border-color: #eee
+    background-color:#2E6EA5;
+    border:none;
+    min-width: 133px;
 }
 .dropdown-menu>li>a {
-    color: #777
+    color: white;
 }
 .dropdown-menu>li>a>.glyphicon,
 .dropdown-menu>li>a>.fa,
@@ -885,8 +886,9 @@ a:focus {
     margin-right: 10px
 }
 .dropdown-menu>li>a:hover {
-    background-color: #e1e3e9;
-    color: #333
+    background-color:#1F2533 ;
+    color: white;
+ 
 }
 .dropdown-menu>.divider {
     background-color: #eee

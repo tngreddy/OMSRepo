@@ -10,6 +10,8 @@ public interface CommonConstants {
 	String GOC ="GOC";
 	String GRC ="GRC";
 	String RIN ="RIN";
+	String CAT_PRODUCTS = "CAT_PRODUCTS";
+	String CATEGORIES = "CATEGORIES";
 	
 
 }

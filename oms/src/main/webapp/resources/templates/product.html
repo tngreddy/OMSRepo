@@ -2,7 +2,7 @@
   <div class="panel panel-default custompanel">
 		<!-- Default panel contents -->
 		<div class="panel-heading">
-			<span class="lead">List of Products </span>
+			<span class="lead">Products</span>
 		</div>
 		
 <div class="addbuttoncontainer"><button type="button" class="btn btn-flat bg-olive " ng-click="addProductModal()">
@@ -130,8 +130,8 @@
 <div class="modal-body">
     <div class="box-body">
       <div class="form-group">
-        <label class="col-sm-4 control-label">Product Name</label>
-        <div class="col-sm-6">
+        <label class="col-sm-3 control-label">Product Name</label>
+        <div class="col-sm-8">
          <input type="text" 
 					    class="form-control" 
 					    validate-on="dirty"
@@ -143,19 +143,19 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-4 control-label">Category Name</label>
-					<div class="col-sm-6">
+        <label class="col-sm-3 control-label">Category Name</label>
+					<div class="col-sm-8">
 						<select class="form-control" name="categoryName"
 							ng-model="product.category.categoryId" validate-on="dirty"
 							required-message="'Category Name is required'" required>
-							<option	ng-selected="{{category.categoryId == product.category.categoryId}}"
+							<option	ng-selected="{{product.category.categoryId == category.categoryId}}"
 								    ng-repeat="category in categories" value="{{category.categoryId}}">{{category.categoryName}}</option>
 						</select>
 					</div>
 		</div>
 		<div class="form-group">
-		<label class="col-sm-4 control-label">Unit of Measure</label>
-        <div class="col-sm-6">
+		<label class="col-sm-3 control-label">Unit of Measure</label>
+        <div class="col-sm-8">
          <input type="text" 
   					    class="form-control" 
 					    validate-on="dirty"
@@ -167,8 +167,8 @@
         </div>
         </div>
         <div class="form-group">
-        <label class="col-sm-4 control-label">Unit Basic Rate</label>
-        <div class="col-sm-6">
+        <label class="col-sm-3 control-label">Unit Basic Rate</label>
+        <div class="col-sm-8">
          <input type="number" min="0"
 					    class="form-control" 
 					    validate-on="dirty"
