@@ -22,6 +22,7 @@ import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.dao.GINDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsInwardNote;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
 
 @Repository
@@ -44,6 +45,9 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 	@Value("${UPDATE_GIN_STATUS}")
 	private String updateGINStatusQuery;
 	
+	@Value("${ADD_GIN_PROD_INFO}")
+	private String addGinProdInfoQuery;
+	
 	
 	private static class GINRowMapper implements RowMapper<GoodsInwardNote> {
 
@@ -57,13 +61,13 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 			gin.setFromName(resultSet.getString("from_name"));
 			gin.setDocRefNo(resultSet.getString("doc_ref_no"));
 			gin.setDocDate(resultSet.getString("doc_date"));
-			gin.setGoodIn(resultSet.getInt("good_in"));
-			gin.setDefectiveIn(resultSet.getInt("def_in"));
+		//	gin.setGoodIn(resultSet.getInt("good_in"));
+		//	gin.setDefectiveIn(resultSet.getInt("def_in"));
 			gin.setStatus(resultSet.getString("status"));
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
-			gin.setProduct(product);
+		//	gin.setProduct(product);
 			return gin;
 		}
 
@@ -100,7 +104,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 		
 		try {
 			success = jdbcTemplate.update(createGINQuery,
-					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromName(), gin.getDocRefNo(), gin.getDocDate(), gin.getProduct().getProductId(), gin.getGoodIn(), gin.getDefectiveIn(), gin.getStatus() });
+					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromName(), gin.getDocRefNo(), gin.getDocDate(), gin.getStatus() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -125,7 +129,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 	public void updateGIN(GoodsInwardNote gin) {
 		try {
 			jdbcTemplate.update(updateGINQuery,
-					new Object[] { gin.getProduct().getProductId(), gin.getGoodIn(), gin.getDefectiveIn(), gin.getStatus() });
+					new Object[] { });
 		} catch (DataAccessException dae) {
 
 		}
@@ -150,6 +154,18 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 					new Object[] { gin.getStatus(), gin.getGinNo() });
 		} catch (DataAccessException dae) {
 
+		}
+		
+	}
+
+	@Override
+	public void addGinProdInfo(String ginNo, ProdInfo prodInfo) throws OmsDataAccessException {
+		
+		try {
+			 jdbcTemplate.update(addGinProdInfoQuery,
+					new Object[] { ginNo, prodInfo.getProduct().getProductId(), prodInfo.getGoodIn(), prodInfo.getDefIn(), prodInfo.getTotalQty(), prodInfo.getUnitBasicRate(), prodInfo.getTotalAmount() });
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}

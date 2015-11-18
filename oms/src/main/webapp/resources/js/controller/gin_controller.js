@@ -2,10 +2,25 @@
 
 omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$state', '$stateParams', function($scope, GINService, CommonService, $state, $stateParams) {
 	$scope.gins=[];
-	$scope.gin={};
+	$scope.gin={prodInfoList:$scope.prodInfoList};
 	$scope.basicInfoMap = {};
 	$scope.productsInfo={};
 	var products = "PRODUCTS";
+	//$scope.gin.prodInfoList = [{"product":{"productId":0},"unitBasicRate":0,"goodIn":0,"defIn":0}];
+	$scope.prodInfoList = [{}];
+	  
+	  $scope.addNewChoice = function() {
+	    var newItemNo = $scope.prodInfoList.length+1;
+	    $scope.prodInfoList.push({});
+	  };
+	    
+	  $scope.removeChoice = function() {
+	    var lastItem = $scope.prodInfoList.length-1;
+	    $scope.prodInfoList.splice(lastItem);
+	  };
+	
+	
+	
 	$scope.fetchAllGINs = function(){
 
 		GINService.fetchAllGINs()

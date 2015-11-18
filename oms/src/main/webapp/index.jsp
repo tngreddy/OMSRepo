@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-        
+        <link rel="shortcut icon" href="http://sstatic.net/stackoverflow/img/favicon.ico">
 		<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 		<!-- Font Awesome -->
 	    <link rel="stylesheet" href="<c:url value="resources/css/font-awesome.css"/>"/>

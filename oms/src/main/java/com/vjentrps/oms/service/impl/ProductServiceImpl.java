@@ -21,6 +21,7 @@ import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.Category;
 import com.vjentrps.oms.model.Product;
+import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.service.ProductService;
 
 @Service
@@ -46,7 +47,7 @@ public class ProductServiceImpl  implements ProductService{
 		try {
 			productId = productDao.addProduct(product);
 			if (productId > 0) {
-				stockDao.addProductStock(productId);
+				stockDao.addProductStock(product);
 			}
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
@@ -71,6 +72,9 @@ public class ProductServiceImpl  implements ProductService{
 	public void updateProduct(Product product) throws OmsServiceException {
 		try {
 			productDao.updateProduct(product);
+			ProductStock stock = new ProductStock();
+			stock.setProduct(product);
+			stockDao.updateProductStock(stock);
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
 		}

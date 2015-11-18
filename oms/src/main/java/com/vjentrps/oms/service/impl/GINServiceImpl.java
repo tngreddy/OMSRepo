@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.GoodsInwardNote;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
@@ -42,24 +44,33 @@ public class GINServiceImpl implements GINService {
 	@Override
 	public void createGIN(GoodsInwardNote gin) throws OmsServiceException, ParseException {
 
-		if (null != gin && null != gin.getProduct()) {
+		if (null != gin && CollectionUtils.isNotEmpty(gin.getProdInfoList())) {
 			try {
-				
-			ProductStock productStock = stockDao.getProductStock(gin.getProduct().getProductId());
-			gin.setGinNo(CommonUtil.buildTransId(CommonConstants.GIN, ginIdIncrementer.nextStringValue()));
-			
-			gin.setDocDate(CommonUtil.formatDate(gin.getDocDate()));
-			
-			
-			int success = ginDao.createGIN(gin);
 
-			if(success > 0 && null != productStock) {
+				gin.setGinNo(CommonUtil.buildTransId(CommonConstants.GIN, ginIdIncrementer.nextStringValue()));
 
-					StockRecord stockRecord = CommonUtil.buildStockRecord(gin, productStock, CommonConstants.GIN);
-					stockDao.addStockRecord(stockRecord);
-					stockDao.updateProductStock(productStock);
+				gin.setDocDate(CommonUtil.formatDate(gin.getDocDate()));
 
-			}
+				int success = ginDao.createGIN(gin);
+
+				for (ProdInfo prodInfo: gin.getProdInfoList()) {
+
+					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
+
+					if(success > 0 && null != productStock) {
+
+						prodInfo.setTotalQty(prodInfo.getGoodIn()+prodInfo.getDefIn());
+						prodInfo.setTotalAmount(prodInfo.getTotalQty()*prodInfo.getUnitBasicRate());
+						
+						ginDao.addGinProdInfo(gin.getGinNo(),prodInfo);
+						
+						StockRecord stockRecord = CommonUtil.buildStockRecord(gin, prodInfo, productStock.getProduct(), CommonConstants.GIN);
+						
+						stockDao.addStockRecord(stockRecord);
+						stockDao.updateProductStock(productStock);
+
+					}
+				}
 			} catch (OmsDataAccessException e) {
 				throw new OmsServiceException(e);
 			}

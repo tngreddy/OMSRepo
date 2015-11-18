@@ -16,6 +16,7 @@ import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.ReturnedInwardNote;
@@ -57,31 +58,31 @@ public class CommonUtil {
 
 	}
 
-	public static StockRecord buildStockRecord(Object transaction, ProductStock productStock, String transactionType) {
+	public static StockRecord buildStockRecord(Object transaction, ProdInfo prodInfo,  Product prodStock, String transactionType) {
 
 		StockRecord stockRecord = new StockRecord();
 
-		if ( null!=transaction && null!=productStock && StringUtils.isNotBlank(transactionType)) {
+		if ( null!=transaction && null!=prodInfo && null!=prodInfo.getProduct() && null!=prodStock && StringUtils.isNotBlank(transactionType)) {
 
 			if(CommonConstants.GIN.equalsIgnoreCase(transactionType)) {
 				
 				GoodsInwardNote gin = (GoodsInwardNote) transaction;
 				Product product = new Product();
-				product.setProductId(gin.getProduct().getProductId());
+				product.setProductId(prodInfo.getProduct().getProductId());
 				stockRecord.setProduct(product);
 				stockRecord.setTransDocRef(gin.getGinNo());
 				stockRecord.setFromTo(gin.getFromName());
-				stockRecord.setGoodIn(gin.getGoodIn());
-				stockRecord.setDefIn(gin.getDefectiveIn());
-				productStock.setGoodBalance(productStock.getGoodBalance()+gin.getGoodIn());
-				productStock.setDefBalance(productStock.getDefBalance()+gin.getDefectiveIn());
-				stockRecord.setGoodBalance(productStock.getGoodBalance());
-				stockRecord.setDefBalance(productStock.getDefBalance());
+				stockRecord.setGoodIn(prodInfo.getGoodIn());
+				stockRecord.setDefIn(prodInfo.getDefIn());
+				prodStock.setGoodBalance(prodStock.getGoodBalance()+prodInfo.getGoodIn());
+				prodStock.setDefBalance(prodStock.getGoodBalance()+prodInfo.getDefIn());
+				stockRecord.setGoodBalance(prodStock.getGoodBalance());
+				stockRecord.setDefBalance(prodStock.getDefBalance());
 				
 			}else if(CommonConstants.GOC.equalsIgnoreCase(transactionType)) {
 				
 				GoodsOutwardChallan goc = (GoodsOutwardChallan) transaction;
-				Product product = new Product();
+				/*Product product = new Product();
 				product.setProductId(goc.getProduct().getProductId());
 				stockRecord.setProduct(product);
 				stockRecord.setTransDocRef(goc.getGocNo());
@@ -91,13 +92,13 @@ public class CommonUtil {
 				productStock.setGoodBalance(productStock.getGoodBalance()-goc.getGoodOut());
 				productStock.setDefBalance(productStock.getDefBalance()-goc.getDefOut());
 				stockRecord.setGoodBalance(productStock.getGoodBalance());
-				stockRecord.setDefBalance(productStock.getDefBalance());
+				stockRecord.setDefBalance(productStock.getDefBalance());*/
 				
 			}
 			
 			if(CommonConstants.RIN.equalsIgnoreCase(transactionType)) {
 				
-				ReturnedInwardNote rin = (ReturnedInwardNote) transaction;
+				/*ReturnedInwardNote rin = (ReturnedInwardNote) transaction;
 				Product product = new Product();
 				product.setProductId(rin.getProduct().getProductId());
 				stockRecord.setProduct(product);
@@ -108,11 +109,11 @@ public class CommonUtil {
 				productStock.setGoodBalance(productStock.getGoodBalance()+rin.getGoodIn());
 				productStock.setDefBalance(productStock.getDefBalance()+rin.getDefIn());
 				stockRecord.setGoodBalance(productStock.getGoodBalance());
-				stockRecord.setDefBalance(productStock.getDefBalance());
+				stockRecord.setDefBalance(productStock.getDefBalance());*/
 				
 			}else if(CommonConstants.GRC.equalsIgnoreCase(transactionType)) {
 				
-				GoodsReturnableChallan grc = (GoodsReturnableChallan) transaction;
+				/*GoodsReturnableChallan grc = (GoodsReturnableChallan) transaction;
 				Product product = new Product();
 				product.setProductId(grc.getProduct().getProductId());
 				stockRecord.setProduct(product);
@@ -123,7 +124,7 @@ public class CommonUtil {
 				productStock.setGoodBalance(productStock.getGoodBalance()-grc.getGoodOut());
 				productStock.setDefBalance(productStock.getDefBalance()-grc.getDefOut());
 				stockRecord.setGoodBalance(productStock.getGoodBalance());
-				stockRecord.setDefBalance(productStock.getDefBalance());
+				stockRecord.setDefBalance(productStock.getDefBalance());*/
 				
 			}
 		}

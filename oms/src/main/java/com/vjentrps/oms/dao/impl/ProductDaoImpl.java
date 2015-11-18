@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -41,8 +40,6 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 	@Value("${FETCH_PRODUCTS_BASIC_INFO}")
 	private String fetchProductsBasicInfoQuery;
 	
-	
-	
 	@Value("${FETCH_CAT_PROD_BASIC_INFO}")
 	private String fetchCatProdInfoQuery;
 	
@@ -71,7 +68,8 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
 			product.setUnitOfMeasure(resultSet.getString("unit_of_measure"));
-			product.setUnitBasicRate(resultSet.getInt("unit_basic_rate"));
+			product.setGoodBalance(resultSet.getLong("good_balance"));
+			product.setDefBalance(resultSet.getLong("def_balance"));
 			category.setCategoryId(resultSet.getLong("category_id"));
 			category.setCategoryName(resultSet.getString("category_name"));
 			product.setCategory(category);
@@ -119,7 +117,6 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		            ps.setString(1, product.getProductName());
 		            ps.setLong(2, product.getCategory().getCategoryId());
 		            ps.setString(3, product.getUnitOfMeasure());
-		            ps.setLong(4, product.getUnitBasicRate());
 		            return ps;
 		        }
 		    },
@@ -138,7 +135,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		try {
 			jdbcTemplate.update(
 					updateProductQuery,
-					new Object[] { product.getProductName(), product.getCategory().getCategoryId(), product.getUnitOfMeasure(), product.getUnitBasicRate(),
+					new Object[] { product.getProductName(), product.getCategory().getCategoryId(), product.getUnitOfMeasure(),
 							 product.getProductId() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);

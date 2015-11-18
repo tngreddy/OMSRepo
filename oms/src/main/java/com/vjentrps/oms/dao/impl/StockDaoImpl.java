@@ -53,8 +53,8 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			ProductStock productStock = new ProductStock();
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
-			productStock.setGoodBalance(resultSet.getLong("good_balance"));
-			productStock.setDefBalance(resultSet.getLong("def_balance"));
+			product.setGoodBalance(resultSet.getLong("good_balance"));
+			product.setDefBalance(resultSet.getLong("def_balance"));
 			productStock.setProduct(product);
 			return productStock;
 		}
@@ -66,11 +66,12 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 		public ProductStock mapRow(ResultSet resultSet, int arg1)
 				throws SQLException {
 			ProductStock productStock = new ProductStock();
-			productStock.setId(resultSet.getLong("id"));
-			productStock.setGoodBalance(resultSet.getLong("good_balance"));
-			productStock.setDefBalance(resultSet.getLong("def_balance"));
-			productStock.setLastModified(resultSet.getString("last_modified"));
 			Product product = new Product();
+			productStock.setId(resultSet.getLong("id"));
+			product.setGoodBalance(resultSet.getLong("good_balance"));
+			product.setDefBalance(resultSet.getLong("def_balance"));
+			productStock.setLastModified(resultSet.getString("last_modified"));
+			
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
 			Category category = new Category();
@@ -132,11 +133,11 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 
 
 	@Override
-	public void addProductStock(long product_id) throws OmsDataAccessException {
+	public void addProductStock(Product product) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(
 					addProductStockQuery,
-					new Object[] { product_id });
+					new Object[] { product.getProductId(), product.getGoodBalance(), product.getDefBalance() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -148,7 +149,7 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 		try {
 			jdbcTemplate.update(
 					updateProductStockQuery,
-					new Object[] {productStock.getGoodBalance(), productStock.getDefBalance(), productStock.getProduct().getProductId()});
+					new Object[] {productStock.getProduct().getGoodBalance(), productStock.getProduct().getDefBalance(), productStock.getProduct().getProductId()});
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}

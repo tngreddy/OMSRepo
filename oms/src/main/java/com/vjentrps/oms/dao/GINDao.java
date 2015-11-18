@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsInwardNote;
+import com.vjentrps.oms.model.ProdInfo;
 
 public interface GINDao {
 
@@ -16,6 +17,8 @@ public interface GINDao {
 	void deleteGIN(long ginNo) throws OmsDataAccessException;
 
 	void updateGINStatus(GoodsInwardNote gin) throws OmsDataAccessException;
+
+	void addGinProdInfo(String ginNo, ProdInfo prodInfo) throws OmsDataAccessException;
 
 	
 }

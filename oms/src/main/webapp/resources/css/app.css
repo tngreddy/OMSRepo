@@ -96,6 +96,13 @@ body #categoryTable_wrapper {
 	padding: 20px;
 }
 
+.prodContainer {
+    border: 1px solid #E4E4E4;
+    height: auto;
+    margin: 15px 0 0;
+   
+}
+
 .addbuttoncontainer>button {
 	float: right;
 }
@@ -131,7 +138,7 @@ body #categoryTable_wrapper {
 	position: relative;
 }
 
-.ng-enter,.ng-leave {
+/* .ng-enter,.ng-leave {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -157,7 +164,7 @@ body #categoryTable_wrapper {
 
 .ng-leave {
 	opacity: 1;
-	/*padding-left: 0px;*/
+	padding-left: 0px;
 	-webkit-transform: translate3d(0, 0, 12);
 	-moz-transform: translate3d(0, 0, 12);
 	transform: translate3d(0, 0, 12);
@@ -165,11 +172,11 @@ body #categoryTable_wrapper {
 
 .ng-leave-active {
 	opacity: 0;
-	/*padding-left: 100px;*/
+	padding-left: 100px;
 	-webkit-transform: translate3d(0, 0, 0);
 	-moz-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
-}
+} */
 
 input.ng-valid {
 	border: 1px solid green;
@@ -205,6 +212,12 @@ select.ng-valid {
 	border-color: #337ab7;
 	color: white;
 }
+.form-left {
+	float: left;
+    width: 50%;
+ 
+}
+
 
 .buttons-copy:hover {
 	background-color: #3D9970;

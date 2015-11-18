@@ -51,7 +51,7 @@ public class GRCServiceImpl implements GRCService {
 			
 			if(success > 0 && null!=productStock) {
 				
-				StockRecord stockRecord = CommonUtil.buildStockRecord(grc, productStock, CommonConstants.GRC);
+				StockRecord stockRecord = CommonUtil.buildStockRecord(grc, null, productStock.getProduct(), CommonConstants.GRC);
 				stockDao.addStockRecord(stockRecord);
 				stockDao.updateProductStock(productStock);
 

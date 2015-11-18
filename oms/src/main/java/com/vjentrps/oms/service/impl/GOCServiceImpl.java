@@ -51,7 +51,7 @@ public class GOCServiceImpl implements GOCService {
 
 				if(success > 0 && null != productStock) {
 
-					StockRecord stockRecord = CommonUtil.buildStockRecord(goc, productStock, CommonConstants.GOC);
+					StockRecord stockRecord = CommonUtil.buildStockRecord(goc, null, productStock.getProduct(), CommonConstants.GOC);
 					stockDao.addStockRecord(stockRecord);
 					stockDao.updateProductStock(productStock);
 

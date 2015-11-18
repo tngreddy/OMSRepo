@@ -51,7 +51,7 @@ public class RINServiceImpl implements RINService {
 
 				if(success > 0 && null != productStock) {
 
-					StockRecord stockRecord = CommonUtil.buildStockRecord(rin, productStock, CommonConstants.RIN);
+					StockRecord stockRecord = CommonUtil.buildStockRecord(rin, null, productStock.getProduct(), CommonConstants.RIN);
 					stockDao.addStockRecord(stockRecord);
 					stockDao.updateProductStock(productStock);
 

@@ -6,7 +6,10 @@ public class Product {
 	private String productName;
 	private Category category;
 	private String unitOfMeasure;
-	private int unitBasicRate;
+	private long goodBalance;
+	private long defBalance;
+	
+
 	public long getProductId() {
 		return productId;
 	}
@@ -26,18 +29,29 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	public int getUnitBasicRate() {
-		return unitBasicRate;
-	}
-	public void setUnitBasicRate(int unitBasicRate) {
-		this.unitBasicRate = unitBasicRate;
-	}
+	
 	public String getUnitOfMeasure() {
 		return unitOfMeasure;
 	}
 	public void setUnitOfMeasure(String unitOfMeasure) {
 		this.unitOfMeasure = unitOfMeasure;
 	}
+	public long getGoodBalance() {
+		return goodBalance;
+	}
+	public void setGoodBalance(long goodBalance) {
+		this.goodBalance = goodBalance;
+	}
+	public long getDefBalance() {
+		return defBalance;
+	}
+	public void setDefBalance(long defBalance) {
+		this.defBalance = defBalance;
+	}
+	
+	
+	
+	
 	
 	
 	
