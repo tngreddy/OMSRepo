@@ -18,7 +18,7 @@ import com.vjentrps.oms.model.Supplier;
 import com.vjentrps.oms.service.SupplierService;
 
 @Service
-@Transactional
+@Transactional(rollbackFor={RuntimeException.class, Exception.class})
 public class SupplierServiceImpl  implements SupplierService{
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());

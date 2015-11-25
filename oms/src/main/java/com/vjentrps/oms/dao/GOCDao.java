@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
+import com.vjentrps.oms.model.ProdInfo;
 
 public interface GOCDao {
 
@@ -16,6 +17,8 @@ public interface GOCDao {
 	void deleteGOC(long gocNo) throws OmsDataAccessException;
 
 	void updateGOCStatus(GoodsOutwardChallan goc) throws OmsDataAccessException;
+
+	void addGocProdInfo(String gocNo, ProdInfo prodInfo) throws OmsDataAccessException;
 
 
 	

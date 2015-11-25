@@ -3,6 +3,7 @@ package com.vjentrps.oms.service.impl;
 import java.text.ParseException;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,14 @@ import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
 import com.vjentrps.oms.service.GOCService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Service
-@Transactional
+@Transactional(rollbackFor={RuntimeException.class, Exception.class})
 public class GOCServiceImpl implements GOCService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -39,9 +41,8 @@ public class GOCServiceImpl implements GOCService {
 	@Override
 	public void createGOC(GoodsOutwardChallan goc) throws OmsServiceException,ParseException  {
 
-		if (null != goc && null != goc.getProduct()) {
+		if (null != goc && CollectionUtils.isNotEmpty(goc.getProdInfoList())) {
 			try {
-				ProductStock productStock = stockDao.getProductStock(goc.getProduct().getProductId());
 
 				goc.setGocNo(CommonUtil.buildTransId(CommonConstants.GOC, gocIdIncrementer.nextStringValue()));
 
@@ -49,14 +50,24 @@ public class GOCServiceImpl implements GOCService {
 
 				int success = gocDao.createGOC(goc);
 
-				if(success > 0 && null != productStock) {
+				for (ProdInfo prodInfo: goc.getProdInfoList()) {
 
-					StockRecord stockRecord = CommonUtil.buildStockRecord(goc, null, productStock.getProduct(), CommonConstants.GOC);
-					stockDao.addStockRecord(stockRecord);
-					stockDao.updateProductStock(productStock);
+					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
 
+					if(success > 0 && null != productStock) {
+
+						prodInfo.setTotalQty(prodInfo.getGoodOut()+prodInfo.getDefOut());
+						prodInfo.setTotalAmount(prodInfo.getTotalQty()*prodInfo.getUnitBasicRate());
+						
+						gocDao.addGocProdInfo(goc.getGocNo(),prodInfo);
+						
+						StockRecord stockRecord = CommonUtil.buildStockRecord(goc, prodInfo, productStock.getProduct(), CommonConstants.GOC);
+						
+						stockDao.addStockRecord(stockRecord);
+						stockDao.updateProductStock(productStock);
+
+					}
 				}
-
 			} catch (OmsDataAccessException e) {
 				throw new OmsServiceException(e);
 			}

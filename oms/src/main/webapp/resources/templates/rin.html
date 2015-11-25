@@ -49,9 +49,8 @@
 </div>
 
 
-
 <!-- Create RIN overlay -->
-<modal visible="showAddModal">
+<modal size="modal-lg" visible="showAddModal">
 <form novalidate angular-validator
 	angular-validator-submit="createRIN()" name="createRINForm"
 	class="form-horizontal">
@@ -64,7 +63,8 @@
 	</div>
 	<div class="modal-body">
 		<div class="box-body">
-			<div class="form-group">
+		<div class="filtercontainer">
+			<div class="form-left">
 				<label class="col-sm-3 control-label">From</label>
 				<div class="col-sm-8 selectContainer">
 					<select class="form-control" " name="from"
@@ -79,7 +79,7 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
+			<div class="form-left">
 				<label class="col-sm-3 control-label">From Name</label>
 				<div class="col-sm-8 selectContainer">
 						<select class="form-control" name="fromName"
@@ -90,8 +90,9 @@
 						</select>
 				</div>
 			</div>
-			
-			<div class="form-group">
+			</div>
+			<div class="filtercontainer">
+			<div class="form-left">
 				<label class="col-sm-3 control-label">Doc Ref No</label>
 				<div class="col-sm-8">
 					<input type="text" 
@@ -104,31 +105,54 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
+			<div class="form-left">
 				<label class="col-sm-3 control-label">Doc Date</label>
 				<div class="col-sm-8">
-					<input type="date" 
-					    class="form-control" 
-					    validate-on="dirty"
+				<input type="date" ng-flat-datepicker datepicker-config="datepickerConfig"
+						class="form-control" 
+						validate-on="dirty"
 						name="docDate" 
 						placeholder="Doc Date"
 						ng-model="rin.docDate"
 						required-message="'Doc Date is required'" required />
-				</div>
+			   
+			</div>
 			</div>
 			
-			<div class="form-group">
+		</div>	
+	<div class="prodContainer">
+	<span class="btn btn-danger  btn-flat btn-xs">Product Info</span>
+		<fieldset  data-ng-repeat="prodInfo in rin.prodInfoList">
+	<div>	
+	<div class="filtercontainer">		
+
+			<div class="form-left">
 				<label class="col-sm-3 control-label">Product Name</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="productName"
-							ng-model="rin.product.productId" validate-on="dirty"
+							ng-model="prodInfo.product.productId" validate-on="dirty"
 							required-message="'Product Name is required'" required>
 							<option	ng-repeat="product in productsInfo" value="{{product.id}}">{{product.name}}</option>
 						</select>
 						</div>
 			</div>
-			
-			<div class="form-group">
+	
+	<div class="form-left">
+				<label class="col-sm-3 control-label">Unit Basic Rate</label>
+				<div class="col-sm-8">
+					<input type="number" min="0" 
+					    class="form-control" 
+					    validate-on="dirty"
+						name="unitBasicRate" 
+						placeholder="Unit Basic Rate"
+						ng-model="prodInfo.unitBasicRate"
+						invalid-message="'Unit Basic Rate should be a postive number'"
+						required-message="'Unit Basic Rate is required'" required/>
+				</div>
+			</div>
+			</div>
+	<div class="filtercontainer">
+	<div class="form-left">
 				<label class="col-sm-3 control-label">Good In</label>
 				<div class="col-sm-8">
 					<input type="number" min="0" 
@@ -136,33 +160,56 @@
 					    validate-on="dirty"
 						name="goodIn" 
 						placeholder="Good In"
-						ng-model="rin.goodIn"
+						ng-model="prodInfo.goodIn"
 						invalid-message="'Good In should be a postive number'"
-						required-message="'Good In is required'" required />
+						/>
 				</div>
 			</div>
 			
-			<div class="form-group">
+	<div class="form-left">
+
 				<label class="col-sm-3 control-label">Defective In</label>
 				<div class="col-sm-8">
 					<input type="number" min="0" 
 					    class="form-control" 
 					    validate-on="dirty"
-						name="defIn" 
+						name="defectiveIn" 
 						placeholder="Defective In"
-						ng-model="rin.defIn"
+						ng-model="prodInfo.defIn"
 						invalid-message="'Defective In should be a postive number'"
-						required-message="'Defective In is required'" required />
+						 />
+				</div>
+			</div>
+	</div>
+	</div>
+      
+   </fieldset>
+   <div style="height: 34px;">
+   		<a class="btn btn-flat btn-danger pull-right"  ng-click="removeChoice()">-</a>
+  		<a class="btn btn-flat bg-olive pull-right"  ng-click="addNewChoice()">+</a>
+   </div>
+   </div>
+		<div class="filtercontainer">
+			
+		     <div class="form-group">
+				<label class="col-sm-2 control-label">Remarks</label>
+				<div class="col-sm-9">
+					<textarea rows="3"
+					    class="form-control" 
+					    validate-on="dirty"
+						name="remarks" 
+						placeholder="Remarks"
+						ng-model="rin.remarks"
+						></textarea>
 				</div>
 			</div>
 			
 		</div>
-
-	</div>
+		
+	</div>	
 	<div class="modal-footer">
 		<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
 		<button type="submit" class="btn btn-flat btn-primary">Create</button>
 	</div>
 </form>
 </modal>
-

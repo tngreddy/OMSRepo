@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.vjentrps.oms.dao.GRCDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
 
 @Repository
@@ -37,6 +38,11 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 	@Value("${UPDATE_GRC_STATUS}")
 	private String updateGRCStatusQuery;
 	
+	@Value("${ADD_GRC_PROD_INFO}")
+	private String addGrcProdInfoQuery;
+	
+	
+	
 	
 	private static class GRCRowMapper implements RowMapper<GoodsReturnableChallan> {
 
@@ -50,13 +56,13 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			grc.setToName(resultSet.getString("to_name"));
 			grc.setDocRefNo(resultSet.getString("doc_ref_no"));
 			grc.setDocDate(resultSet.getString("doc_date"));
-			grc.setGoodOut(resultSet.getInt("good_out"));
-			grc.setDefOut(resultSet.getInt("def_out"));
+			//grc.setGoodOut(resultSet.getInt("good_out"));
+			//grc.setDefOut(resultSet.getInt("def_out"));
 			grc.setStatus(resultSet.getString("status"));
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
-			grc.setProduct(product);
+		//	grc.setProduct(product);
 			return grc;
 		}
 
@@ -69,7 +75,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 		
 		try {
 			success = jdbcTemplate.update(createGRCQuery,
-					new Object[] { grc.getGrcNo(), grc.getTo(), grc.getToName(), grc.getDocRefNo(), grc.getDocDate(), grc.getProduct().getProductId(), grc.getGoodOut(), grc.getDefOut(), grc.getStatus() });
+					new Object[] { grc.getGrcNo(), grc.getTo(), grc.getToName(), grc.getDocRefNo(), grc.getDocDate(), grc.getStatus(), grc.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -92,12 +98,12 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 
 	@Override
 	public void updateGRC(GoodsReturnableChallan grc) {
-		try {
+		/*try {
 			jdbcTemplate.update(updateGRCQuery,
 					new Object[] { grc.getProduct().getProductId(), grc.getGoodOut(), grc.getDefOut(), grc.getStatus() });
 		} catch (DataAccessException dae) {
 
-		}
+		}*/
 		
 	}
 
@@ -119,6 +125,17 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 					new Object[] { grc.getStatus(), grc.getGrcNo() });
 		} catch (DataAccessException dae) {
 
+		}
+		
+	}
+
+	@Override
+	public void addGrcProdInfo(String grcNo, ProdInfo prodInfo) throws OmsDataAccessException {
+		try {
+			 jdbcTemplate.update(addGrcProdInfoQuery,
+					new Object[] { grcNo, prodInfo.getProduct().getProductId(), prodInfo.getGoodOut(), prodInfo.getDefOut(), prodInfo.getTotalQty(), prodInfo.getUnitBasicRate(), prodInfo.getTotalAmount() });
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}

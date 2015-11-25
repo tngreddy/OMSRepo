@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.vjentrps.oms.dao.GOCDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
 
 @Repository
@@ -37,6 +38,11 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 	@Value("${UPDATE_GOC_STATUS}")
 	private String updateGOCStatusQuery;
 	
+	@Value("${ADD_GOC_PROD_INFO}")
+	private String addGocProdInfoQuery;
+	
+	
+	
 	
 	private static class GOCRowMapper implements RowMapper<GoodsOutwardChallan> {
 
@@ -50,13 +56,13 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 			goc.setToName(resultSet.getString("to_name"));
 			goc.setDocRefNo(resultSet.getString("doc_ref_no"));
 			goc.setDocDate(resultSet.getString("doc_date"));
-			goc.setGoodOut(resultSet.getInt("good_out"));
-			goc.setDefOut(resultSet.getInt("def_out"));
+			//goc.setGoodOut(resultSet.getInt("good_out"));
+			//goc.setDefOut(resultSet.getInt("def_out"));
 			goc.setStatus(resultSet.getString("status"));
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
-			goc.setProduct(product);
+			//goc.setProduct(product);
 			return goc;
 		}
 
@@ -69,7 +75,7 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 		
 		try {
 			success = jdbcTemplate.update(createGOCQuery,
-					new Object[] { goc.getGocNo(), goc.getTo(), goc.getToName(), goc.getDocRefNo(), goc.getDocDate(), goc.getProduct().getProductId(), goc.getGoodOut(), goc.getDefOut(), goc.getStatus() });
+					new Object[] { goc.getGocNo(), goc.getTo(), goc.getToName(), goc.getDocRefNo(), goc.getDocDate(), goc.getStatus(), goc.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -92,12 +98,12 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 
 	@Override
 	public void updateGOC(GoodsOutwardChallan goc) {
-		try {
+		/*try {
 			jdbcTemplate.update(updateGOCQuery,
 					new Object[] { goc.getProduct().getProductId(), goc.getGoodOut(), goc.getDefOut(), goc.getStatus() });
 		} catch (DataAccessException dae) {
 
-		}
+		}*/
 		
 	}
 
@@ -121,5 +127,17 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 
 		}
 		
+	}
+
+	@Override
+	public void addGocProdInfo(String gocNo, ProdInfo prodInfo) throws OmsDataAccessException {
+		
+		try {
+				 jdbcTemplate.update(addGocProdInfoQuery,
+						new Object[] { gocNo, prodInfo.getProduct().getProductId(), prodInfo.getGoodOut(), prodInfo.getDefOut(), prodInfo.getTotalQty(), prodInfo.getUnitBasicRate(), prodInfo.getTotalAmount() });
+			} catch (DataAccessException dae) {
+				throw new OmsDataAccessException(dae);
+			}
+				
 	}
 }

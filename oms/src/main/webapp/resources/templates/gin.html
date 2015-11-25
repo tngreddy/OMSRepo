@@ -107,27 +107,23 @@
 			</div>
 			
 			<div class="form-left">
-				<label class="col-sm-3 control-label" style="margin-right: 15px;">Doc Date</label>
-				<div class="col-sm-7 input-group"  >
-					<input type="text" 
-					    class="form-control" 
-					    validate-on="dirty"
+				<label class="col-sm-3 control-label">Doc Date</label>
+				<div class="col-sm-8">
+				<input type="date" ng-flat-datepicker datepicker-config="datepickerConfig"
+						class="form-control" 
+						validate-on="dirty"
 						name="docDate" 
 						placeholder="Doc Date"
 						ng-model="gin.docDate"
 						required-message="'Doc Date is required'" required />
-					<span class="input-group-addon">
-                        <span class="fa fa-calendar"></span>
-                    </span>
-				</div>
+			   
 			</div>
-			
-						
+			</div>
 			
 		</div>	
 	<div class="prodContainer">
 	<span class="btn btn-danger  btn-flat btn-xs">Product Info</span>
-		<fieldset  data-ng-repeat="prodInfo in prodInfoList">
+		<fieldset  data-ng-repeat="prodInfo in gin.prodInfoList">
 	<div>	
 	<div class="filtercontainer">		
 
@@ -211,8 +207,7 @@
 			
 		</div>
 		
-
-	</div>
+	</div>	
 	<div class="modal-footer">
 		<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
 		<button type="submit" class="btn btn-flat btn-primary">Create</button>
@@ -278,13 +273,14 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Doc Date</label>
 				<div class="col-sm-8">
-					<input type="date" 
-					    class="form-control" 
+					<input jquery-date-picker
+						class="form-control" 
 					    validate-on="dirty"
 						name="docDate" 
 						placeholder="Doc Date"
 						ng-model="gin.docDate"
 						required-message="'Doc Date is required'" required />
+				
 				</div>
 			</div>
 			
@@ -343,6 +339,7 @@
 				</div>
 			</div>
 		
+		  
 	
       <button class="remove" ng-show="$last" ng-click="removeChoice()"></button>
    </fieldset>
@@ -357,6 +354,32 @@
 </form>
 </modal>
 
+
+<!-- Alert products Overlay -->
+<modal size="modal-sm" visible="alertModal">
+<div class="modal-header with-border">
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-title" id="myModalLabel">Alert</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal">
+    <div class="box-body">
+      <div class="form-group">
+        <div class="col-sm-12 text-center">
+          Only 10 Products are allowed
+        </div>
+      </div>
+    </div>
+    
+  </form>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">OK</button>
+    </div>
+</modal>
 <!-- <modal size="modal-sm" visible="showDeleteModal">
 <delete-modal-content type="category" value="category.categoryName" method="deleteCategory(category.categoryId)"></delete-modal-content>
 </modal> -->

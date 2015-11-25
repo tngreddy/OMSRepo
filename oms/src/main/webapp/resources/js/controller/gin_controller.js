@@ -2,21 +2,37 @@
 
 omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$state', '$stateParams', function($scope, GINService, CommonService, $state, $stateParams) {
 	$scope.gins=[];
-	$scope.gin={prodInfoList:$scope.prodInfoList};
+	$scope.gin={};
 	$scope.basicInfoMap = {};
 	$scope.productsInfo={};
 	var products = "PRODUCTS";
 	//$scope.gin.prodInfoList = [{"product":{"productId":0},"unitBasicRate":0,"goodIn":0,"defIn":0}];
-	$scope.prodInfoList = [{}];
+	//$scope.gin.prodInfoList = [{}];
+	
+	  $scope.datepickerConfig = {
+            allowFuture: false,
+            dateFormat: 'DD/MM/YYYY'
+        };
+
 	  
 	  $scope.addNewChoice = function() {
-	    var newItemNo = $scope.prodInfoList.length+1;
-	    $scope.prodInfoList.push({});
+	    var newItemNo = $scope.gin.prodInfoList.length+1;
+	    if($scope.gin.prodInfoList.length<10) {
+	    	 $scope.gin.prodInfoList.push({});
+	    } else {
+	    	window.alert("Only 10 Products are allowed. Please create a new GIN");
+	    }
+	   
 	  };
 	    
 	  $scope.removeChoice = function() {
-	    var lastItem = $scope.prodInfoList.length-1;
-	    $scope.prodInfoList.splice(lastItem);
+	    var lastItem = $scope.gin.prodInfoList.length-1;
+	    if (lastItem>0) {
+	    	$scope.gin.prodInfoList.splice(lastItem);
+	    } else {
+	    	window.alert("Atleast one product is required to create a GIN");
+	    }
+	    
 	  };
 	
 	
@@ -104,6 +120,7 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 
 $scope.createGINModal = function(){
 	$scope.gin={};
+	$scope.gin.prodInfoList = [{}];
 	$scope.showAddModal = true;
 
 };

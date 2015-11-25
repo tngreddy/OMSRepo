@@ -6,6 +6,35 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 	$scope.basicInfoMap = {};
 	$scope.productsInfo={};
 	var products = "PRODUCTS";
+	
+	 $scope.datepickerConfig = {
+	            allowFuture: false,
+	           // dateFormat: 'DD/MM/YYYY'
+	            dateFormat: 'yyyy-MM-dd'
+	        };
+
+	
+	$scope.addNewChoice = function() {
+	    var newItemNo = $scope.grc.prodInfoList.length+1;
+	    if($scope.grc.prodInfoList.length<10) {
+	    	 $scope.grc.prodInfoList.push({});
+	    } else {
+	    	window.alert("Only 10 Products are allowed. Please create a new GRC");
+	    }
+	   
+	  };
+	    
+	  $scope.removeChoice = function() {
+	    var lastItem = $scope.grc.prodInfoList.length-1;
+	    if (lastItem>0) {
+	    	$scope.grc.prodInfoList.splice(lastItem);
+	    } else {
+	    	window.alert("Atleast one product is required to create a GRC");
+	    }
+	    
+	  };
+	
+	
 	$scope.fetchAllGRCs = function(){
 
 		GRCService.fetchAllGRCs()
@@ -89,6 +118,7 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 
 $scope.createGRCModal = function(){
 	$scope.grc={};
+	$scope.grc.prodInfoList = [{}];
 	$scope.showAddModal = true;
 
 };

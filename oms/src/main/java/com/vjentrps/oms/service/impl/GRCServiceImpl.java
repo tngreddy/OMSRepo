@@ -3,6 +3,7 @@ package com.vjentrps.oms.service.impl;
 import java.text.ParseException;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,14 @@ import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
 import com.vjentrps.oms.service.GRCService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Service
-@Transactional
+@Transactional(rollbackFor={RuntimeException.class, Exception.class})
 public class GRCServiceImpl implements GRCService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -37,32 +39,39 @@ public class GRCServiceImpl implements GRCService {
 	DataFieldMaxValueIncrementer grcIdIncrementer;
 
 	@Override
-	public void createGRC(GoodsReturnableChallan grc) throws ParseException {
+	public void createGRC(GoodsReturnableChallan grc) throws ParseException, OmsServiceException {
 
-		if (null != grc && null != grc.getProduct()) {
+		if (null != grc && CollectionUtils.isNotEmpty(grc.getProdInfoList())) {
 			try {
-			ProductStock productStock = stockDao.getProductStock(grc.getProduct().getProductId());
 
-			grc.setGrcNo(CommonUtil.buildTransId(CommonConstants.GRC, grcIdIncrementer.nextStringValue()));
+				grc.setGrcNo(CommonUtil.buildTransId(CommonConstants.GRC, grcIdIncrementer.nextStringValue()));
 
-			grc.setDocDate(CommonUtil.formatDate(grc.getDocDate()));
+				grc.setDocDate(CommonUtil.formatDate(grc.getDocDate()));
 
-			int success = grcDao.createGRC(grc);
-			
-			if(success > 0 && null!=productStock) {
-				
-				StockRecord stockRecord = CommonUtil.buildStockRecord(grc, null, productStock.getProduct(), CommonConstants.GRC);
-				stockDao.addStockRecord(stockRecord);
-				stockDao.updateProductStock(productStock);
+				int success = grcDao.createGRC(grc);
 
-			}
-			
+				for (ProdInfo prodInfo: grc.getProdInfoList()) {
+
+					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
+
+					if(success > 0 && null != productStock) {
+
+						prodInfo.setTotalQty(prodInfo.getGoodOut()+prodInfo.getDefOut());
+						prodInfo.setTotalAmount(prodInfo.getTotalQty()*prodInfo.getUnitBasicRate());
+						
+						grcDao.addGrcProdInfo(grc.getGrcNo(),prodInfo);
+						
+						StockRecord stockRecord = CommonUtil.buildStockRecord(grc, prodInfo, productStock.getProduct(), CommonConstants.GRC);
+						
+						stockDao.addStockRecord(stockRecord);
+						stockDao.updateProductStock(productStock);
+
+					}
+				}
 			} catch (OmsDataAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new OmsServiceException(e);
 			}
 		}
-
 	}
 
 	@Override

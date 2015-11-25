@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
+import com.vjentrps.oms.model.ProdInfo;
 
 public interface GRCDao {
 
@@ -16,6 +17,8 @@ public interface GRCDao {
 	void deleteGRC(String grcNo) throws OmsDataAccessException;
 
 	void updateGRCStatus(GoodsReturnableChallan grc) throws OmsDataAccessException;
+
+	void addGrcProdInfo(String grcNo, ProdInfo prodInfo) throws OmsDataAccessException;
 
 
 	

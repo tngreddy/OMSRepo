@@ -1,24 +1,16 @@
 package com.vjentrps.oms.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.vjentrps.oms.dao.CategoryDao;
 import com.vjentrps.oms.dao.GINDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsInwardNote;
@@ -104,7 +96,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 		
 		try {
 			success = jdbcTemplate.update(createGINQuery,
-					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromName(), gin.getDocRefNo(), gin.getDocDate(), gin.getStatus() });
+					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromName(), gin.getDocRefNo(), gin.getDocDate(), gin.getStatus(), gin.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}

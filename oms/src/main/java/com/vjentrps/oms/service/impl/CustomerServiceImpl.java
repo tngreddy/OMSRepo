@@ -18,7 +18,7 @@ import com.vjentrps.oms.model.Customer;
 import com.vjentrps.oms.service.CustomerService;
 
 @Service
-@Transactional
+@Transactional(rollbackFor={RuntimeException.class, Exception.class})
 public class CustomerServiceImpl implements CustomerService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());

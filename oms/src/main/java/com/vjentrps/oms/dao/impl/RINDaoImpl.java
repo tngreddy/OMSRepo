@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.RINDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ReturnedInwardNote;
 
@@ -36,6 +37,10 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 	@Value("${UPDATE_RIN_STATUS}")
 	private String updateRINStatusQuery;
 	
+	@Value("${ADD_RIN_PROD_INFO}")
+	private String addRinProdInfoQuery;
+	
+	
 	
 	private static class RINRowMapper implements RowMapper<ReturnedInwardNote> {
 
@@ -49,13 +54,13 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 			rin.setFromName(resultSet.getString("from_name"));
 			rin.setDocRefNo(resultSet.getString("doc_ref_no"));
 			rin.setDocDate(resultSet.getString("doc_date"));
-			rin.setGoodIn(resultSet.getInt("good_in"));
-			rin.setDefIn(resultSet.getInt("def_in"));
+			//rin.setGoodIn(resultSet.getInt("good_in"));
+			//rin.setDefIn(resultSet.getInt("def_in"));
 			rin.setStatus(resultSet.getString("status"));
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
-			rin.setProduct(product);
+			//rin.setProduct(product);
 			return rin;
 		}
 
@@ -92,7 +97,7 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 		
 		try {
 			success = jdbcTemplate.update(createRINQuery,
-					new Object[] { rin.getRinNo(), rin.getFrom(), rin.getFromName(), rin.getDocRefNo(), rin.getDocDate(), rin.getProduct().getProductId(), rin.getGoodIn(), rin.getDefIn(), rin.getStatus() });
+					new Object[] { rin.getRinNo(), rin.getFrom(), rin.getFromName(), rin.getDocRefNo(), rin.getDocDate(), rin.getStatus(), rin.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -115,12 +120,12 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 
 	@Override
 	public void updateRIN(ReturnedInwardNote rin) {
-		try {
+		/*try {
 			jdbcTemplate.update(updateRINQuery,
 					new Object[] { rin.getProduct().getProductId(), rin.getGoodIn(), rin.getDefIn(), rin.getStatus() });
 		} catch (DataAccessException dae) {
 
-		}
+		}*/
 		
 	}
 
@@ -142,6 +147,18 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 					new Object[] { rin.getStatus(), rin.getRinNo() });
 		} catch (DataAccessException dae) {
 
+		}
+		
+	}
+
+	@Override
+	public void addRinProdInfo(String rinNo, ProdInfo prodInfo)
+			throws OmsDataAccessException {
+		try {
+			 jdbcTemplate.update(addRinProdInfoQuery,
+					new Object[] { rinNo, prodInfo.getProduct().getProductId(), prodInfo.getGoodIn(), prodInfo.getDefIn(), prodInfo.getTotalQty(), prodInfo.getUnitBasicRate(), prodInfo.getTotalAmount() });
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
 		}
 		
 	}

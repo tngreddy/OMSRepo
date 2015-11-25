@@ -16,10 +16,13 @@
 	
 		<!-- DataTables -->
        <link rel="stylesheet" href="<c:url value="/resources/css/dataTables.bootstrap.css" />" >
-       
    <%--     
        <link rel="stylesheet" href="<c:url value="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css" />" > --%>
        <link rel="stylesheet" href="<c:url value="/resources/css/buttons.bootstrap.min.css" />" >
+       
+       <link rel="stylesheet" href="<c:url value="/resources/css/daterangepickerCompat.css" />" >
+       <link rel="stylesheet" href="<c:url value="/resources/css/ng-flat-datepicker.css" />" >
+       
      
        
        
@@ -558,12 +561,13 @@
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script> -->
 <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap/bootstrap3-wysihtml5.all.min.js" />"></script>
-
+<script src="<c:url value="/resources/js/angular/moment.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-route.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-animate.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-validator.js" />"></script>
 <script src="<c:url value="/resources/js/angular/angular-ui-router.js"/>"></script>
+<script src="<c:url value="/resources/js/angular/ng-flat-datepicker.js"/>"></script>
 <%-- <script src="<c:url value="/resources/js/datatables/jquery.dataTables.min.js" />"></script>
 <script src="<c:url value="/resources/js/datatables/dataTables.bootstrap.min.js" />"></script> --%>
 <script src="<c:url value="/resources/js/datatables/datatables.min.js" />"></script>
@@ -573,6 +577,9 @@
 <script src="<c:url value="/resources/js/formValidation.min.js"/>"></script>
 <script src="<c:url value="/resources/js/framework/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/anim-in-out.js" />"></script>
+
+
+
 
  
 
@@ -611,6 +618,7 @@
 <script src="<c:url value="/resources/js/service/grc_service.js" />"></script>
 <script src="<c:url value="/resources/js/controller/reports_controller.js" />"></script>
 <script src="<c:url value="/resources/js/service/reports_service.js" />"></script>
+
 
 
 </body>

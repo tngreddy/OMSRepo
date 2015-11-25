@@ -25,7 +25,7 @@ import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.service.ProductService;
 
 @Service
-@Transactional
+@Transactional(rollbackFor={RuntimeException.class, Exception.class})
 public class ProductServiceImpl  implements ProductService{
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -47,6 +47,7 @@ public class ProductServiceImpl  implements ProductService{
 		try {
 			productId = productDao.addProduct(product);
 			if (productId > 0) {
+				product.setProductId(productId);
 				stockDao.addProductStock(product);
 			}
 		} catch (OmsDataAccessException e) {

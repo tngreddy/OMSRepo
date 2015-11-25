@@ -1,8 +1,6 @@
 package com.vjentrps.oms.service.impl;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -11,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vjentrps.oms.dao.GINDao;
@@ -20,14 +19,13 @@ import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.ProdInfo;
-import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
 import com.vjentrps.oms.service.GINService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Service
-@Transactional
+@Transactional(rollbackFor={RuntimeException.class, Exception.class})
 public class GINServiceImpl implements GINService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());

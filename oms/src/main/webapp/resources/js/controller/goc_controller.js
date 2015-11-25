@@ -6,6 +6,38 @@ omsApp.controller('GOCController', ['$scope', 'GOCService', 'CommonService', '$s
 	$scope.basicInfoMap = {};
 	$scope.productsInfo={};
 	var products = "PRODUCTS";
+	//$scope.gin.prodInfoList = [{}];
+	
+	
+	 $scope.datepickerConfig = {
+	            allowFuture: false,
+	           // dateFormat: 'DD/MM/YYYY'
+	            dateFormat: 'yyyy-MM-dd'
+	        };
+
+	
+	 $scope.addNewChoice = function() {
+		    var newItemNo = $scope.goc.prodInfoList.length+1;
+		    if($scope.goc.prodInfoList.length<10) {
+		    	 $scope.goc.prodInfoList.push({});
+		    } else {
+		    	window.alert("Only 10 Products are allowed. Please create a new GOC");
+		    }
+		   
+		  };
+		    
+		  $scope.removeChoice = function() {
+		    var lastItem = $scope.goc.prodInfoList.length-1;
+		    if (lastItem>0) {
+		    	$scope.goc.prodInfoList.splice(lastItem);
+		    } else {
+		    	window.alert("Atleast one product is required to create a GOC");
+		    }
+		    
+		  };
+		
+	
+	
 	$scope.fetchAllGOCs = function(){
 
 		GOCService.fetchAllGOCs()
@@ -89,6 +121,7 @@ omsApp.controller('GOCController', ['$scope', 'GOCService', 'CommonService', '$s
 
 $scope.createGOCModal = function(){
 	$scope.goc={};
+	$scope.goc.prodInfoList = [{}];
 	$scope.showAddModal = true;
 
 };

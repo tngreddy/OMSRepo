@@ -6,6 +6,37 @@ omsApp.controller('RINController', ['$scope', 'RINService', 'CommonService', '$s
 	$scope.basicInfoMap = {};
 	$scope.productsInfo={};
 	var products = "PRODUCTS";
+	
+	 $scope.datepickerConfig = {
+	            allowFuture: false,
+	           // dateFormat: 'DD/MM/YYYY'
+	            dateFormat: 'yyyy-MM-dd'
+	        };
+
+	
+	 $scope.addNewChoice = function() {
+		    var newItemNo = $scope.rin.prodInfoList.length+1;
+		    if($scope.rin.prodInfoList.length<10) {
+		    	 $scope.rin.prodInfoList.push({});
+		    } else {
+		    	window.alert("Only 10 Products are allowed. Please create a new RIN");
+		    }
+		   
+		  };
+		    
+		  $scope.removeChoice = function() {
+		    var lastItem = $scope.rin.prodInfoList.length-1;
+		    if (lastItem>0) {
+		    	$scope.rin.prodInfoList.splice(lastItem);
+		    } else {
+		    	window.alert("Atleast one product is required to create a RIN");
+		    }
+		    
+		  };
+		
+	
+	
+	
 	$scope.fetchAllRINs = function(){
 
 		RINService.fetchAllRINs()
@@ -89,6 +120,7 @@ omsApp.controller('RINController', ['$scope', 'RINService', 'CommonService', '$s
 
 $scope.createRINModal = function(){
 	$scope.rin={};
+	$scope.rin.prodInfoList = [{}];
 	$scope.showAddModal = true;
 
 };

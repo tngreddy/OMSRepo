@@ -3,6 +3,7 @@ package com.vjentrps.oms.service.impl;
 import java.text.ParseException;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.vjentrps.oms.dao.StockDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
+import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.ReturnedInwardNote;
 import com.vjentrps.oms.model.StockRecord;
@@ -22,7 +24,7 @@ import com.vjentrps.oms.service.RINService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Service
-@Transactional
+@Transactional(rollbackFor={RuntimeException.class, Exception.class})
 public class RINServiceImpl implements RINService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -39,22 +41,32 @@ public class RINServiceImpl implements RINService {
 	@Override
 	public void createRIN(ReturnedInwardNote rin) throws OmsServiceException, ParseException {
 
-		if (null != rin && null != rin.getProduct()) {
+		if (null != rin && CollectionUtils.isNotEmpty(rin.getProdInfoList())) {
 			try {
-				ProductStock productStock = stockDao.getProductStock(rin.getProduct().getProductId());
-				
+
 				rin.setRinNo(CommonUtil.buildTransId(CommonConstants.RIN, rinIdIncrementer.nextStringValue()));
 
 				rin.setDocDate(CommonUtil.formatDate(rin.getDocDate()));
-				
+
 				int success = rinDao.createRIN(rin);
 
-				if(success > 0 && null != productStock) {
+				for (ProdInfo prodInfo: rin.getProdInfoList()) {
 
-					StockRecord stockRecord = CommonUtil.buildStockRecord(rin, null, productStock.getProduct(), CommonConstants.RIN);
-					stockDao.addStockRecord(stockRecord);
-					stockDao.updateProductStock(productStock);
+					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
 
+					if(success > 0 && null != productStock) {
+
+						prodInfo.setTotalQty(prodInfo.getGoodIn()+prodInfo.getDefIn());
+						prodInfo.setTotalAmount(prodInfo.getTotalQty()*prodInfo.getUnitBasicRate());
+						
+						rinDao.addRinProdInfo(rin.getRinNo(),prodInfo);
+						
+						StockRecord stockRecord = CommonUtil.buildStockRecord(rin, prodInfo, productStock.getProduct(), CommonConstants.RIN);
+						
+						stockDao.addStockRecord(stockRecord);
+						stockDao.updateProductStock(productStock);
+
+					}
 				}
 			} catch (OmsDataAccessException e) {
 				throw new OmsServiceException(e);

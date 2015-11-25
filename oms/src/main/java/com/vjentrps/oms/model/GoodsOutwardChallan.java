@@ -1,5 +1,7 @@
 package com.vjentrps.oms.model;
 
+import java.util.List;
+
 public class GoodsOutwardChallan {
 	
 	private String gocNo;
@@ -8,10 +10,10 @@ public class GoodsOutwardChallan {
 	private String toName;
 	private String docRefNo;
 	private String docDate;
-	private Product product;
-	private int goodOut;
-	private int defOut;
+	private List<ProdInfo> prodInfoList;
 	private String status;
+	private String remarks;
+	
 	public String getGocNo() {
 		return gocNo;
 	}
@@ -48,29 +50,23 @@ public class GoodsOutwardChallan {
 	public void setDocDate(String docDate) {
 		this.docDate = docDate;
 	}
-	public Product getProduct() {
-		return product;
+	public List<ProdInfo> getProdInfoList() {
+		return prodInfoList;
 	}
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-	public int getGoodOut() {
-		return goodOut;
-	}
-	public void setGoodOut(int goodOut) {
-		this.goodOut = goodOut;
-	}
-	public int getDefOut() {
-		return defOut;
-	}
-	public void setDefOut(int defOut) {
-		this.defOut = defOut;
+	public void setProdInfoList(List<ProdInfo> prodInfoList) {
+		this.prodInfoList = prodInfoList;
 	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 	
 	
