@@ -12,6 +12,7 @@ public class ReturnedInwardNote {
 	private String docRefNo;
 	private String docDate;
 	private List<ProdInfo> prodInfoList;
+	private String grcNo;
 	private String status;
 	private String remarks;
 	
@@ -56,6 +57,12 @@ public class ReturnedInwardNote {
 	}
 	public void setProdInfoList(List<ProdInfo> prodInfoList) {
 		this.prodInfoList = prodInfoList;
+	}
+	public String getGrcNo() {
+		return grcNo;
+	}
+	public void setGrcNo(String grcNo) {
+		this.grcNo = grcNo;
 	}
 	public String getStatus() {
 		return status;

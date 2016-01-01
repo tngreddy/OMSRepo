@@ -20,5 +20,11 @@ public interface GINDao {
 
 	void addGinProdInfo(String ginNo, ProdInfo prodInfo) throws OmsDataAccessException;
 
+	GoodsInwardNote fetchGINByNo(String ginNo) throws OmsDataAccessException;
+
+	List<ProdInfo> getGINProdInfo(String ginNo) throws OmsDataAccessException;
+
+	 
+
 	
 }

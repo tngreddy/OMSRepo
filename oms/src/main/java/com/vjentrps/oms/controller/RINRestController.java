@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
 import com.vjentrps.oms.model.ErrorsEnum;
+import com.vjentrps.oms.model.GoodsInwardNote;
+import com.vjentrps.oms.model.RINDetails;
 import com.vjentrps.oms.model.ResponseDTO;
 import com.vjentrps.oms.model.ReturnedInwardNote;
 
@@ -39,16 +41,17 @@ public class RINRestController extends BaseRestController{
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO createRIN(@RequestBody ReturnedInwardNote rin) {
  
+    	String rinNo = "";
     	rin.setStatus("pending");
     	try {
-			rinService.createRIN(rin);
+    		rinNo = rinService.createRIN(rin);
 		}  catch (OmsServiceException e) {
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		} catch (Exception e) {
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
        
-        return new ResponseDTO();
+        return new ResponseDTO(rinNo);
     }
     
       
@@ -94,6 +97,38 @@ public class RINRestController extends BaseRestController{
  
            return "Success";
     }
+    
+    @RequestMapping(value="/details/{rinNo}/{fromToInfo}", method = RequestMethod.GET)
+    public ResponseDTO buildRINDetails(@PathVariable String rinNo, @PathVariable boolean fromToInfo ) {
+    	
+        	try {
+        		RINDetails  rinDetails = rinService.buildRINDetails(rinNo, fromToInfo);      
+        		
+        		if (null == rinDetails.getRin()) {
+    				return new ResponseDTO(commonUtil.processError(ErrorsEnum.NO_DATA_FOUND));
+    			}
+        		return new ResponseDTO(rinDetails);
+        		
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+        
+    }
+    
+    @RequestMapping(value="/{rinNo}", method = RequestMethod.GET)
+    public ResponseDTO fetchRINData(@PathVariable String rinNo) {
+    	
+        	try {
+        		ReturnedInwardNote  rin = rinService.getRINbyNo(rinNo);        		
+        		
+        		return new ResponseDTO(rin);
+        		
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+        
+    }
+ 
     
  
 }

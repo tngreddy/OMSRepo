@@ -3,13 +3,17 @@ package com.vjentrps.oms.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.acegisecurity.util.EncryptionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.Error;
 import com.vjentrps.oms.model.ErrorsEnum;
@@ -18,21 +22,27 @@ import com.vjentrps.oms.model.GoodsOutwardChallan;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
 import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
+import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.ReturnedInwardNote;
 import com.vjentrps.oms.model.StockRecord;
+import com.vjentrps.oms.service.ReportsService;
 
 @Component
 public class CommonUtil {
 
 	@Resource(name = "errorMessages")
 	public Map<Integer, String> errorMessages;
+	
+	@Autowired
+	ReportsService reportsService;
 
 	public Error processError(ErrorsEnum err) {
 
 		return new Error(err.getCode(), errorMessages.get(err.getCode()));
 
 	}
-
+	
+	
 	public static String buildTransId(String preToken, String postToken) {
 
 		return StringUtils.join(preToken, postToken);
@@ -41,7 +51,7 @@ public class CommonUtil {
 	public static String formatDate(String dateString) throws ParseException {
 
 		if (StringUtils.isNotBlank(dateString)) {
-			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+			Date date = new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
 
 			/*
 			 * SimpleDateFormat format = new SimpleDateFormat(
@@ -50,13 +60,87 @@ public class CommonUtil {
 			 * "$1$2"));
 			 */
 
-			dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+			dateString = new SimpleDateFormat("yyyy-MM-dd")
 					.format(date);
 		}
 		return dateString;
 
 	}
+	
+	public static String formatFromSQLDate(String dateString) {
 
+		if (StringUtils.isNotBlank(dateString)) {
+			
+			try {
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+
+				/*
+				 * SimpleDateFormat format = new SimpleDateFormat(
+				 * "yyyy-MM-dd'T'HH:mm:SSSZ"); Date date =
+				 * format.parse(dateString.replaceAll( "([\\+\\-]\\d\\d):(\\d\\d)",
+				 * "$1$2"));
+				 */
+
+				dateString = new SimpleDateFormat("dd/MM/yyyy")
+						.format(date);
+			} catch (Exception e) {
+				
+			}
+			
+		}
+		return dateString;
+
+	}
+	
+	public static String encryptString(String data) {
+		
+		return EncryptionUtils.encrypt(CommonConstants.KEY, data);
+		
+	}
+	
+	public static String decryptString(String data) {
+		
+		return EncryptionUtils.decrypt(CommonConstants.KEY, data);
+		
+	}
+	
+	public Error frameError(String productName, ErrorsEnum errEnum) {
+		
+		Error error = new Error(errEnum.getCode(), errorMessages.get(errEnum.getCode()));
+		error.setMessage("<Strong>"+productName+"</Strong>--"+error.getMessage());
+		
+		return error;
+		
+	}
+
+	
+	public Error isCrossedOutwardLimit(List<ProdInfo> prodInfos) throws OmsServiceException {
+
+		for (ProdInfo prodInfo : prodInfos) {
+			if (null != prodInfo && null != prodInfo.getProduct()) {
+				ProductStock productStock = reportsService.fetchProductStock(prodInfo.getProduct().getProductId());
+
+				if (null != productStock && null != productStock.getProduct()) {
+					
+					boolean goodOutError = prodInfo.getGoodOut() > productStock.getProduct().getGoodBalance();
+					boolean defOutError = prodInfo.getDefOut() > productStock.getProduct().getDefBalance();
+					if (goodOutError && defOutError) {
+						return frameError(productStock.getProduct().getProductName(), ErrorsEnum.GOOD_DEF_OUT_EXCEEDED);
+					} else if (goodOutError) {
+						return frameError(productStock.getProduct().getProductName(), ErrorsEnum.GOOD_OUT_EXCEEDED);
+					} else if (defOutError) {
+						return frameError(productStock.getProduct().getProductName(), ErrorsEnum.DEF_OUT_EXCEEDED);
+					}
+
+				}
+			}
+
+		}
+
+		return null;
+
+	}
+	
 	public static StockRecord buildStockRecord(Object transaction,
 			ProdInfo prodInfo, Product prodt, String transactionType) {
 

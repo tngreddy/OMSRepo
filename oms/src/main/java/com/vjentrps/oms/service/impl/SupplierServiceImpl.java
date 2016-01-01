@@ -125,6 +125,12 @@ public class SupplierServiceImpl  implements SupplierService{
 		}
 	}
 
+	@Override
+	public Supplier getSupplierByName(String from) throws OmsServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

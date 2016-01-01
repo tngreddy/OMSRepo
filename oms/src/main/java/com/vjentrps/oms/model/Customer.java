@@ -3,7 +3,7 @@ package com.vjentrps.oms.model;
 public class Customer {
 
 	private long customerId;
-	private String customerName;
+	private String name;
 	private String tinNo;
 	private String cstNo;
 	private Contact contact;
@@ -14,11 +14,11 @@ public class Customer {
 	public void setCustomerId(long customerId) {
 		this.customerId = customerId;
 	}
-	public String getCustomerName() {
-		return customerName;
+	public String getName() {
+		return name;
 	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getTinNo() {
 		return tinNo;

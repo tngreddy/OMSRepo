@@ -55,7 +55,46 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 						return $q.reject(errResponse);
 					});
 
-		}
+		},
+		
+		fetchGRCNos: function(fromName) {
+			return $http.get('http://ntiyyagura:8080/oms/service/grc/grcNos/'+fromName)
+			.then(
+					function(response){
+						return response.data.object;
+					}, 
+					function(errResponse){
+						console.error('Error while fetching GRC nos');
+						return $q.reject(errResponse);
+					}
+			);
+		},
+		
+		fetchGRCData: function(grcNo,fromToInfo) {
+			return $http.get('http://ntiyyagura:8080/oms/service/grc/details/'+grcNo+'/'+fromToInfo)
+			.then(
+					function(response){
+						return response.data;
+					}, 
+					function(errResponse){
+						console.error('Error while fetching grcdata');
+						return $q.reject(errResponse);
+					}
+			);
+		},
+		
+		fetchPendingGRCs: function() {
+			return $http.get('http://ntiyyagura:8080/oms/service/grc/pending')
+			.then(
+					function(response){
+						return response.data.object;
+					}, 
+					function(errResponse){
+						console.error('Error while fetching pending GRCs ');
+						return $q.reject(errResponse);
+					}
+			);
+		},
   
 	};
 

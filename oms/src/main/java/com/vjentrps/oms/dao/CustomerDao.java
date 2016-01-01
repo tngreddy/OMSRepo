@@ -23,4 +23,6 @@ public interface CustomerDao {
 	int getCustomerCount() throws OmsDataAccessException;
 
 	List<BasicInfo> getCustomersBasicInfo() throws OmsDataAccessException;
+
+	Customer getCustomerByName(String customerName) throws OmsDataAccessException;
 }

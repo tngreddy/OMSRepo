@@ -21,6 +21,8 @@ public interface SupplierService {
 	int getSupplierCount() throws OmsServiceException;
 
 	List<BasicInfo> getSuppliersBasicInfo() throws OmsServiceException;
+
+	Supplier getSupplierByName(String from) throws OmsServiceException;
 	 
 	
 }

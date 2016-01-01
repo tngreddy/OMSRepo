@@ -94,8 +94,13 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.framework.version}</version>
 		</dependency>
-
-
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>4.0.1.RELEASE</version>
+		</dependency>
+		
 		<!-- datasource -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -209,6 +214,12 @@
 	<groupId>javax.servlet.jsp</groupId>
 	<artifactId>javax.servlet.jsp-api</artifactId>
 	<version>2.2.1</version>
+</dependency>
+
+<dependency>
+	<groupId>org.acegisecurity</groupId>
+	<artifactId>acegi-security</artifactId>
+	<version>1.0.5</version>
 </dependency>
 
 

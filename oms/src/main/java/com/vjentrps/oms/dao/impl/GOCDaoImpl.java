@@ -17,6 +17,7 @@ import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
 import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
+import com.vjentrps.oms.util.CommonUtil;
 
 @Repository
 public class GOCDaoImpl extends BaseDao implements GOCDao {
@@ -31,7 +32,10 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 
 	@Value("${FETCH_GOCS}")
 	private String fetchAllGOCSQuery;
-
+	
+	@Value("${FETCH_GOC_BY_NO}")
+	private String fetchGOCByNoQuery;
+	
 	@Value("${DELETE_GOC}")
 	private String deleteGOCQuery;
 	
@@ -40,6 +44,11 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 	
 	@Value("${ADD_GOC_PROD_INFO}")
 	private String addGocProdInfoQuery;
+	
+	@Value("${FETCH_GOC_PROD_INFO_LIST}")
+	private String fetchGOCProdInfoListQuery;
+	
+	
 	
 	
 	
@@ -51,22 +60,37 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 
 			GoodsOutwardChallan goc = new GoodsOutwardChallan();
 			goc.setGocNo(resultSet.getString("goc_no"));
-			goc.setGocDate(resultSet.getString("goc_date"));
+			goc.setGocDate(CommonUtil.formatFromSQLDate(resultSet.getString("goc_date")));
 			goc.setTo(resultSet.getString("_to"));
 			goc.setToName(resultSet.getString("to_name"));
 			goc.setDocRefNo(resultSet.getString("doc_ref_no"));
-			goc.setDocDate(resultSet.getString("doc_date"));
-			//goc.setGoodOut(resultSet.getInt("good_out"));
-			//goc.setDefOut(resultSet.getInt("def_out"));
+			goc.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			goc.setStatus(resultSet.getString("status"));
-			Product product = new Product();
-			product.setProductId(resultSet.getLong("product_id"));
-			product.setProductName(resultSet.getString("product_name"));
-			//goc.setProduct(product);
 			return goc;
 		}
 
 	}
+	
+	private static class ProdInfoRowMapper implements RowMapper<ProdInfo> {
+
+		public ProdInfo mapRow(ResultSet resultSet, int arg1)
+				throws SQLException {
+
+			ProdInfo prodInfo = new ProdInfo();
+			Product product = new Product();
+			product.setProductId(resultSet.getLong("product_id"));
+			product.setProductName(resultSet.getString("product_name"));
+			prodInfo.setProduct(product);
+			prodInfo.setGoodOut(resultSet.getLong("good_out"));
+			prodInfo.setDefOut(resultSet.getLong("def_out"));
+			prodInfo.setTotalQty(resultSet.getLong("total_qty"));
+			prodInfo.setUnitBasicRate(resultSet.getLong("unit_basic_rate"));
+			prodInfo.setTotalAmount(resultSet.getLong("total_amount"));
+			return prodInfo;
+		}
+
+	}
+	
 
 	@Override
 	public int createGOC(final GoodsOutwardChallan goc) throws OmsDataAccessException {
@@ -140,4 +164,36 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 			}
 				
 	}
-}
+
+	@Override
+	public GoodsOutwardChallan fetchGOCByNo(String gocNo)
+			throws OmsDataAccessException {
+		GoodsOutwardChallan goc = null;
+		GOCRowMapper resultSetExtractor = new GOCRowMapper();
+		try {
+			goc = (GoodsOutwardChallan) jdbcTemplate.queryForObject(fetchGOCByNoQuery,
+					new Object[] { gocNo}, 
+					resultSetExtractor);
+		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return goc;
+	}
+
+	@Override
+	public List<ProdInfo> getGOCProdInfo(String gocNo)
+			throws OmsDataAccessException {
+		List<ProdInfo> prodInfos = null;
+
+		ProdInfoRowMapper resultSetExtractor = new ProdInfoRowMapper();
+		try {
+			prodInfos = (List<ProdInfo>) jdbcTemplate.query(fetchGOCProdInfoListQuery,new Object[] { gocNo }, resultSetExtractor);
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return prodInfos;
+	}
+	}
+
+	

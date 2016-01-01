@@ -11,12 +11,16 @@ import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vjentrps.oms.dao.CustomerDao;
 import com.vjentrps.oms.dao.GRCDao;
 import com.vjentrps.oms.dao.StockDao;
+import com.vjentrps.oms.dao.SupplierDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
+import com.vjentrps.oms.model.GRCDetails;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
+import com.vjentrps.oms.model.PendingGRC;
 import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
@@ -34,18 +38,25 @@ public class GRCServiceImpl implements GRCService {
 
 	@Autowired
 	private StockDao stockDao;
+	
+	@Autowired
+	private SupplierDao supplierDao;
+
+	@Autowired
+	private CustomerDao customerDao;
 
 	@Autowired
 	DataFieldMaxValueIncrementer grcIdIncrementer;
 
 	@Override
-	public void createGRC(GoodsReturnableChallan grc) throws ParseException, OmsServiceException {
+	public String createGRC(GoodsReturnableChallan grc) throws ParseException, OmsServiceException {
 
+		String grcNo = "";
 		if (null != grc && CollectionUtils.isNotEmpty(grc.getProdInfoList())) {
 			try {
 
 				grc.setGrcNo(CommonUtil.buildTransId(CommonConstants.GRC, grcIdIncrementer.nextStringValue()));
-
+				grcNo = grc.getGrcNo();
 				grc.setDocDate(CommonUtil.formatDate(grc.getDocDate()));
 
 				int success = grcDao.createGRC(grc);
@@ -72,6 +83,7 @@ public class GRCServiceImpl implements GRCService {
 				throw new OmsServiceException(e);
 			}
 		}
+		return grcNo;
 	}
 
 	@Override
@@ -115,5 +127,68 @@ public class GRCServiceImpl implements GRCService {
 		}
 
 	}
+
+	@Override
+	public List<String> getGRCNoList(String toName) throws OmsServiceException {
+		try {
+			return grcDao.fetchGRCNoList(toName);
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
+
+		
+	}
+	
+	@Override
+	public GRCDetails buildGRCDetails(String grcNo, boolean fromToInfo) throws OmsServiceException {
+		GRCDetails grcDetails = new GRCDetails();
+		try {
+			GoodsReturnableChallan grc = getGRCbyNo(grcNo);
+			if (null != grc) {
+				if(fromToInfo) {
+					
+					if (CommonConstants.SUPPLIER.equalsIgnoreCase(grc.getTo())) {
+						
+						grcDetails.setSupplier(supplierDao.getSupplierByName(grc.getToName()));
+						
+					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(grc.getTo())) {
+						
+						grcDetails.setCustomer(customerDao.getCustomerByName(grc.getToName()));
+					}
+				}
+				grcDetails.setGrc(grc);
+			}
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
+		return grcDetails;
+	}
+
+	@Override
+	public GoodsReturnableChallan getGRCbyNo(String grcNo) throws OmsServiceException {
+		try {
+			GoodsReturnableChallan grc = grcDao.fetchGRCByNo(grcNo);
+			if (null != grc) {
+				grc.setProdInfoList(grcDao.getGRCProdInfo(grcNo, CommonConstants.ALL_STATUS));
+				grc.setPartPndgProdInfoList(grcDao.getGrcPartialPendingProdInfo(grcNo));
+			}
+			return grc;
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
+
+	}
+
+	@Override
+	public List<PendingGRC> fetchAllGRCPendingProdInfo(String status)
+			throws OmsServiceException {
+		try {
+			return  grcDao.getAllGrcPartialPendingProdInfo(status);
+			
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
+	}
+
 
 }

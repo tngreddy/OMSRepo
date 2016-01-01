@@ -3,6 +3,7 @@ package com.vjentrps.oms.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vjentrps.oms.service.AuthenticationService;
 import com.vjentrps.oms.service.CategoryService;
 import com.vjentrps.oms.service.CustomerService;
 import com.vjentrps.oms.service.GINService;
@@ -12,6 +13,7 @@ import com.vjentrps.oms.service.ProductService;
 import com.vjentrps.oms.service.RINService;
 import com.vjentrps.oms.service.ReportsService;
 import com.vjentrps.oms.service.SupplierService;
+import com.vjentrps.oms.service.UserService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Component
@@ -46,5 +48,16 @@ public class BaseRestController {
 	
 	@Autowired
 	CommonUtil commonUtil;
+	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	AuthenticationService authenticateService;
+	
+	
+	
+	
+	
 
 }

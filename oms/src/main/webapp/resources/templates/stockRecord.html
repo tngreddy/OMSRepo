@@ -5,36 +5,77 @@
 			<span class="lead">Stock Records</span>
 		</div>
 
+
+<form novalidate angular-validator
+	angular-validator-submit="fetchStockRecords()" name="searchForm"
+	class="form-horizontal">
+
 <div class="filtercontainer">
-<label class="col-sm-3 control-label">Product</label>
+<div class="form-left" style="width: 23%;">
+<label class="col-sm-3 control-label">Category</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="categoryName"
-							ng-model="categoryName" validate-on="dirty"
-							>
-							<option	ng-repeat="product in productsInfo" value="{{product.name}}">{{product.name}}</option>
+							ng-model="searchObj.categoryName" validate-on="dirty"
+							required-message="'Category is required'" required
+							ng-change="populateProductList(searchObj.categoryName)">
+							<option	selected value="ALL">ALL CATEGORIES</option>
+							<option	ng-repeat="categoryName in categories" value="{{categoryName}}">{{categoryName}}</option>
 						</select>
 						</div>
 
-
+</div>
+<div class="form-left" style="width: 23%;">
 <label class="col-sm-3 control-label">Product</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="productName"
-							ng-model="productName" validate-on="dirty"
-							required-message="'Product Name is required'" required>
-							<option	ng-repeat="product in productsInfo" value="{{product.name}}">{{product.name}}</option>
+							ng-model="searchObj.productName">
+							<option	selected value="ALL">ALL PRODUCTS</option>
+							<option	ng-repeat="productName in products" value="{{productName}}">{{productName}}</option>
 						</select>
 						</div>
 </div>
+<div class="form-left" style="width: 23%;">
+				<label class="col-sm-3 ">From Date</label>
+				<div class="col-sm-8">
+				<input type="text" ng-click="openRange($event,'from')"
+						class="form-control" 
+						name="fromDateValue" 
+						placeholder="From Date"
+						ng-model="searchObj.fromDateValue"
+						uib-datepicker-popup="MM/dd/yyyy" is-open="status.fromOpen" max-date="maxDate" close-text="Close"
+						/>
+			   
+			</div>
 </div>
-<div class="addbuttoncontainer">
- </div>
- 
-<div class="tablecontainer">
-			<table  class="table table-bordered table-striped">
+<div class="form-left" style="width: 23%;">
+				<label class="col-sm-3 ">To Date</label>
+				<div class="col-sm-8">
+				<input type="text" ng-click="openRange($event,'to')"
+						class="form-control" 
+						name="toDateValue" 
+						placeholder="To Date"
+						ng-model="searchObj.toDateValue"
+						uib-datepicker-popup="MM/dd/yyyy" is-open="status.toOpen" max-date="maxDate" close-text="Close"
+						/>
+			   
+			</div>
+			</div>
+<button type="submit" class="btn btn-flat btn-primary">Search</button>
+</div>
+</form>
+</div>
+ <div  ng-show = "showResults" class="panel panel-default mainWrapper dataPanel">
+	<div class="panel-heading">
+			<span class="lead">Results</span>
+	</div>
+	<div class="addbuttoncontainer"></div>
+<div  class="tablecontainer">
+			<table id="resultsTable" class="table table-bordered table-striped">
 			<thead>
                       <tr>
                         <th>Record Id</th>
                         <th>Trans Doc Ref</th>
+                        <th>Category Name</th>
                         <th>Product Name</th>
                         <th>From/To</th>
                         <th>Good In</th>
@@ -47,9 +88,10 @@
                         </tr>
                     </thead>
 				<tbody>
-					<tr ng-repeat="stockRecord in stockRecordList | filter:productName">
+					<tr ng-repeat="stockRecord in stockRecordList ">
 						<td><span ng-bind="stockRecord.recordId"></span></td>
 						<td><span ng-bind="stockRecord.transDocRef"></span></td>
+						<td><span ng-bind="stockRecord.product.category.categoryName"></span></td>
 						<td><span ng-bind="stockRecord.product.productName"></span></td>
 						<td><span ng-bind="stockRecord.fromTo"></span></td>
 						<td><span ng-bind="stockRecord.goodIn"></span></td>
@@ -66,5 +108,5 @@
 			</table>
 		</div>
 	</div>	
-		
+	
 

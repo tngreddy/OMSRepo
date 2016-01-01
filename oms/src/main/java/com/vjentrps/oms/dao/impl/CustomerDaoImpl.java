@@ -32,6 +32,10 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	@Value("${GET_CUSTOMER}")
 	private String getCustomerQuery;
 	
+	@Value("${GET_CUSTOMER_BY_NAME}")
+	private String getCustomerByNameQuery;
+	
+	
 	@Value("${UPDATE_CUSTOMER}")
 	private String updateCustomerQuery;
 	
@@ -49,7 +53,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	public void addCustomer(Customer customer) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(addCustomerQuery,
-					new Object[] { customer.getCustomerName(), customer.getTinNo(), customer.getCstNo(), customer.getContact().getContactId() });
+					new Object[] { customer.getName(), customer.getTinNo(), customer.getCstNo(), customer.getContact().getContactId() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -71,7 +75,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	public void updateCustomer(Customer customer) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateCustomerQuery,
-					new Object[] { customer.getCustomerName(), customer.getTinNo(), customer.getCstNo(), customer.getCustomerId()});
+					new Object[] { customer.getName(), customer.getTinNo(), customer.getCstNo(), customer.getCustomerId()});
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -158,7 +162,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 			contact.setPhoneNo(resultSet.getString("phone"));
 			customer.setContact(contact);
 			customer.setCustomerId(resultSet.getLong("customer_id"));
-			customer.setCustomerName(resultSet.getString("customer_name"));
+			customer.setName(resultSet.getString("customer_name"));
 			customer.setTinNo(resultSet.getString("tin_no"));
 			customer.setCstNo(resultSet.getString("cst_no"));
 			return customer;
@@ -210,6 +214,20 @@ public List<BasicInfo> getCustomersBasicInfo() throws OmsDataAccessException{
 		throw new OmsDataAccessException(dae);
 	}
 	return customers;
+}
+
+@Override
+public Customer getCustomerByName(String customerName)
+		throws OmsDataAccessException {
+	Customer customer = null;
+	CustomerRowMapper resultSetExtractor = new CustomerRowMapper();
+	try {
+		customer = (Customer) jdbcTemplate.queryForObject(getCustomerByNameQuery,
+				new Object[] { customerName }, resultSetExtractor);
+	} catch (DataAccessException dae) {
+		throw new OmsDataAccessException(dae);
+	}
+	return customer;
 }
 
 

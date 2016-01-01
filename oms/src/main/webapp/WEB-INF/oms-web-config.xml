@@ -59,6 +59,17 @@
 			value="Oops some thing went wrong, try refreshing the page " />
 		<entry key="1001"
 			value="Oops there is technical glitch, try again " />
+		<entry key="1002"
+			value="No data found for the search input" />
+		<entry key="1003"
+			value="UserName/Password is incorrect, Please try again with valid credentials" />
+		<entry key="1004"
+			value="GoodOut value exceeds the total good stock" />
+		<entry key="1005"
+			value="DefOut value exceeds the total defective stock" />
+		<entry key="1006"
+			value="Both GoodOut and DefOut values exceeds the quantities in stock" />
+			
 	</util:map>
 
 	<bean id="ginIdIncrementer"

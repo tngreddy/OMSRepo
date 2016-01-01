@@ -23,4 +23,6 @@ public interface SupplierDao {
 	int getSupplierCount() throws OmsDataAccessException;
 
 	List<BasicInfo> getSuppliersBasicInfo() throws OmsDataAccessException;
+
+	Supplier getSupplierByName(String supplierName)	throws OmsDataAccessException;
 }

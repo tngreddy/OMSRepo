@@ -20,6 +20,10 @@ public interface GOCDao {
 
 	void addGocProdInfo(String gocNo, ProdInfo prodInfo) throws OmsDataAccessException;
 
+	GoodsOutwardChallan fetchGOCByNo(String gocNo) throws OmsDataAccessException;
+
+	List<ProdInfo> getGOCProdInfo(String gocNo) throws OmsDataAccessException;
+
 
 	
 }

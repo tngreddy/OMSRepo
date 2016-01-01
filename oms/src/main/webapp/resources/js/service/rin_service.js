@@ -55,7 +55,21 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 						return $q.reject(errResponse);
 					});
 
+		},
+		
+		fetchRINData: function(rinNo,fromToInfo) {
+			return $http.get('http://ntiyyagura:8080/oms/service/rin/details/'+rinNo+'/'+fromToInfo)
+			.then(
+					function(response){
+						return response.data;
+					}, 
+					function(errResponse){
+						console.error('Error while fetching rindata');
+						return $q.reject(errResponse);
+					}
+			);
 		}
+
   
 	};
 

@@ -11,6 +11,7 @@ public class GoodsReturnableChallan {
 	private String docRefNo;
 	private String docDate;
 	private List<ProdInfo> prodInfoList;
+	private List<ProdInfo> partPndgProdInfoList;
 	private String status;
 	private String remarks;
 	public String getGrcNo() {
@@ -54,6 +55,13 @@ public class GoodsReturnableChallan {
 	}
 	public void setProdInfoList(List<ProdInfo> prodInfoList) {
 		this.prodInfoList = prodInfoList;
+	}
+	
+	public List<ProdInfo> getPartPndgProdInfoList() {
+		return partPndgProdInfoList;
+	}
+	public void setPartPndgProdInfoList(List<ProdInfo> partPndgProdInfoList) {
+		this.partPndgProdInfoList = partPndgProdInfoList;
 	}
 	public String getStatus() {
 		return status;

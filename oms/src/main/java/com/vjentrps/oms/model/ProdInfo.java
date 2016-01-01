@@ -3,13 +3,14 @@ package com.vjentrps.oms.model;
 public class ProdInfo {
 	
 	private Product product;
-	private int goodIn;
-	private int defIn;
-	private int goodOut;
-	private int defOut;
-	private int totalQty;
-	private int unitBasicRate;
+	private long goodIn;
+	private long defIn;
+	private long goodOut;
+	private long defOut;
+	private long totalQty;
+	private long unitBasicRate;
 	private long totalAmount;
+	private String status;
 	
 	public Product getProduct() {
 		return product;
@@ -17,40 +18,40 @@ public class ProdInfo {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	public int getGoodIn() {
+	public long getGoodIn() {
 		return goodIn;
 	}
-	public void setGoodIn(int goodIn) {
+	public void setGoodIn(long goodIn) {
 		this.goodIn = goodIn;
 	}
-	public int getDefIn() {
+	public long getDefIn() {
 		return defIn;
 	}
-	public void setDefIn(int defIn) {
+	public void setDefIn(long defIn) {
 		this.defIn = defIn;
 	}
-	public int getGoodOut() {
+	public long getGoodOut() {
 		return goodOut;
 	}
-	public void setGoodOut(int goodOut) {
+	public void setGoodOut(long goodOut) {
 		this.goodOut = goodOut;
 	}
-	public int getDefOut() {
+	public long getDefOut() {
 		return defOut;
 	}
-	public void setDefOut(int defOut) {
+	public void setDefOut(long defOut) {
 		this.defOut = defOut;
 	}
-	public int getTotalQty() {
+	public long getTotalQty() {
 		return totalQty;
 	}
-	public void setTotalQty(int totalQty) {
+	public void setTotalQty(long totalQty) {
 		this.totalQty = totalQty;
 	}
-	public int getUnitBasicRate() {
+	public long getUnitBasicRate() {
 		return unitBasicRate;
 	}
-	public void setUnitBasicRate(int unitBasicRate) {
+	public void setUnitBasicRate(long unitBasicRate) {
 		this.unitBasicRate = unitBasicRate;
 	}
 	public long getTotalAmount() {
@@ -59,6 +60,14 @@ public class ProdInfo {
 	public void setTotalAmount(long totalAmount) {
 		this.totalAmount = totalAmount;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 	
 
 	

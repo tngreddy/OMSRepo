@@ -1,11 +1,22 @@
 'use strict';
 
-omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$state', '$stateParams', function($scope, GINService, CommonService, $state, $stateParams) {
+omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$state', '$stateParams','Flash', function($scope, GINService, CommonService, $state, $stateParams,Flash) {
 	$scope.gins=[];
 	$scope.gin={};
 	$scope.basicInfoMap = {};
+	$scope.showGINData =false;
+	$scope.showGINDetails = false;
 	$scope.productsInfo={};
+	$scope.loading = false ;
+	$scope.showSuccess = false;	
+	$scope.showError = false;
+	$scope.modalShowSuccess = false;	
+	$scope.modalShowError = false;	
+	$scope.viewDate;
+	$scope.dt;
+	
 	var products = "PRODUCTS";
+	$scope.ginData = {}
 	//$scope.gin.prodInfoList = [{"product":{"productId":0},"unitBasicRate":0,"goodIn":0,"defIn":0}];
 	//$scope.gin.prodInfoList = [{}];
 	
@@ -20,7 +31,7 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 	    if($scope.gin.prodInfoList.length<10) {
 	    	 $scope.gin.prodInfoList.push({});
 	    } else {
-	    	window.alert("Only 10 Products are allowed. Please create a new GIN");
+	    	CommonService.showMsg('danger',"Only 10 Products are allowed. Please create a new GIN");
 	    }
 	   
 	  };
@@ -30,7 +41,7 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 	    if (lastItem>0) {
 	    	$scope.gin.prodInfoList.splice(lastItem);
 	    } else {
-	    	window.alert("Atleast one product is required to create a GIN");
+	    	CommonService.showMsg('danger',"Atleast one product is required to create a GIN");
 	    }
 	    
 	  };
@@ -53,11 +64,36 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 
 
 	$scope.createGIN = function(){
-		GINService.createGIN($scope.gin)
+		if(typeof $scope.gin.docDateValue != 'undefined') {
+			$scope.gin.docDate = $scope.gin.docDateValue.toLocaleDateString();
+		}
+	    GINService.createGIN($scope.gin)
 		.then(
 				function(data) {
-					$scope.showAddModal = false;
-					$scope.reloadState();	
+					if(!(typeof data === 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+							//$scope.errorMessage = data.error.message;
+							//$scope.showError = true;
+						} else {
+							CommonService.showMsg('success',"Successfully created <strong>"+data.object+"</Strong>");
+							//$scope.successMessage = "Successfully created "+data.object;
+							//$scope.modalShowSuccess = false;
+							//$scope.modalShowSuccess = true;
+							
+						      //setTimeout(function(){
+							
+						    	//  $scope.modalShowSuccess = false;	
+								  $scope.showAddModal = false;
+								  $scope.fetchGINData(data.object,true);
+						      //  }, 2000);
+							
+							
+						}
+						
+					}	
+				    //$scope.reloadState();	
 				},
 				function(errResponse){
 					console.error('Error while create GIN');
@@ -69,8 +105,18 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 		GINService.updateGIN(gin)
 		.then(
 				function(data) {
-					$scope.showEditModal = false;
-					$scope.reloadState();		
+					if(!(typeof data === 'undefined')){
+						
+						if(data.error!= null){
+							$scope.errorMessage = error.message;
+						} else {
+							$scope.showEditModal = false;
+							$scope.reloadState();	
+						}
+						
+						
+					}
+						
 				},
 				function(errResponse){
 					console.error('Error while updating GIN');
@@ -104,6 +150,39 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 				}
 		);
 	};
+	
+	
+	$scope.fetchGINData = function(ginNo,fromToInfo){
+
+		if(!(typeof ginNo === 'undefined')){
+		
+		GINService.fetchGINData(ginNo,fromToInfo)
+		.then(
+				function(data) {
+					
+					if(data.error!= null){
+						CommonService.showMsg('danger',data.error.message);
+					} else {
+						$scope.ginData = data.object;
+						if(fromToInfo){
+							$scope.showGINData = false;
+							$scope.showGINDetails = true;
+						} else {
+							$scope.showGINDetails = false;
+							$scope.showGINData = true;
+						}
+						
+					}
+					
+					
+				},
+				function(errResponse){
+					console.error('Error while fetching GIN data');
+				}
+		);
+		
+		};
+	};
 
 
 	$scope.populateFromData = function(from){
@@ -112,8 +191,17 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 		
 	};
 	
-	$scope.fetchAllGINs();
+	$scope.fetchGINInfo = function(ginNo,option){
+
+		if(option == "search") {
+			$scope.fetchGINData(ginNo, false);
+		} else if(option == "printFormat") {
+			$scope.fetchGINData(ginNo, true);
+		}
+		
+	};
 	
+		
 	$scope.fetchBasicInfoToPopulate();
 	
 	

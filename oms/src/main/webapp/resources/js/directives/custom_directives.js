@@ -1,48 +1,29 @@
 //directive to initiate datatables
-omsApp.directive('myTabs', function() {
+omsApp.directive('myTabs', ['CommonService', function(CommonService) {
   return {
 	  
     // angular passes the element reference to you
     compile: function(element) {
-    	
-      setTimeout(function(){
-    	var table = $(element).DataTable( {
-    		  
-    	        buttons: [
-    	          'copy',
-    	                 
-    	            {
-    	                extend: 'pdf',
-    	                exportOptions: {
-    	                    columns: ':visible'
-    	                }
-    	            },
-    	            {
-    	                extend: 'excel',
-    	                exportOptions: {
-    	                    columns: ':visible'
-    	                }
-    	            },
-    	            {
-    	                extend: 'print',
-    	                exportOptions: {
-    	                    columns: ':visible'
-    	                }
-    	            },
-    	             'colvis'
-    	            
-    	            
-    	        ]
-    	       	    } );
-    	
-    	table.buttons().container()
-        .appendTo( $('.addbuttoncontainer') );
-      
-      }, 1000);
-      
-    }
+    
+      CommonService.initializeDataTable(element,'.addbuttoncontainer');
+      }
   };
-});
+}]);
+
+omsApp.directive('myDate', function() {
+	  return {
+		  
+	    // angular passes the element reference to you
+	    link: function(element) {
+	      	var today = new Date().toISOString().split('T')[0];
+	    	(element)[0].setAttribute('max', today);
+	      
+	    }
+	  };
+	});
+
+
+
 
 // directive to display modals
 omsApp.directive('modal', function () {
@@ -56,7 +37,7 @@ omsApp.directive('modal', function () {
 		restrict: 'E',
 		transclude: true,
 		replace:true,
-		scope:true,
+		scope: true,
 		link: function postLink(scope, element, attrs) {
 			
 			scope.size = attrs.size;
@@ -82,6 +63,7 @@ omsApp.directive('modal', function () {
 		}
 	};
 });
+
 
 
 /*omsApp.directive('validateCategory', function() {

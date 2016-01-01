@@ -20,5 +20,9 @@ public interface RINDao {
 
 	void addRinProdInfo(String rinNo, ProdInfo prodInfo) throws OmsDataAccessException;
 
+	ReturnedInwardNote fetchRINByNo(String rinNo) throws OmsDataAccessException;
+
+	List<ProdInfo> getRINProdInfo(String rinNo) throws OmsDataAccessException;
+
 	
 }

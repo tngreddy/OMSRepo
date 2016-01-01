@@ -45,12 +45,13 @@ body, .form-control{
 body {
 	font-size: 13px;
 	font-family: Roboto;
-	background-color: rgba(237, 237, 237, .5)
+	background-color: rgba(237, 237, 237, .5);
+	overflow-y: scroll;
 }
 
 body .content-wrapper {
 	margin-left: 0;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 body .tablecontainer {
@@ -82,7 +83,7 @@ body #categoryTable_wrapper {
 	z-index: 1;
 	zoom: 1;
 	border-radius: 0px;
-	margin: 70px 20px;
+	margin: 50px 20px 20px;
 	-webkit-box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
 	-moz-box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
 	box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
@@ -107,8 +108,78 @@ body #categoryTable_wrapper {
 	float: right;
 }
 
+.detailsContainer {
+	border: 1px solid #E4E4E4;
+    height: auto;
+    margin: 15px 0 0;
 }
 
+.dataPanel {
+	z-index: 1;
+	zoom: 1;
+	border-radius: 0px;
+	margin: 0px 20px;
+	-webkit-box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
+	-moz-box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
+	box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
+	padding-bottom: 20px;
+
+}
+
+.dataPanel>tbody>tr>td {
+	padding:10px;
+}
+
+.printFormatPanel {
+	margin: 0px 20px;
+	padding:1px;
+	-webkit-box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
+	-moz-box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
+	box-shadow: 0px 0px 111px -30px rgba(0, 0, 0, 0.62);
+	background-color: white;
+	font-size:11px;
+}
+
+.logo{
+	padding: 4% 0px 0px 30%;
+	
+}
+
+.searchPanel {
+	float:left;
+	width:90%;
+}
+
+.createBtnPanel {
+	float:right;
+	width:10%;
+}
+.printFormatPanel .header {
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ededed+0,efefef+0,d3d3d3+0,ffffff+38,ffffff+58 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(237,237,237,1) 0%, rgba(239,239,239,1) 0%, rgba(211,211,211,1) 0%, rgba(255,255,255,1) 38%, rgba(255,255,255,1) 58%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(237,237,237,1) 0%,rgba(239,239,239,1) 0%,rgba(211,211,211,1) 0%,rgba(255,255,255,1) 38%,rgba(255,255,255,1) 58%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(237,237,237,1) 0%,rgba(239,239,239,1) 0%,rgba(211,211,211,1) 0%,rgba(255,255,255,1) 38%,rgba(255,255,255,1) 58%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+}
+
+.printFormatPanel h2,h3,h4 {
+	margin-top:5px;
+}
+
+
+.userSection {
+	
+}
+
+.userSection>li:hover {
+	background-color: #d73925;
+	
+}
+
+
+ */
 /* .modal {
     display: block;
 }
@@ -218,7 +289,6 @@ select.ng-valid {
  
 }
 
-
 .buttons-copy:hover {
 	background-color: #3D9970;
 	border-color: #317D5B;
@@ -227,4 +297,27 @@ select.ng-valid {
 
 .lead {
 	font-weight:400;
+}
+
+.strongLabel {
+	font-weight:bold;
+	width: 30px;
+}
+
+.companyName,.fromAddress {
+	padding: 0px 20px 0px 30px;
+}
+
+address{
+	margin-bottom:0px;
+}
+
+.login-body {
+	background-color: rgba(2, 33, 72, 0.87);
+}
+.customPicker {
+	background-color: white;
+}
+.form-control[readonly]{
+	background-color: white;
 }

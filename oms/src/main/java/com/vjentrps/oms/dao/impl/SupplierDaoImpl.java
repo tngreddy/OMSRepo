@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +30,9 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 
 	@Value("${GET_SUPPLIER}")
 	private String getSupplierQuery;
+	
+	@Value("${GET_SUPPLIER_BY_NAME}")
+	private String getSupplierByNameQuery;
 
 	@Value("${UPDATE_SUPPLIER}")
 	private String updateSupplierQuery;
@@ -48,7 +50,7 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 	public void addSupplier(Supplier supplier) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(addSupplierQuery,
-					new Object[] { supplier.getSupplierName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getContact().getContactId() });
+					new Object[] { supplier.getName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getContact().getContactId() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -70,7 +72,7 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 	public void updateSupplier(Supplier supplier) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateSupplierQuery,
-					new Object[] { supplier.getSupplierName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getSupplierId()});
+					new Object[] { supplier.getName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getSupplierId()});
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -105,6 +107,20 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 		}
 		return supplier;
 	}
+	
+	@Override
+	public Supplier getSupplierByName(String supplierName) throws OmsDataAccessException {
+		Supplier supplier = null;
+		SupplierRowMapper resultSetExtractor = new SupplierRowMapper();
+		try {
+			supplier = (Supplier) jdbcTemplate.queryForObject(getSupplierByNameQuery,
+					new Object[] { supplierName }, resultSetExtractor);
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return supplier;
+	}
+
 
 	@Override
 	public Supplier getSupplierIds(long supplierId) throws OmsDataAccessException {
@@ -155,7 +171,7 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 			contact.setPhoneNo(resultSet.getString("phone"));
 			supplier.setContact(contact);
 			supplier.setSupplierId(resultSet.getLong("supplier_id"));
-			supplier.setSupplierName(resultSet.getString("supplier_name"));
+			supplier.setName(resultSet.getString("supplier_name"));
 			supplier.setTinNo(resultSet.getString("tin_no"));
 			supplier.setCstNo(resultSet.getString("cst_no"));
 			return supplier;

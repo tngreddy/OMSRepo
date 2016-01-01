@@ -5,6 +5,11 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 	$scope.grc={};
 	$scope.basicInfoMap = {};
 	$scope.productsInfo={};
+	$scope.grcData = {};
+	$scope.showGRCData = false;
+	$scope.showGRCDetails = false;
+	$scope.showPendingGRCs = false;
+	$scope.pendingGRCs = [];
 	var products = "PRODUCTS";
 	
 	 $scope.datepickerConfig = {
@@ -19,7 +24,7 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 	    if($scope.grc.prodInfoList.length<10) {
 	    	 $scope.grc.prodInfoList.push({});
 	    } else {
-	    	window.alert("Only 10 Products are allowed. Please create a new GRC");
+	    	CommonService.showMsg('danger',"Only 10 Products are allowed. Please create a new GRC");
 	    }
 	   
 	  };
@@ -29,7 +34,7 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 	    if (lastItem>0) {
 	    	$scope.grc.prodInfoList.splice(lastItem);
 	    } else {
-	    	window.alert("Atleast one product is required to create a GRC");
+	    	CommonService.showMsg('danger',"Atleast one product is required to create a GOC");
 	    }
 	    
 	  };
@@ -51,11 +56,24 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 
 
 	$scope.createGRC = function(){
+		if(typeof $scope.grc.docDateValue != 'undefined') {
+			$scope.grc.docDate = $scope.grc.docDateValue.toLocaleDateString();
+		}
 		GRCService.createGRC($scope.grc)
 		.then(
 				function(data) {
-					$scope.showAddModal = false;
-					$scope.reloadState();	
+					
+					if(!(typeof data === 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							CommonService.showMsg('success',"Successfully created <strong>"+data.object+"</Strong>");
+							$scope.showAddModal = false;
+							$scope.fetchGRCData(data.object,true);	
+						}
+					}	
+					
 				},
 				function(errResponse){
 					console.error('Error while create GRC');
@@ -88,6 +106,54 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 				}
 		);
 	};
+	
+	$scope.fetchGRCData = function(grcNo,fromToInfo){
+
+		if(!(typeof grcNo === 'undefined')){
+		
+		GRCService.fetchGRCData(grcNo,fromToInfo)
+		.then(
+				function(data) {
+					if(data.error!= null){
+						CommonService.showMsg('danger',data.error.message);
+					} else {
+						$scope.grcData = data.object;
+						$scope.showPendingGRCs = false;	
+						if(fromToInfo){
+							$scope.showGRCData = false;
+							$scope.showGRCDetails = true;
+						} else {
+							$scope.showGRCDetails = false;
+							$scope.showGRCData = true;
+						}
+					}
+				},
+				function(errResponse){
+					console.error('Error while fetching GRC data');
+				}
+		);
+		
+		};
+	};
+	
+	$scope.fetchPendingGRCs = function(){
+
+		GRCService.fetchPendingGRCs()
+		.then(
+				function(data) {
+					$scope.pendingGRCs = data;
+					$scope.showGRCData = false;
+					$scope.showGRCDetails = false;
+					$scope.showPendingGRCs = true;					
+				},
+				function(errResponse){
+					console.error('Error while fetching GRC data');
+				}
+			);
+	
+		};
+	
+	
 	
 	$scope.fetchBasicInfoToPopulate = function(){
 

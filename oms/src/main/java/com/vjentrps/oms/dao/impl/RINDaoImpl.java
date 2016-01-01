@@ -8,14 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.RINDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
+import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ReturnedInwardNote;
+import com.vjentrps.oms.util.CommonUtil;
 
 @Repository
 public class RINDaoImpl extends BaseDao implements RINDao {
@@ -30,6 +33,9 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 
 	@Value("${FETCH_RINS}")
 	private String fetchAllRINSQuery;
+	
+	@Value("${FETCH_RIN_BY_NO}")
+	private String fetchRINByNoQuery;
 
 	@Value("${DELETE_RIN}")
 	private String deleteRINQuery;
@@ -40,6 +46,10 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 	@Value("${ADD_RIN_PROD_INFO}")
 	private String addRinProdInfoQuery;
 	
+	@Value("${FETCH_RIN_PROD_INFO_LIST}")
+	private String fetchGinProdInfoListQuery;
+	
+	
 	
 	
 	private static class RINRowMapper implements RowMapper<ReturnedInwardNote> {
@@ -49,22 +59,38 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 
 			ReturnedInwardNote rin = new ReturnedInwardNote();
 			rin.setRinNo(resultSet.getString("rin_no"));
-			rin.setRinDate(resultSet.getString("rin_date"));
+			rin.setRinDate(CommonUtil.formatFromSQLDate(resultSet.getString("rin_date")));
 			rin.setFrom(resultSet.getString("_from"));
 			rin.setFromName(resultSet.getString("from_name"));
 			rin.setDocRefNo(resultSet.getString("doc_ref_no"));
-			rin.setDocDate(resultSet.getString("doc_date"));
-			//rin.setGoodIn(resultSet.getInt("good_in"));
-			//rin.setDefIn(resultSet.getInt("def_in"));
+			rin.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			rin.setStatus(resultSet.getString("status"));
-			Product product = new Product();
-			product.setProductId(resultSet.getLong("product_id"));
-			product.setProductName(resultSet.getString("product_name"));
-			//rin.setProduct(product);
+			
 			return rin;
 		}
 
 	}
+	
+	private static class ProdInfoRowMapper implements RowMapper<ProdInfo> {
+
+		public ProdInfo mapRow(ResultSet resultSet, int arg1)
+				throws SQLException {
+
+			ProdInfo prodInfo = new ProdInfo();
+			Product product = new Product();
+			product.setProductId(resultSet.getLong("product_id"));
+			product.setProductName(resultSet.getString("product_name"));
+			prodInfo.setProduct(product);
+			prodInfo.setGoodIn(resultSet.getLong("good_in"));
+			prodInfo.setDefIn(resultSet.getLong("def_in"));
+			prodInfo.setTotalQty(resultSet.getLong("total_qty"));
+			prodInfo.setUnitBasicRate(resultSet.getLong("unit_basic_rate"));
+			prodInfo.setTotalAmount(resultSet.getLong("total_amount"));
+			return prodInfo;
+		}
+
+	}
+	
 
 	@Override
 	public int createRIN(final ReturnedInwardNote rin) throws OmsDataAccessException {
@@ -161,5 +187,36 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 			throw new OmsDataAccessException(dae);
 		}
 		
+	}
+	
+	@Override
+	public ReturnedInwardNote fetchRINByNo(String rinNo)
+			throws OmsDataAccessException {
+		ReturnedInwardNote rin = null;
+		RINRowMapper resultSetExtractor = new RINRowMapper();
+		try {
+			rin = (ReturnedInwardNote) jdbcTemplate.queryForObject(fetchRINByNoQuery,
+					new Object[] { rinNo}, 
+					resultSetExtractor);
+		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return rin;
+		
+	}
+
+	@Override
+	public List<ProdInfo> getRINProdInfo(String rinNo)
+			throws OmsDataAccessException {
+		List<ProdInfo> prodInfos = null;
+
+		ProdInfoRowMapper resultSetExtractor = new ProdInfoRowMapper();
+		try {
+			prodInfos = (List<ProdInfo>) jdbcTemplate.query(fetchGinProdInfoListQuery,new Object[] { rinNo }, resultSetExtractor);
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return prodInfos;
 	}
 }

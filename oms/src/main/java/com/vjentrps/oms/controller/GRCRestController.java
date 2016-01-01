@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
 import com.vjentrps.oms.model.ErrorsEnum;
+import com.vjentrps.oms.model.GRCDetails;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
+import com.vjentrps.oms.model.PendingGRC;
 import com.vjentrps.oms.model.ResponseDTO;
+import com.vjentrps.oms.model.StatusEnum;
 
 @RestController
 @RequestMapping(value="/service/grc")
@@ -37,11 +40,11 @@ public class GRCRestController extends BaseRestController{
     
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO createGRC(@RequestBody GoodsReturnableChallan grc) {
- 
+    	String grcNo = "";
     	grc.setStatus("pending");
     	try {
 			try {
-				grcService.createGRC(grc);
+				grcNo = grcService.createGRC(grc);
 			} catch (OmsServiceException e) {
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 			}
@@ -49,7 +52,7 @@ public class GRCRestController extends BaseRestController{
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
        
-        return new ResponseDTO();
+        return new ResponseDTO(grcNo);
     }
     
       
@@ -92,6 +95,64 @@ public class GRCRestController extends BaseRestController{
  
            return new ResponseDTO();
     }
+    
+    @RequestMapping(value="/grcNos/{toName}",method = RequestMethod.GET)
+    public ResponseDTO getGRCNoList(@PathVariable String toName) {
+    	List<String> grcNoList = new ArrayList<String>();
+    	try {
+			grcNoList = grcService.getGRCNoList(toName);
+		} catch (OmsServiceException e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		}
+ 
+           return new ResponseDTO(grcNoList);
+    }
+    
+    @RequestMapping(value="/details/{grcNo}/{fromToInfo}", method = RequestMethod.GET)
+    public ResponseDTO buildGRCDetails(@PathVariable String grcNo, @PathVariable boolean fromToInfo) {
+    	
+        	try {
+        		GRCDetails  grcDetails = grcService.buildGRCDetails(grcNo, fromToInfo);        		
+        		
+        		if (null == grcDetails.getGrc()) {
+    				return new ResponseDTO(commonUtil.processError(ErrorsEnum.NO_DATA_FOUND));
+    			}
+        		return new ResponseDTO(grcDetails);
+        		
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+        
+    }
+    
+    @RequestMapping(value="/{grcNo}", method = RequestMethod.GET)
+    public ResponseDTO fetchGRCData(@PathVariable String grcNo) {
+    	
+        	try {
+        		GoodsReturnableChallan  grc = grcService.getGRCbyNo(grcNo);        		
+        		
+        		return new ResponseDTO(grc);
+        		
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+        
+    }
+    
+    @RequestMapping(value="/pending", method = RequestMethod.GET)
+    public ResponseDTO fetchGRCPendingProdInfo() {
+    	
+        	try {
+        		List<PendingGRC>  grcPendProdInfos = grcService.fetchAllGRCPendingProdInfo(StatusEnum.PENDING.name());        		
+        		
+        		return new ResponseDTO(grcPendProdInfos);
+        		
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+        
+    }
+ 
     
  
 }

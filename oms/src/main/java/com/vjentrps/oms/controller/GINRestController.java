@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
 import com.vjentrps.oms.model.ErrorsEnum;
+import com.vjentrps.oms.model.GINDetails;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.ResponseDTO;
 
@@ -38,16 +39,17 @@ public class GINRestController extends BaseRestController{
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO createGIN(@RequestBody GoodsInwardNote gin) {
  
+    	String ginNo="";
     	gin.setStatus("pending");
     	try {
-			ginService.createGIN(gin);
+			ginNo = ginService.createGIN(gin);
 		} catch (OmsServiceException e) {
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		} catch (Exception e) {
-			// TODO: handle exception
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
        
-        return new ResponseDTO();
+        return new ResponseDTO(new String(ginNo));
     }
     
       
@@ -94,5 +96,36 @@ public class GINRestController extends BaseRestController{
            return "Success";
     }
     
+    
+    @RequestMapping(value="/details/{ginNo}/{fromToInfo}", method = RequestMethod.GET)
+    public ResponseDTO buildGINDetails(@PathVariable String ginNo, @PathVariable boolean fromToInfo) {
+    	
+        	try {
+        		GINDetails  ginDetails = ginService.buildGINDetails(ginNo, fromToInfo);        		
+        		
+			if (null == ginDetails.getGin()) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.NO_DATA_FOUND));
+			}
+        		return new ResponseDTO(ginDetails);
+        		
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+        
+    }
+    
+    @RequestMapping(value="/{ginNo}", method = RequestMethod.GET)
+    public ResponseDTO fetchGINData(@PathVariable String ginNo) {
+    	
+        	try {
+        		GoodsInwardNote  gin = ginService.getGINbyNo(ginNo);        		
+        		
+        		return new ResponseDTO(gin);
+        		
+			} catch (OmsServiceException e) {
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			}
+        
+    }
  
 }

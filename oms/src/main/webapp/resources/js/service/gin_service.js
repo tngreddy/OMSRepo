@@ -55,8 +55,21 @@ omsApp.factory('GINService', ['$http', '$q', function($http, $q){
 						return $q.reject(errResponse);
 					});
 
+		},
+		
+		fetchGINData: function(ginNo,fromToInfo) {
+			return $http.get('http://ntiyyagura:8080/oms/service/gin/details/'+ginNo+'/'+fromToInfo)
+			.then(
+					function(response){
+						return response.data;
+					}, 
+					function(errResponse){
+						console.error('Error while fetching gindata');
+						return $q.reject(errResponse);
+					}
+			);
 		}
-  
+		  
 	};
 
 }]);

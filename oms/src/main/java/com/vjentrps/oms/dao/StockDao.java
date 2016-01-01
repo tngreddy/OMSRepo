@@ -5,6 +5,7 @@ import java.util.List;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ProductStock;
+import com.vjentrps.oms.model.SearchObj;
 import com.vjentrps.oms.model.StockRecord;
 
 
@@ -17,6 +18,7 @@ public interface StockDao {
 	void updateProductStock(ProductStock productStock) throws OmsDataAccessException;
 	List<ProductStock> getAllProductStock() throws OmsDataAccessException;
 	List<StockRecord> getAllStockRecords() throws OmsDataAccessException;
+	List<StockRecord> getAllStockRecords(SearchObj searchObj) throws OmsDataAccessException;
+	List<StockRecord> getStockRecords(String transDocRef) throws OmsDataAccessException;
 	
-
 }

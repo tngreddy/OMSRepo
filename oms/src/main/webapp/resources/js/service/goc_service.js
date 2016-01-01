@@ -55,6 +55,19 @@ omsApp.factory('GOCService', ['$http', '$q', function($http, $q){
 						return $q.reject(errResponse);
 					});
 
+		},
+		
+		fetchGOCData: function(gocNo,fromToInfo) {
+			return $http.get('http://ntiyyagura:8080/oms/service/goc/details/'+gocNo+'/'+fromToInfo)
+			.then(
+					function(response){
+						return response.data;
+					}, 
+					function(errResponse){
+						console.error('Error while fetching gocdata');
+						return $q.reject(errResponse);
+					}
+			);
 		}
   
 	};

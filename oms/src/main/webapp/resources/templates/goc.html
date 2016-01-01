@@ -1,59 +1,240 @@
 
-<div class="panel panel-default mainWrapper custompanel">
-		<!-- Default panel contents -->
-		<div class="panel-heading">
-			<span class="lead">Goods Outward Challan </span>
-		</div>
+<div class="panel panel-default mainWrapper custompanel hidden-print">
+	<!-- Default panel contents -->
+	<div class="panel-heading">
+		<span class="lead">Goods Outward Challan </span>
+	</div>
 
-<div class="addbuttoncontainer"><button type="button" class="btn btn-flat bg-olive " ng-click="createGOCModal()">
-  <i class="fa fa-plus"></i> Create GOC</button>
- </div>
-        
-		<div class="tablecontainer">
-		<table my-tabs id="gocTable"
-			class="table table-bordered table-striped">
+<div class="filtercontainer">
+
+	<div class="searchPanel">
+
+		<form novalidate angular-validator name="gocDataForm"
+			class="form-horizontal">
+			<div class="">
+				<label class="col-sm-3 control-label">GOC No</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" validate-on="dirty"
+						name="gocNo" placeholder="GOC No" ng-model="gocNo"
+						required-message="'GOC No is required'" required />
+				</div>
+			</div>
+			<button type="submit" class="btn btn-flat btn-primary" name="search"
+				ng-click="fetchGOCData(gocNo,false)">
+				<span data-ng-hide="loading"> Search </span> <span
+					data-ng-show="loading"> Searching <i
+					class="fa fa-spinner fa-spin"></i></span>
+			</button>
+			<button type="submit" class="btn btn-flat btn-primary"
+				ng-click="fetchGOCData(gocNo,true)">Get Print Format</button>
+		</form>
+		
+	</div>
+	<div class="createBtnPanel">
+	<button type="button" class="btn btn-flat bg-olive pull-right"
+			ng-click="createGOCModal()">
+			<i class="fa fa-plus"></i> Create GOC </button>
+	</div>
+	
+	</div>
+
+</div>
+<div ng-show="showGOCData"
+	class="panel panel-default mainWrapper dataPanel">
+	<div class="panel-heading">
+		<span class="lead">{{gocData.goc.gocNo}} </span>
+	</div>
+	<div ng-show=user.isAdmin class="modal-footer">
+		<button class="btn btn-flat btn-warning"
+			ng-click="editGOCModal(gocData)">
+			<i class="fa fa-edit "></i> Edit
+		</button>
+		<button class="btn btn-flat btn-danger"
+			ng-click="deleteGOCModal(gocData)">
+			<i class="fa fa-trash "></i> Delete
+		</button>
+	</div>
+
+	<div class="tablecontainer">
+
+		<h4>
+			<span class="label label-default">Data</span>
+		</h4>
+
+		<table id="gocTable" class="table table-bordered table-striped">
 			<thead>
-                      <tr>
-                        <th>GOC No</th>
-                        <th>To</th>
-                        <th>To Name</th>
-                        <th>Doc Ref No</th>
-                        <th>Doc Date</th>
-                        <th>Product Name</th>
-                        <th>Good Out</th>
-                        <th>Def Out</th>
-                        <th>Status</th>
-                        <th>GOC Date</th>
-					<th width="5%">Edit</th>
-					<th width="5%">Delete</th>
-                        </tr>
-                    </thead>
-				<tbody>
-					<tr ng-repeat="goc in gocs">
-						<td><span ng-bind="goc.gocNo"></span></td>
-						<td><span ng-bind="goc.to"></span></td>
-						<td><span ng-bind="goc.toName"></span></td>
-						<td><span ng-bind="goc.docRefNo"></span></td>
-						<td><span ng-bind="goc.docDate"></span></td>
-						<td><span ng-bind="goc.product.productName"></span></td>
-						<td><span ng-bind="goc.goodOut"></span></td>
-						<td><span ng-bind="goc.defOut"></span></td>
-						<td><span ng-bind="goc.status"></span></td>
-						<td><span ng-bind="goc.gocDate"></span></td>
-						<td><button class="btn btn-flat btn-sm btn-warning" ng-click="editGOCModal(goc)"><i class="fa fa-edit "></i></button></td>
-						<td><button class="btn btn-flat btn-sm btn-danger" ng-click="deleteGOCModal(goc)"><i class="fa fa-trash "></i></button></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+				<tr>
+					<th>GOC No</th>
+					<th>From</th>
+					<th>From Name</th>
+					<th>Doc Ref No</th>
+					<th>Doc Date</th>
+					<th>Status</th>
+					<th>GOC Date</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><span ng-bind="gocData.goc.gocNo"></span></td>
+					<td><span ng-bind="gocData.goc.to"></span></td>
+					<td><span ng-bind="gocData.goc.toName"></span></td>
+					<td><span ng-bind="gocData.goc.docRefNo"></span></td>
+					<td><span ng-bind="gocData.goc.docDate"></span></td>
+					<td><span ng-bind="gocData.goc.status"></span></td>
+					<td><span ng-bind="gocData.goc.gocDate"></span></td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="tablecontainer">
+
+		<h4>
+			<span class="label label-default">Products Info</span>
+		</h4>
+
+		<table id="gocTable" class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Product Id</th>
+					<th>Product Name</th>
+					<th>Good Out</th>
+					<th>Def Out</th>
+					<th>Total Qty</th>
+					<th>unit Basic Rate</th>
+					<th>Total Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="prodInfo in gocData.goc.prodInfoList">
+					<td><span ng-bind="prodInfo.product.productId"></span></td>
+					<td><span ng-bind="prodInfo.product.productName"></span></td>
+					<td><span ng-bind="prodInfo.goodOut"></span></td>
+					<td><span ng-bind="prodInfo.defOut"></span></td>
+					<td><span ng-bind="prodInfo.totalQty"></span></td>
+					<td><span ng-bind="prodInfo.unitBasicRate"></span></td>
+					<td><span ng-bind="prodInfo.totalAmount"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+<div ng-show="showGOCDetails" class="printFormatPanel" ng-init="vendor= (gocData.goc.to ==='SUPPLIER' ? gocData.supplier : gocData.customer)">
+	<table class="table table-bordered" style="margin-bottom:2px;">
+			 <tr class="header" ng-include="'resources/templates/common/header.html'" >
+		     </tr>
+			<tr>
+				<td colspan="2">
+					<h3 class="text-center">
+						<u>GOODS OUTWARD CHALLAN</u>
+					</h3></td>
+			</tr>
+			<tr ng-include="'resources/templates/common/registrationDetails.html'">
+				
+			</tr>
+			<tr>
+				<td><span><strong>To</strong><span>
+				  <div class="fromAddress">
+					<address>
+						<strong>{{gocData.customer.name}}</strong><br>
+						{{gocData.customer.contact.address.addressLine1}}
+						{{gocData.customer.contact.address.addressLine2}}<br>
+						{{gocData.customer.contact.address.city}}<br>
+						{{gocData.customer.contact.address.state}}-
+						{{gocData.customer.contact.address.pinCode}}
+					</address>
+					</div>
+					</td>
+				<td style="padding:0px;">
+				<table class="table table-bordered" style="margin-bottom: 0px;border: 0px;">
+						<tr>
+							<td width="35%"><span>GOC NO</span></td>
+							<td width="65%"><span>{{gocData.goc.gocNo}}</span></td>
+						</tr>
+						<tr>
+							<td><span>GOC DATE</span></td>
+							<td><span>{{gocData.goc.gocDate}}</span></td>
+						</tr>
+						<tr>
+							<td><span>GOC DOC REF</span></td>
+							<td><span>{{gocData.goc.docRefNo}}</span></td>
+						</tr>
+					</table></td>
+			</tr>
+			<tr>
+				<td><span>{{gocData.goc.to}}</span></td>
+				<td><span>Name : {{gocData.goc.toName}}</span></td>
+			</tr>
+			<tr>
+				<td><span>Contact No : </span><span>{{gocData.customer.contact.phoneNo}}</span></td>
+				<td><span>TIN : </span><span>{{gocData.customer.tinNo}}</span> </td>
+			</tr>
+			<tr>
+				<td><span>Mobile No : </span><span>{{gocData.customer.contact.mobileNo}}</span></td>
+				<td><span>CST No : </span><span>{{gocData.customer.cstNo}}</span> </td>
+			</tr>
+			<tr>
+				<td><span>Fax No : </span><span></span></td>
+				<td><span>Despatch Details :</span><span></span></td>
+			</tr>
+			<tr>
+				<td><span>Email : </span></td>
+				<td><span>DC No & Date : </span><span></span></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding:0px;">
+				<table class="table table-bordered" style="margin:0px;border:0px;">
+						<tr class="text-center">
+							<td width="3%"><span>SNo</span></td>
+							<td width="46%"><span>Description</span></td>
+							<td width="10%"><span>Good Out</span></td>
+							<td width="10%"><span>Def Out</span></td>
+							<td width="10%"><span>Total Qty</span></td>
+							<td width="10%"><span>Unit Basic Rate</span></td>
+							<td width="10%"><span>Total Amount</span></td>
+						</tr>
+						<tr ng-repeat="prodInfo in gocData.goc.prodInfoList">
+							<td><span ng-bind="$index+1"></span></td>
+							<td><span ng-bind="prodInfo.product.productName"></span></td>
+							<td><span ng-bind="prodInfo.goodOut"></span></td>
+							<td><span ng-bind="prodInfo.defOut"></span></td>
+							<td><span ng-bind="prodInfo.totalQty"></span></td>
+							<td><span ng-bind="prodInfo.unitBasicRate"></span></td>
+							<td><span ng-bind="prodInfo.totalAmount"></span></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span>VALUE : (FOR OCTROI PURPOSES)</span></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span>REMARKS : </span><span>&nbsp;{{gocData.goc.remarks}}</span><br><br></td>
+			</tr>
+			<tr>
+				<td><span>Received the above material in Good Condition</span><br> <br>
+				<br> <span>Receiver's Signature with Stamp</span></td>
+				<td>
+					<div class="text-right">
+						<span style="font-size:12px;"><Strong>For VIJAYA ENTERPRISES</Strong></span><br> <br>
+						<br><span>Authorised Signatory</span>
+					</div>
+				</td>
+			</tr>
+	</table>
+	<span> NOTE: The above Transaction is not sale</span>
+
 </div>
 
 
 
 <!-- Create GOC overlay -->
 <modal size="modal-lg" visible="showAddModal">
-<form novalidate angular-validator
-	angular-validator-submit="createGOC()" name="createGOCForm"
+<form name="createGOCForm" novalidate angular-validator
+	angular-validator-submit="createGOC()"
 	class="form-horizontal">
 	<div class="modal-header with-border">
 		<button type="button" class="close" data-dismiss="modal"
@@ -109,12 +290,13 @@
 			<div class="form-left">
 				<label class="col-sm-3 control-label">Doc Date</label>
 				<div class="col-sm-8">
-				<input type="date" ng-flat-datepicker datepicker-config="datepickerConfig"
+				<input type="text" ng-click="open($event)"
 						class="form-control" 
 						validate-on="dirty"
 						name="docDate" 
 						placeholder="Doc Date"
-						ng-model="goc.docDate"
+						ng-model="goc.docDateValue"
+						uib-datepicker-popup="dd/MM/yyyy" is-open="status.opened" max-date="maxDate" close-text="Close"
 						required-message="'Doc Date is required'" required />
 			   
 			</div>
@@ -130,8 +312,10 @@
 			<div class="form-left">
 				<label class="col-sm-3 control-label">Product Name</label>
 				<div class="col-sm-8">
-					<select class="form-control" name="productName"
+					<select class="form-control" name="productName{{$index}}"
+							id="productName{{$index}}"
 							ng-model="prodInfo.product.productId" validate-on="dirty"
+							ng-change="fetchProductStock(prodInfo.product.productId,$index)"
 							required-message="'Product Name is required'" required>
 							<option	ng-repeat="product in productsInfo" value="{{product.id}}">{{product.name}}</option>
 						</select>
@@ -144,7 +328,7 @@
 					<input type="number" min="0" 
 					    class="form-control" 
 					    validate-on="dirty"
-						name="unitBasicRate" 
+						name="unitBasicRate{{$index}}" 
 						placeholder="Unit Basic Rate"
 						ng-model="prodInfo.unitBasicRate"
 						invalid-message="'Unit Basic Rate should be a postive number'"
@@ -156,13 +340,15 @@
 	<div class="form-left">
 				<label class="col-sm-3 control-label">Good Out</label>
 				<div class="col-sm-8">
-					<input type="number" min="0" 
+					<input type="number" min="0" max=""
 					    class="form-control" 
-					    validate-on="dirty"
-						name="goodOut" 
+					    validate-on="blur"
+					    id="goodOut{{$index}}"
+						name="goodOut{{$index}}" 
 						placeholder="Good Out"
 						ng-model="prodInfo.goodOut"
-						invalid-message="'Good Out should be a postive number'"
+						
+						invalid-message="'Good Out should be a postive number and should not be greater then product stock'"
 						/>
 				</div>
 			</div>
@@ -174,7 +360,7 @@
 					<input type="number" min="0" 
 					    class="form-control" 
 					    validate-on="dirty"
-						name="defectiveOut" 
+						name="defectiveOut{{$index}}" 
 						placeholder="Defective Out"
 						ng-model="prodInfo.defOut"
 						invalid-message="'Defective Out should be a postive number'"
@@ -208,6 +394,7 @@
 		</div>
 		
 	</div>	
+	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
 		<button type="submit" class="btn btn-flat btn-primary">Create</button>

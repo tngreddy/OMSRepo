@@ -1,69 +1,91 @@
 
-var omsApp = angular.module('omsApp', ['ui.router','datatables', 'ui.bootstrap','ngAnimate','anim-in-out','angularValidator','ngFlatDatepicker']);
+var omsApp = angular.module('omsApp', ['ui.router','datatables','flash','ui.bootstrap','ngAnimate','anim-in-out','angularValidator','ngFlatDatepicker','date-picker']);
+
 
 omsApp.config(function($stateProvider, $urlRouterProvider) {
 	    
-	    $urlRouterProvider.otherwise('/oms/');
+	    $urlRouterProvider.otherwise('login');
 	    
 	    $stateProvider
-	    
-	         .state('category', {
+		    .state('login', {
+	        	url: '/login',
+	            templateUrl: 'resources/templates/login.html',
+	            controller: 'LoginController'
+	        })
+	         .state('base', {
+	        	url: '',
+	            templateUrl: 'resources/templates/common/navbar.html',
+	            controller: 'BaseController'
+	            
+	        })
+		    .state('base.dashboard', {
+	        	url: '/dashboard',
+	            templateUrl: 'resources/templates/dashboard.html',
+	            controller: 'CommonController'
+	        })
+	         .state('base.category', {
 	        	url: '/categoryHome',
 	            templateUrl: 'resources/templates/category.html',
 	            controller: 'CategoryController'
 	        })
 	        
-	        .state('product', {
+	        .state('base.product', {
 	        	url: '/productHome',
 	            templateUrl: 'resources/templates/product.html',
 	            controller: 'ProductController'
 	        })
 	        
-	        .state('customer', {
+	        .state('base.customer', {
 	        	url: '/customerHome',
 	            templateUrl: 'resources/templates/customer.html',
 	            controller: 'CustomerController'
 	        })
 	        
-	        .state('supplier', {
+	        .state('base.supplier', {
 	        	url: '/supplierHome',
 	            templateUrl: 'resources/templates/supplier.html',
 	            controller: 'SupplierController'
 	        })
-	         .state('gin', {
+	         .state('base.gin', {
 	        	url: '/goodsInwardNote',
 	            templateUrl: 'resources/templates/gin.html',
 	            controller: 'GINController'
 	        })
 	        
-	         .state('rin', {
+	         .state('base.rin', {
 	        	url: '/ReturnedInwardNote',
 	            templateUrl: 'resources/templates/rin.html',
 	            controller: 'RINController'
 	        })
 	        
-	         .state('grc', {
+	         .state('base.grc', {
 	        	url: '/goodsReturnableChallan',
 	            templateUrl: 'resources/templates/grc.html',
 	            controller: 'GRCController'
 	        })
 	        
-	         .state('goc', {
+	         .state('base.goc', {
 	        	url: '/goodsOutwardChallan',
 	            templateUrl: 'resources/templates/goc.html',
 	            controller: 'GOCController'
 	        })
 	        
-	        .state('stockSummary', {
+	        .state('base.stockSummary', {
 	        	url: '/stockSummary',
 	            templateUrl: 'resources/templates/productStock.html',
 	            controller: 'ReportsController'
 	        })
 	        
-	        .state('stockRecord', {
+	        .state('base.stockRecord', {
 	        	url: '/stockRecord',
 	            templateUrl: 'resources/templates/stockRecord.html',
 	            controller: 'ReportsController'
+	        })
+	        
+	        .state('base.user', {
+	        	url: '/userHome',
+	            templateUrl: 'resources/templates/user.html',
+	            controller: 'UserController'
 	        })
 	        ;
 	        

@@ -4,19 +4,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.StockDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.model.Category;
+import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ProductStock;
+import com.vjentrps.oms.model.SearchObj;
 import com.vjentrps.oms.model.StockRecord;
+import com.vjentrps.oms.util.CommonUtil;
 
 @Repository
 public class StockDaoImpl extends BaseDao implements StockDao {
@@ -44,6 +49,9 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 	@Value("${FETCH_ALL_STOCK_RECORDS}")
 	private String fetchAllStockRecordsQuery;
 	
+	@Value("${FETCH_STOCK_RECORDS}")
+	private String fetchStockRecordsQuery;
+	
 	
 	
 	private static class PrdStockRowMapper implements RowMapper<ProductStock> {
@@ -53,6 +61,7 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			ProductStock productStock = new ProductStock();
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
+			product.setProductName(resultSet.getString("product_name"));
 			product.setGoodBalance(resultSet.getLong("good_balance"));
 			product.setDefBalance(resultSet.getLong("def_balance"));
 			productStock.setProduct(product);
@@ -100,11 +109,16 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			stockRecord.setDefIn(resultSet.getLong("def_in"));
 			stockRecord.setDefOut(resultSet.getLong("def_out"));
 			stockRecord.setDefBalance(resultSet.getLong("def_balance"));
-			stockRecord.setCreatedDate(resultSet.getString("created_date"));
+			stockRecord.setCreatedDate(CommonUtil.formatFromSQLDate(resultSet.getString("created_date")));
+			
+			Category category = new Category();
+			category.setCategoryId(resultSet.getLong("category_id"));
+			category.setCategoryName(resultSet.getString("category_name"));
 			
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
+			product.setCategory(category);
 			
 			stockRecord.setProduct(product);
 			return stockRecord;
@@ -176,6 +190,8 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 		try {
 			productStock = jdbcTemplate.queryForObject(getProductStockQuery,new Object[] { productId },
 					resultSetExtractor);
+		} catch (EmptyResultDataAccessException dae) {
+			
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -206,6 +222,48 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 		StockRecordRowMapper resultSetExtractor = new StockRecordRowMapper();
 		try {
 			stockRecords = (List<StockRecord>) jdbcTemplate.query(fetchAllStockRecordsQuery,
+					resultSetExtractor);
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return stockRecords;
+	}
+	
+	@Override
+	public List<StockRecord> getStockRecords(String transDocRef) throws OmsDataAccessException {
+		List<StockRecord> stockRecords = null;
+
+		StockRecordRowMapper resultSetExtractor = new StockRecordRowMapper();
+		try {
+			stockRecords = (List<StockRecord>) jdbcTemplate.query(fetchStockRecordsQuery,new Object[] { transDocRef },
+					resultSetExtractor);
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return stockRecords;
+	}
+
+
+	@Override
+	public List<StockRecord> getAllStockRecords(SearchObj searchObj) throws OmsDataAccessException {
+		List<StockRecord> stockRecords = null;
+		StockRecordRowMapper resultSetExtractor = new StockRecordRowMapper();
+		try {
+			
+			StringBuffer sb = new StringBuffer(fetchAllStockRecordsQuery);
+			if(StringUtils.isNotBlank(searchObj.getCategoryName()) && !CommonConstants.ALL.equalsIgnoreCase(searchObj.getCategoryName())){
+				sb.append(" and cat.category_name = "+"'"+searchObj.getCategoryName()+"'");
+			}
+			
+			if(StringUtils.isNotBlank(searchObj.getProductName()) && !CommonConstants.ALL.equalsIgnoreCase(searchObj.getProductName())){
+				sb.append(" and prod.product_name = "+"'"+searchObj.getProductName()+"'");
+			}
+			
+			if(StringUtils.isNoneBlank(searchObj.getFromDate(), searchObj.getToDate())) {
+				sb.append(" and sr.created_date between "+"'"+searchObj.getFromDate()+"'"+" and "+"'"+searchObj.getToDate()+"'");
+			}
+					
+			stockRecords = (List<StockRecord>) jdbcTemplate.query(sb.toString(),
 					resultSetExtractor);
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);

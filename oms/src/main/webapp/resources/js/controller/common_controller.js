@@ -1,6 +1,10 @@
 'use strict';
 
 omsApp.controller('CommonController', ['$scope', 'CommonService', function($scope, CommonService) {
+	
+    
+	//$scope.user = CommonService.checkAuth();
+	
 			
 			$scope.getCounts = function(){
 				$scope.homeResponseDto ;
