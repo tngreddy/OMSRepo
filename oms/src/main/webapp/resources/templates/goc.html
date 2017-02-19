@@ -31,7 +31,7 @@
 		
 	</div>
 	<div class="createBtnPanel">
-	<button type="button" class="btn btn-flat bg-olive pull-right"
+	<button type="button" class="btn btn-flat bg-olive pull-right" uib-tooltip="Create a new GOC"
 			ng-click="createGOCModal()">
 			<i class="fa fa-plus"></i> Create GOC </button>
 	</div>
@@ -136,15 +136,15 @@
 				
 			</tr>
 			<tr>
-				<td><span><strong>To</strong><span>
+				<td style="padding:0px;"><span><strong>To</strong><span>
 				  <div class="fromAddress">
 					<address>
-						<strong>{{gocData.customer.name}}</strong><br>
-						{{gocData.customer.contact.address.addressLine1}}
-						{{gocData.customer.contact.address.addressLine2}}<br>
-						{{gocData.customer.contact.address.city}}<br>
-						{{gocData.customer.contact.address.state}}-
-						{{gocData.customer.contact.address.pinCode}}
+						<strong>{{gocData.toDetails.name}}</strong><br>
+						{{gocData.toDetails.contact.address.addressLine1}}
+						{{gocData.toDetails.contact.address.addressLine2}}<br>
+						{{gocData.toDetails.contact.address.city}}<br>
+						{{gocData.toDetails.contact.address.state}}-
+						{{gocData.toDetails.contact.address.pinCode}}
 					</address>
 					</div>
 					</td>
@@ -169,12 +169,12 @@
 				<td><span>Name : {{gocData.goc.toName}}</span></td>
 			</tr>
 			<tr>
-				<td><span>Contact No : </span><span>{{gocData.customer.contact.phoneNo}}</span></td>
-				<td><span>TIN : </span><span>{{gocData.customer.tinNo}}</span> </td>
+				<td><span>Contact No : </span><span>{{gocData.toDetails.contact.phoneNo}}</span></td>
+				<td><span>TIN : </span><span>{{gocData.toDetails.tinNo}}</span> </td>
 			</tr>
 			<tr>
-				<td><span>Mobile No : </span><span>{{gocData.customer.contact.mobileNo}}</span></td>
-				<td><span>CST No : </span><span>{{gocData.customer.cstNo}}</span> </td>
+				<td><span>Mobile No : </span><span>{{gocData.toDetails.contact.mobileNo}}</span></td>
+				<td><span>CST No : </span><span>{{gocData.toDetails.cstNo}}</span> </td>
 			</tr>
 			<tr>
 				<td><span>Fax No : </span><span></span></td>
@@ -189,21 +189,23 @@
 				<table class="table table-bordered" style="margin:0px;border:0px;">
 						<tr class="text-center">
 							<td width="3%"><span>SNo</span></td>
-							<td width="46%"><span>Description</span></td>
-							<td width="10%"><span>Good Out</span></td>
-							<td width="10%"><span>Def Out</span></td>
-							<td width="10%"><span>Total Qty</span></td>
-							<td width="10%"><span>Unit Basic Rate</span></td>
+							<td width="42%"><span>Description</span></td>
+							<td width="7%"><span>Good Out</span></td>
+							<td width="7%"><span>Def Out</span></td>
+							<td width="7%"><span>Total Qty</span></td>
+							<td width="7%"><span>Unit Of Measure</span></td>
+							<td width="7%"><span>Unit Basic Rate</span></td>
 							<td width="10%"><span>Total Amount</span></td>
 						</tr>
 						<tr ng-repeat="prodInfo in gocData.goc.prodInfoList">
-							<td><span ng-bind="$index+1"></span></td>
+							<td><span style="float:right;" ng-bind="$index+1"></span></td>
 							<td><span ng-bind="prodInfo.product.productName"></span></td>
-							<td><span ng-bind="prodInfo.goodOut"></span></td>
-							<td><span ng-bind="prodInfo.defOut"></span></td>
-							<td><span ng-bind="prodInfo.totalQty"></span></td>
-							<td><span ng-bind="prodInfo.unitBasicRate"></span></td>
-							<td><span ng-bind="prodInfo.totalAmount"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.goodOut"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.defOut"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.totalQty"></span></td>
+							<td><span ng-bind="prodInfo.product.unitOfMeasure"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.unitBasicRate"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.totalAmount"></span></td>
 						</tr>
 					</table>
 				</td>
@@ -309,7 +311,7 @@
 	<div>	
 	<div class="filtercontainer">		
 
-			<div class="form-left">
+			<div class="form-left width33">
 				<label class="col-sm-3 control-label">Product Name</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="productName{{$index}}"
@@ -322,23 +324,8 @@
 						</div>
 			</div>
 	
-	<div class="form-left">
-				<label class="col-sm-3 control-label">Unit Basic Rate</label>
-				<div class="col-sm-8">
-					<input type="number" min="0" 
-					    class="form-control" 
-					    validate-on="dirty"
-						name="unitBasicRate{{$index}}" 
-						placeholder="Unit Basic Rate"
-						ng-model="prodInfo.unitBasicRate"
-						invalid-message="'Unit Basic Rate should be a postive number'"
-						required-message="'Unit Basic Rate is required'" required/>
-				</div>
-			</div>
-			</div>
-	<div class="filtercontainer">
-	<div class="form-left">
-				<label class="col-sm-3 control-label">Good Out</label>
+	<div class="form-left width33">
+				<label class="col-sm-4 control-label">Good Out</label>
 				<div class="col-sm-8">
 					<input type="number" min="0" max=""
 					    class="form-control" 
@@ -353,7 +340,7 @@
 				</div>
 			</div>
 			
-	<div class="form-left">
+	<div class="form-left width33">
 
 				<label class="col-sm-3 control-label">Defective Out</label>
 				<div class="col-sm-8">

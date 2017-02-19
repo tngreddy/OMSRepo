@@ -68,10 +68,11 @@ public class GINServiceImpl implements GINService {
 
 					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
 
-					if (success > 0 && null != productStock) {
+					if (success > 0 && null != productStock	&& null != productStock.getProduct()) {
 
+						prodInfo.setUnitBasicRate(productStock.getProduct().getUnitBasicRate());
 						prodInfo.setTotalQty(prodInfo.getGoodIn() + prodInfo.getDefIn());
-						prodInfo.setTotalAmount(prodInfo.getTotalQty() * prodInfo.getUnitBasicRate());
+						prodInfo.setTotalAmount(prodInfo.getTotalQty() * prodInfo.getUnitBasicRate() );
 
 						ginDao.addGinProdInfo(gin.getGinNo(), prodInfo);
 
@@ -159,11 +160,12 @@ public class GINServiceImpl implements GINService {
 
 					if (CommonConstants.SUPPLIER.equalsIgnoreCase(gin.getFrom())) {
 
-						ginDetails.setSupplier(supplierDao.getSupplierByName(gin.getFromName()));
+						ginDetails.setFromDetails(supplierDao.getSupplierByName(gin.getFromName()));
+						//ginDetails.setSupplier(supplierDao.getSupplierByName(gin.getFromName()));
 
 					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(gin.getFrom())) {
-
-						ginDetails.setCustomer(customerDao.getCustomerByName(gin.getFromName()));
+						ginDetails.setFromDetails(customerDao.getCustomerByName(gin.getFromName()));
+						//ginDetails.setCustomer(customerDao.getCustomerByName(gin.getFromName()));
 					}
 				}
 				ginDetails.setGin(gin);

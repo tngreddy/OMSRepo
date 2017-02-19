@@ -68,6 +68,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
 			product.setUnitOfMeasure(resultSet.getString("unit_of_measure"));
+			product.setUnitBasicRate(resultSet.getDouble("unit_basic_rate"));
 			product.setGoodBalance(resultSet.getLong("good_balance"));
 			product.setDefBalance(resultSet.getLong("def_balance"));
 			category.setCategoryId(resultSet.getLong("category_id"));
@@ -117,6 +118,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		            ps.setString(1, product.getProductName());
 		            ps.setLong(2, product.getCategory().getCategoryId());
 		            ps.setString(3, product.getUnitOfMeasure());
+		            ps.setDouble(4, product.getUnitBasicRate());
 		            return ps;
 		        }
 		    },
@@ -135,7 +137,7 @@ public class ProductDaoImpl extends BaseDao implements ProductDao {
 		try {
 			jdbcTemplate.update(
 					updateProductQuery,
-					new Object[] { product.getProductName(), product.getCategory().getCategoryId(), product.getUnitOfMeasure(),
+					new Object[] { product.getProductName(), product.getCategory().getCategoryId(), product.getUnitOfMeasure(), product.getUnitBasicRate(),
 							 product.getProductId() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);

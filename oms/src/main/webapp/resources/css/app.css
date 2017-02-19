@@ -289,6 +289,10 @@ select.ng-valid {
  
 }
 
+.width33 {
+	width:33%;
+}
+
 .buttons-copy:hover {
 	background-color: #3D9970;
 	border-color: #317D5B;
@@ -320,4 +324,21 @@ address{
 }
 .form-control[readonly]{
 	background-color: white;
+}
+
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url(/resources/img/loader.gif) center no-repeat #fff;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 5px;
+
 }

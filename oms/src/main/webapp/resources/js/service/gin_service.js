@@ -1,11 +1,11 @@
 'use strict';
 
-omsApp.factory('GINService', ['$http', '$q', function($http, $q){
+omsApp.factory('GINService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 
 		fetchAllGINs: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/gin/')
+			return $http.get(CommonService.getBaseUrl()+'/service/gin/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('GINService', ['$http', '$q', function($http, $q){
 		},
 
 		createGIN: function(gin) {
-			return $http.post('http://ntiyyagura:8080/oms/service/gin/', gin)
+			return $http.post(CommonService.getBaseUrl()+'/service/gin/', gin)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('GINService', ['$http', '$q', function($http, $q){
 
 		},
 		updateGIN: function(gin) {
-			return $http.put('http://ntiyyagura:8080/oms/service/gin/', gin)
+			return $http.put(CommonService.getBaseUrl()+'/service/gin/', gin)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('GINService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteGIN: function(ginNo) {
-			return $http.delete('http://ntiyyagura:8080/oms/service/gin/'+ginNo)
+			return $http.delete(CommonService.getBaseUrl()+'/service/gin/'+ginNo)
 			.then(
 					function(response){
 						return response.data;
@@ -58,7 +58,7 @@ omsApp.factory('GINService', ['$http', '$q', function($http, $q){
 		},
 		
 		fetchGINData: function(ginNo,fromToInfo) {
-			return $http.get('http://ntiyyagura:8080/oms/service/gin/details/'+ginNo+'/'+fromToInfo)
+			return $http.get(CommonService.getBaseUrl()+'/service/gin/details/'+ginNo+'/'+fromToInfo)
 			.then(
 					function(response){
 						return response.data;

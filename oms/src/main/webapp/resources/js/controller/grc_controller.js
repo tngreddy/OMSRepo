@@ -141,7 +141,7 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 		GRCService.fetchPendingGRCs()
 		.then(
 				function(data) {
-					$scope.pendingGRCs = data;
+					$scope.pendingGRCs = data.object;
 					$scope.showGRCData = false;
 					$scope.showGRCDetails = false;
 					$scope.showPendingGRCs = true;					
@@ -176,7 +176,6 @@ omsApp.controller('GRCController', ['$scope', 'GRCService', 'CommonService', '$s
 		
 	};
 	
-	$scope.fetchAllGRCs();
 	
 	$scope.fetchBasicInfoToPopulate();
 	
@@ -199,17 +198,6 @@ $scope.deleteGRCModal = function(grc){
 	$scope.grc = grc;
 };
 
-
-$scope.reloadState = function() {
-	setTimeout(function(){
-		$state.transitionTo($state.current, $stateParams, {
-			reload: true,
-			inherit: false,
-			notify: true
-		});
-
-	}, 100);
-};
 
 }]);
 

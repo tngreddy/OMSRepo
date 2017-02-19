@@ -3,6 +3,9 @@ package com.vjentrps.oms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.Constants;
+import com.vjentrps.oms.model.Error;
 import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.GINDetails;
 import com.vjentrps.oms.model.GoodsInwardNote;
@@ -20,6 +24,8 @@ import com.vjentrps.oms.model.ResponseDTO;
 @RestController
 @RequestMapping(value="/service/gin")
 public class GINRestController extends BaseRestController{
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
  
     @RequestMapping(method = RequestMethod.GET)
@@ -30,7 +36,11 @@ public class GINRestController extends BaseRestController{
         	try {
 				gins = ginService.listGINs();
 			} catch (OmsServiceException e) {
+				log.error("Error while getting GINS",e);
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			} catch (Exception e) {
+				log.error("Error while getting GINS",e);
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 			}
         return new ResponseDTO(gins);
     }
@@ -42,10 +52,20 @@ public class GINRestController extends BaseRestController{
     	String ginNo="";
     	gin.setStatus("pending");
     	try {
-			ginNo = ginService.createGIN(gin);
+			if (null != gin	&& CollectionUtils.isNotEmpty(gin.getProdInfoList())) {
+				gin.setStatus("PENDING");
+				Error err = commonUtil.isDuplicateProductSelected(gin.getProdInfoList());
+				if (null != err) {
+					return new ResponseDTO(err);
+				}
+				ginNo = ginService.createGIN(gin);
+			}
+			
 		} catch (OmsServiceException e) {
+			log.error("Error while creating a GIN",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		} catch (Exception e) {
+			log.error("Error while creating a GIN",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
        
@@ -89,8 +109,7 @@ public class GINRestController extends BaseRestController{
     	try {
 			ginService.updateGINStatus(gin);
 		} catch (OmsServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error while creating a GIN",e);
 		}
  
            return "Success";
@@ -109,7 +128,11 @@ public class GINRestController extends BaseRestController{
         		return new ResponseDTO(ginDetails);
         		
 			} catch (OmsServiceException e) {
+				log.error("Error while getting GIN details",e);
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			} catch (Exception e) {
+				log.error("Error while getting GIN details",e);
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 			}
         
     }
@@ -123,7 +146,11 @@ public class GINRestController extends BaseRestController{
         		return new ResponseDTO(gin);
         		
 			} catch (OmsServiceException e) {
+				log.error("Error while getting GIN Data",e);
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			} catch (Exception e) {
+				log.error("Error while getting GIN Data",e);
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 			}
         
     }

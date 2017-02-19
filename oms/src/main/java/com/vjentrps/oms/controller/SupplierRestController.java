@@ -3,6 +3,8 @@ package com.vjentrps.oms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,8 @@ import com.vjentrps.oms.model.Supplier;
 @RequestMapping(value="/service/supplier")
 public class SupplierRestController extends BaseRestController {
 	
-
+	private Logger log = LoggerFactory.getLogger(this.getClass());
+	
     @RequestMapping(method = RequestMethod.GET)
     public ResponseDTO getSuppliers() {
               
@@ -28,7 +31,11 @@ public class SupplierRestController extends BaseRestController {
         try {
 			suppliers = supplierService.listSuppliers();
 		} catch (OmsServiceException e) {
+			log.error("Error while getting suppliers",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			log.error("Error while getting suppliers",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
         return new ResponseDTO(suppliers);
     }
@@ -40,7 +47,11 @@ public class SupplierRestController extends BaseRestController {
 		try {
 			supplier = supplierService.getSupplierById(supplierId);
 		} catch (OmsServiceException e) {
+			log.error("Error while getting a supplier info",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			log.error("Error while getting a supplier info",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
    	
         return new ResponseDTO(supplier);
@@ -54,7 +65,11 @@ public class SupplierRestController extends BaseRestController {
        try {
 		supplierService.addSupplier(supplier);
 	} catch (OmsServiceException e) {
+		log.error("Error while adding a supplier",e);
 		return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+	} catch (Exception e) {
+		log.error("Error while adding a supplier",e);
+		return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 	}
        
         return new ResponseDTO();
@@ -67,9 +82,12 @@ public class SupplierRestController extends BaseRestController {
         try {
 			supplierService.updateSupplier(supplier);
 		} catch (OmsServiceException e) {
+			log.error("Error while updating a supplier",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			log.error("Error while updating a supplier",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
-        
          return new ResponseDTO();
     }
     
@@ -79,7 +97,11 @@ public class SupplierRestController extends BaseRestController {
     	 try {
 			supplierService.deleteSupplier(supplierId);
 		} catch (OmsServiceException e) {
+			log.error("Error while deleting a supplier",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			log.error("Error while deleting a supplier",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
  
          return new ResponseDTO();
@@ -107,7 +129,11 @@ public class SupplierRestController extends BaseRestController {
         try {
 			suppliers = supplierService.getSuppliersBasicInfo();
 		} catch (OmsServiceException e) {
+			log.error("Error while getting supplier basic Info",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			log.error("Error while getting supplier basic Info",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
         return new ResponseDTO(suppliers);
     }

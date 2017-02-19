@@ -1,7 +1,9 @@
 package com.vjentrps.oms.service.impl;
 
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -65,8 +67,9 @@ public class GRCServiceImpl implements GRCService {
 
 					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
 
-					if(success > 0 && null != productStock) {
+					if(success > 0 && null != productStock && null != productStock.getProduct()) {
 
+						prodInfo.setUnitBasicRate(productStock.getProduct().getUnitBasicRate());
 						prodInfo.setTotalQty(prodInfo.getGoodOut()+prodInfo.getDefOut());
 						prodInfo.setTotalAmount(prodInfo.getTotalQty()*prodInfo.getUnitBasicRate());
 						
@@ -149,11 +152,14 @@ public class GRCServiceImpl implements GRCService {
 					
 					if (CommonConstants.SUPPLIER.equalsIgnoreCase(grc.getTo())) {
 						
-						grcDetails.setSupplier(supplierDao.getSupplierByName(grc.getToName()));
+						grcDetails.setToDetails(supplierDao.getSupplierByName(grc.getToName()));
+						//grcDetails.setSupplier(supplierDao.getSupplierByName(grc.getToName()));
+						//grcDetails.setHasSupplier(true);
 						
 					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(grc.getTo())) {
-						
-						grcDetails.setCustomer(customerDao.getCustomerByName(grc.getToName()));
+						grcDetails.setToDetails(customerDao.getCustomerByName(grc.getToName()));
+						//grcDetails.setCustomer(customerDao.getCustomerByName(grc.getToName()));
+						//grcDetails.setHasCustomer(true);
 					}
 				}
 				grcDetails.setGrc(grc);
@@ -180,10 +186,15 @@ public class GRCServiceImpl implements GRCService {
 	}
 
 	@Override
-	public List<PendingGRC> fetchAllGRCPendingProdInfo(String status)
+	public Map<String, List<PendingGRC>> fetchAllGRCPendingProdInfo(String status)
 			throws OmsServiceException {
 		try {
-			return  grcDao.getAllGrcPartialPendingProdInfo(status);
+			
+			Map<String, List<PendingGRC>> pendingGRCsMap = new HashMap<String, List<PendingGRC>>();
+			pendingGRCsMap.put(CommonConstants.PENDING_GRCS, grcDao.getAllGrcPendingProdInfo(status));
+			pendingGRCsMap.put(CommonConstants.PARTIAL_PENDING_GRCS, grcDao.getAllGrcPartialPendingProdInfo(status));
+					
+			return pendingGRCsMap;
 			
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);

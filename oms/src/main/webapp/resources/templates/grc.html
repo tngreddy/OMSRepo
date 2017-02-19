@@ -7,7 +7,7 @@
 
 <div class="filtercontainer">
 
-	<div class="searchPanel" style="width:70%;">
+	<div class="searchPanel" >
 
 		<form novalidate angular-validator name="grcDataForm"
 			class="form-horizontal">
@@ -30,12 +30,12 @@
 		</form>
 		
 	</div>
-	<div style="width:20%;float:left;"><button type="button" class="btn btn-flat btn-primary pull-right"
-			ng-click="fetchPendingGRCs()">
+	<!-- <div style="width:20%;float:left;"><button type="button" class="btn btn-flat btn-primary pull-right"
+			uib-tooltip="Click to see all the pending GRCs" ng-click="fetchPendingGRCs()">
 			Partial Pending GRCs </button>
-	</div>
+	</div> -->
 	<div class="createBtnPanel">
-	<button type="button" class="btn btn-flat bg-olive pull-right"
+	<button type="button" class="btn btn-flat bg-olive pull-right" uib-tooltip="Create a new GRC"
 			ng-click="createGRCModal()">
 			<i class="fa fa-plus"></i> Create GRC </button>
 	</div>
@@ -162,7 +162,7 @@
 </div>
 
 
-<div ng-show="showGRCDetails" class="printFormatPanel" ng-init="vendor= (grcData.grc.to ==='SUPPLIER' ? grcData.supplier : grcData.customer)">
+<div ng-show="showGRCDetails" class="printFormatPanel" ng-init="showCust={{grcData.hasCustomer}}">
 	<table class="table table-bordered" style="margin-bottom:2px;">
 			 <tr class="header" ng-include="'resources/templates/common/header.html'" >
 		     </tr>
@@ -176,15 +176,15 @@
 				
 			</tr>
 			<tr>
-				<td><span><strong>To</strong><span>
+				<td style="padding:0px;"><span><strong>To</strong><span>
 				  <div class="fromAddress">
 					<address>
-						<strong>{{grcData.customer.name}}</strong><br>
-						{{grcData.customer.contact.address.addressLine1}}
-						{{grcData.customer.contact.address.addressLine2}}<br>
-						{{grcData.customer.contact.address.city}}<br>
-						{{grcData.customer.contact.address.state}}-
-						{{grcData.customer.contact.address.pinCode}}
+						<strong>{{grcData.toDetails.name}}</strong><br>
+						{{grcData.toDetails.contact.address.addressLine1}}
+						{{grcData.toDetails.contact.address.addressLine2}}<br>
+						{{grcData.toDetails.contact.address.city}}<br>
+						{{grcData.toDetails.contact.address.state}}-
+						{{grcData.toDetails.contact.address.pinCode}}
 					</address>
 					</div>
 					</td>
@@ -209,12 +209,12 @@
 				<td><span>Name : {{grcData.grc.toName}}</span></td>
 			</tr>
 			<tr>
-				<td><span>Contact No : </span><span>{{grcData.customer.contact.phoneNo}}</span></td>
-				<td><span>TIN : </span><span>{{grcData.supplier.tinNo}}</span> </td>
+				<td><span>Contact No : </span><span>{{grcData.toDetails.contact.phoneNo}}</span></td>
+				<td><span>TIN : </span><span>{{grcData.toDetails.tinNo}}</span> </td>
 			</tr>
 			<tr>
-				<td><span>Mobile No : </span><span>{{grcData.customer.contact.mobileNo}}</span></td>
-				<td><span>CST No : </span><span>{{grcData.customer.cstNo}}</span> </td>
+				<td><span>Mobile No : </span><span>{{grcData.toDetails.contact.mobileNo}}</span></td>
+				<td><span>CST No : </span><span>{{grcData.toDetails.cstNo}}</span> </td>
 			</tr>
 			<tr>
 				<td><span>Fax No : </span><span></span></td>
@@ -229,21 +229,23 @@
 				<table class="table table-bordered" style="margin:0px;border:0px;">
 						<tr class="text-center">
 							<td width="3%"><span>SNo</span></td>
-							<td width="46%"><span>Description</span></td>
-							<td width="10%"><span>Good Out</span></td>
-							<td width="10%"><span>Def Out</span></td>
-							<td width="10%"><span>Total Qty</span></td>
-							<td width="10%"><span>Unit Basic Rate</span></td>
+							<td width="42%"><span>Description</span></td>
+							<td width="7%"><span>Good Out</span></td>
+							<td width="7%"><span>Def Out</span></td>
+							<td width="7%"><span>Total Qty</span></td>
+							<td width="7%"><span>Unit Of Measure</span></td>
+							<td width="7%"><span>Unit Basic Rate</span></td>
 							<td width="10%"><span>Total Amount</span></td>
 						</tr>
 						<tr ng-repeat="prodInfo in grcData.grc.prodInfoList">
-							<td><span ng-bind="$index+1"></span></td>
+							<td><span style="float:right;" ng-bind="$index+1"></span></td>
 							<td><span ng-bind="prodInfo.product.productName"></span></td>
-							<td><span ng-bind="prodInfo.goodOut"></span></td>
-							<td><span ng-bind="prodInfo.defOut"></span></td>
-							<td><span ng-bind="prodInfo.totalQty"></span></td>
-							<td><span ng-bind="prodInfo.unitBasicRate"></span></td>
-							<td><span ng-bind="prodInfo.totalAmount"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.goodOut"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.defOut"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.totalQty"></span></td>
+							<td><span ng-bind="prodInfo.product.unitOfMeasure"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.unitBasicRate"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.totalAmount"></span></td>
 						</tr>
 					</table>
 				</td>
@@ -433,7 +435,7 @@
 	<div>	
 	<div class="filtercontainer">		
 
-			<div class="form-left">
+			<div class="form-left width33">
 				<label class="col-sm-3 control-label">Product Name</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="productName{{$index}}"
@@ -443,24 +445,9 @@
 						</select>
 						</div>
 			</div>
-	
-	<div class="form-left">
-				<label class="col-sm-3 control-label">Unit Basic Rate</label>
-				<div class="col-sm-8">
-					<input type="number" min="0" 
-					    class="form-control" 
-					    validate-on="dirty"
-						name="unitBasicRate{{$index}}" 
-						placeholder="Unit Basic Rate"
-						ng-model="prodInfo.unitBasicRate"
-						invalid-message="'Unit Basic Rate should be a postive number'"
-						required-message="'Unit Basic Rate is required'" required/>
-				</div>
-			</div>
-			</div>
-	<div class="filtercontainer">
-	<div class="form-left">
-				<label class="col-sm-3 control-label">Good Out</label>
+
+	<div class="form-left width33">
+				<label class="col-sm-4 control-label">Good Out</label>
 				<div class="col-sm-8">
 					<input type="number" min="0" 
 					    class="form-control" 
@@ -473,7 +460,7 @@
 				</div>
 			</div>
 			
-	<div class="form-left">
+	<div class="form-left width33">
 
 				<label class="col-sm-3 control-label">Defective Out</label>
 				<div class="col-sm-8">

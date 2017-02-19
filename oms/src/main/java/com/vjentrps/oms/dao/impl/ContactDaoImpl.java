@@ -47,8 +47,8 @@ public class ContactDaoImpl extends BaseDao implements ContactDao {
 		            ps.setString(1, contact.getContactPerson());
 		            ps.setString(2, contact.getContactDesignation());
 		            ps.setLong(3, contact.getAddress().getAddressId());
-		            ps.setString(4, contact.getMobileNo());
-		            ps.setString(5, contact.getPhoneNo());
+		            ps.setString(4, contact.getPhoneNo());
+		            ps.setString(5, contact.getMobileNo());
 		            return ps;
 		        }
 		    },

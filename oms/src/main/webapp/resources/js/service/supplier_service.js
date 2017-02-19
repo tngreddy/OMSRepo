@@ -1,14 +1,14 @@
 'use strict';
 
-omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
+omsApp.factory('SupplierService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 		
 			fetchAllSuppliers: function() {
-					return $http.get('http://ntiyyagura:8080/oms/service/supplier/')
+					return $http.get(CommonService.getBaseUrl()+'/service/supplier/')
 							.then(
 									function(response){
-										return response.data.object;
+										return response.data;
 									}, 
 									function(errResponse){
 										console.error('Error while fetching suppliers');
@@ -18,7 +18,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 			},
 			
 			addSupplier: function(supplier) {
-				return $http.post('http://ntiyyagura:8080/oms/service/supplier/', supplier)
+				return $http.post(CommonService.getBaseUrl()+'/service/supplier/', supplier)
 				.then(
 						function(response){
 							return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 
 			},
 			updateSupplier: function(supplier) {
-				return $http.put('http://ntiyyagura:8080/oms/service/supplier/', supplier)
+				return $http.put(CommonService.getBaseUrl()+'/service/supplier/', supplier)
 				.then(
 						function(response){
 							return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 			},
 
 			deleteSupplier: function(supplierId) {
-				return $http.delete('http://ntiyyagura:8080/oms/service/supplier/'+supplierId)
+				return $http.delete(CommonService.getBaseUrl()+'/service/supplier/'+supplierId)
 				.then(
 						function(response){
 							return response.data;
@@ -59,7 +59,7 @@ omsApp.factory('SupplierService', ['$http', '$q', function($http, $q){
 			},
 			
 			getSupplierCount: function() {
-				return $http.get('http://ntiyyagura:8080/oms/service/supplier/count')
+				return $http.get(CommonService.getBaseUrl()+'/service/supplier/count')
 						.then(
 								function(response){
 									return response.data;

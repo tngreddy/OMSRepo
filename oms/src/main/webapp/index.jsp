@@ -40,11 +40,45 @@
        
       
        <link href="<c:url value="/resources/css/app.css" />" rel="stylesheet">
-      
+      <script type="text/javascript">
+      if (!sessionStorage.length) {
+  		// Ask other tabs for session storage
+  		localStorage.setItem('getSessionStorage', Date.now());
+  		};
+
+  		window.addEventListener('storage', function(event) {
+
+  		//console.log('storage event', event);
+
+  		if (event.key == 'getSessionStorage') {
+  			// Some tab asked for the sessionStorage -> send it
+
+  			localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+  			localStorage.removeItem('sessionStorage');
+
+  		} else if (event.key == 'sessionStorage' && !sessionStorage.length) {
+  			// sessionStorage is empty -> fill it
+
+  			var data = JSON.parse(event.newValue),
+  						value;
+
+  			for (key in data) {
+  				sessionStorage.setItem(key, data[key]);
+  			}
+
+  		}
+
+  	});
+      </script>
 	</head>
 <body ng-app="omsApp" class="hold-transition skin-blue sidebar-mini">
 
 <div flash-message="6000" ></div> 	
+
+
+
+<div class="se-pre-con"></div>
+
 
 	
     <div id="main" >
@@ -125,6 +159,17 @@
 <script src="<c:url value="/resources/js/service/login_service.js" />"></script>
 
 
+<script type="text/javascript">
+$(window).load(function() {
+	// Animate loader off screen
+	$(".se-pre-con").fadeOut("slow");
+	
+	
+	
+});
 
+
+
+</script>
 </body>
 </html>

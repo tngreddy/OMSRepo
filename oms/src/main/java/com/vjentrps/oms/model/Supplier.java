@@ -1,6 +1,6 @@
 package com.vjentrps.oms.model;
 
-public class Supplier {
+public class Supplier{
 	
 	private long supplierId;
 	private String name;

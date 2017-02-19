@@ -17,6 +17,8 @@ public interface CommonConstants {
 	String ALL_STATUS =  "PENDING','CLOSED";
 	String MSG_DELIMITER =  "-_-";
 	String NONE="NONE";
+	String PENDING_GRCS="PENDING_GRCS";
+	String PARTIAL_PENDING_GRCS="PARTIAL_PENDING_GRCS";
 	
 	
 

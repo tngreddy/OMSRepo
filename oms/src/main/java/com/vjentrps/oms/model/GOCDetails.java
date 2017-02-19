@@ -5,6 +5,8 @@ public class GOCDetails {
 	private GoodsOutwardChallan goc;
 	private Supplier supplier;
 	private Customer customer;
+	
+	private Object toDetails;
 		
 	public GoodsOutwardChallan getGoc() {
 		return goc;
@@ -24,6 +26,13 @@ public class GOCDetails {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	public Object getToDetails() {
+		return toDetails;
+	}
+	public void setToDetails(Object toDetails) {
+		this.toDetails = toDetails;
+	}
+	
 	
 
 

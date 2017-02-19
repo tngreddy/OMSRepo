@@ -75,8 +75,9 @@ public class GOCServiceImpl implements GOCService {
 					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct()
 									.getProductId());
 					
-					if (success > 0 && null != productStock) {
-
+					if (success > 0 && null != productStock && null != productStock.getProduct()) {
+						
+						prodInfo.setUnitBasicRate(productStock.getProduct().getUnitBasicRate());
 						prodInfo.setTotalQty(prodInfo.getGoodOut() + prodInfo.getDefOut());
 						prodInfo.setTotalAmount(prodInfo.getTotalQty() * prodInfo.getUnitBasicRate());
 
@@ -153,14 +154,14 @@ public class GOCServiceImpl implements GOCService {
 				if (fromToInfo) {
 					if (CommonConstants.SUPPLIER.equalsIgnoreCase(goc.getTo())) {
 
-						gocDetails.setSupplier(supplierDao
-								.getSupplierByName(goc.getToName()));
+						gocDetails.setToDetails(supplierDao.getSupplierByName(goc.getToName()));
+						//gocDetails.setSupplier(supplierDao.getSupplierByName(goc.getToName()));
 
 					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(goc
 							.getTo())) {
 
-						gocDetails.setCustomer(customerDao
-								.getCustomerByName(goc.getToName()));
+						gocDetails.setToDetails(customerDao.getCustomerByName(goc.getToName()));
+						//gocDetails.setCustomer(customerDao.getCustomerByName(goc.getToName()));
 					}
 				}
 				gocDetails.setGoc(goc);

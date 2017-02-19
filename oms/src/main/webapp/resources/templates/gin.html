@@ -147,20 +147,20 @@
 				
 			</tr>
 			<tr>
-				<td><span><strong>FROM</strong><span>
+				<td style="padding:0px;"><span><strong>FROM</strong><span>
 				  <div class="fromAddress">
 					<address>
-						<strong>{{ginData.supplier.name}}</strong><br>
-						{{ginData.supplier.contact.address.addressLine1}}
-						{{ginData.supplier.contact.address.addressLine2}}<br>
-						{{ginData.supplier.contact.address.city}}<br>
-						{{ginData.supplier.contact.address.state}}-
-						{{ginData.supplier.contact.address.pinCode}}
+						<strong>{{ginData.fromDetails.name}}</strong><br>
+						{{ginData.fromDetails.contact.address.addressLine1}}
+						{{ginData.fromDetails.contact.address.addressLine2}}<br>
+						{{ginData.fromDetails.contact.address.city}}<br>
+						{{ginData.fromDetails.contact.address.state}}-
+						{{ginData.fromDetails.contact.address.pinCode}}
 					</address>
 					</div>
 					</td>
 				<td style="padding:0px;">
-				<table class="table table-bordered" style="margin-bottom: 0px;border: 0px;">
+				<table class="table table-bordered halfbox" style="margin-bottom: 0px;border: 0px;">
 						<tr>
 							<td width="35%"><span>GIN NO</span></td>
 							<td width="65%"><span>{{ginData.gin.ginNo}}</span></td>
@@ -180,37 +180,39 @@
 				<td><span>Name : {{ginData.gin.fromName}}</span></td>
 			</tr>
 			<tr>
-				<td><span>Contact No : </span><span>{{ginData.supplier.contact.phoneNo}}</span></td>
-				<td><span>TIN : </span><span>{{ginData.supplier.tinNo}}</span> </td>
+				<td><span>Contact No : </span><span>{{ginData.fromDetails.contact.phoneNo}}</span></td>
+				<td><span>TIN : </span><span>{{ginData.fromDetails.tinNo}}</span> </td>
 			</tr>
 			<tr>
-				<td><span>Mobile No : </span><span>{{ginData.supplier.contact.mobileNo}}</span></td>
-				<td><span>CST No : </span><span>{{ginData.supplier.cstNo}}</span> </td>
+				<td><span>Mobile No : </span><span>{{ginData.fromDetails.contact.mobileNo}}</span></td>
+				<td><span>CST No : </span><span>{{ginData.fromDetails.cstNo}}</span> </td>
 			</tr>
 			<tr>
 				<td><span>Fax No : </span><span></span></td>
-				<td><span>Email : {{ginData.supplier.contact.email}}</span></td>
+				<td><span>Email : </span></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="padding:0px;">
 				<table class="table table-bordered" style="margin:0px;border:0px white;">
 						<tr class="text-center">
 							<td width="3%"><span>SNo</span></td>
-							<td width="46%"><span>Description</span></td>
-							<td width="10%"><span>Good In</span></td>
-							<td width="10%"><span>Def In</span></td>
-							<td width="10%"><span>Total Qty</span></td>
-							<td width="10%"><span>Unit Basic Rate</span></td>
+							<td width="42%"><span>Description</span></td>
+							<td width="7%"><span>Good In</span></td>
+							<td width="7%"><span>Def In</span></td>
+							<td width="7%"><span>Total Qty</span></td>
+							<td width="7%"><span>Unit Of Measure</span></td>
+							<td width="7%"><span>Unit Basic Rate</span></td>
 							<td width="10%"><span>Total Amount</span></td>
 						</tr>
 						<tr ng-repeat="prodInfo in ginData.gin.prodInfoList">
-							<td><span ng-bind="$index+1"></span></td>
+							<td><span style="float:right;" ng-bind="$index+1"></span></td>
 							<td><span ng-bind="prodInfo.product.productName"></span></td>
-							<td><span ng-bind="prodInfo.goodIn"></span></td>
-							<td><span ng-bind="prodInfo.defIn"></span></td>
-							<td><span ng-bind="prodInfo.totalQty"></span></td>
-							<td><span ng-bind="prodInfo.unitBasicRate"></span></td>
-							<td><span ng-bind="prodInfo.totalAmount"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.goodIn"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.defIn"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.totalQty"></span></td>
+							<td><span ng-bind="prodInfo.product.unitOfMeasure"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.unitBasicRate"></span></td>
+							<td><span style="float:right;" ng-bind="prodInfo.totalAmount"></span></td>
 						</tr>
 					</table>
 				</td>
@@ -305,7 +307,7 @@
 					<div>
 						<div class="filtercontainer">
 
-							<div class="form-left">
+							<div class="form-left width33">
 								<label class="col-sm-3 control-label">Product Name</label>
 								<div class="col-sm-8">
 									<select class="form-control" name="productName{{$index}}"
@@ -316,22 +318,9 @@
 									</select>
 								</div>
 							</div>
-
-							<div class="form-left">
-								<label class="col-sm-3 control-label">Unit Basic Rate</label>
-								<div class="col-sm-8">
-									<input type="number" min="0" class="form-control"
-										validate-on="dirty" name="unitBasicRate{{$index}}"
-										placeholder="Unit Basic Rate"
-										ng-model="prodInfo.unitBasicRate"
-										invalid-message="'Unit Basic Rate should be a postive number'"
-										required-message="'Unit Basic Rate is required'" required />
-								</div>
-							</div>
-						</div>
-						<div class="filtercontainer">
-							<div class="form-left">
-								<label class="col-sm-3 control-label">Good In</label>
+	
+							<div class="form-left width33">
+								<label class="col-sm-4 control-label">Good In</label>
 								<div class="col-sm-8">
 									<input type="number" min="0" class="form-control"
 										validate-on="dirty" name="goodIn{{$index}}" placeholder="Good In"
@@ -340,9 +329,9 @@
 								</div>
 							</div>
 
-							<div class="form-left">
+							<div class="form-left width33">
 
-								<label class="col-sm-3 control-label">Defective In</label>
+								<label class="col-sm-4 control-label">Defective In</label>
 								<div class="col-sm-8">
 									<input type="number" min="0" class="form-control"
 										validate-on="dirty" name="defectiveIn{{$index}}"
@@ -369,8 +358,6 @@
 							name="remarks" placeholder="Remarks" ng-model="gin.remarks"></textarea>
 					</div>
 				</div>
-         {{gin.docDate}}
-				
     
 			</div>
 
@@ -387,7 +374,7 @@
 
 
 <!-- Edit GIN Overlay -->
-<modal visible="showEditModal">
+<!-- <modal visible="showEditModal">
 <form novalidate angular-validator
 	angular-validator-submit="updateGIN()" name="updateGINForm"
 	class="form-horizontal">
@@ -510,7 +497,7 @@
 </modal>
 
 
-<!-- Alert products Overlay -->
+Alert products Overlay
 <modal size="modal-sm" visible="alertModal">
 <div class="modal-header with-border">
 	<button type="button" class="close" data-dismiss="modal"
@@ -534,7 +521,7 @@
 	<button type="button" class="btn btn-flat btn-default"
 		data-dismiss="modal">OK</button>
 </div>
-</modal>
+</modal> -->
 <!-- <modal size="modal-sm" visible="showDeleteModal">
 <delete-modal-content type="category" value="category.categoryName" method="deleteCategory(category.categoryId)"></delete-modal-content>
 </modal> -->

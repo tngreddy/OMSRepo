@@ -6,13 +6,16 @@ omsApp.controller('LoginController', ['$scope', 'LoginService', 'CommonService',
 	$scope.validUser={};
 	
 	if (null != CommonService.getUserContext()) {
-		$state.go('base.dashboard');
+			$state.go('base.dashboard');
+	
 	} else {
 		CommonService.showMsg('info','Welcome to <Strong>SMS</Strong>, Please login');
 	}
 	
 	
 	$scope.authenticateUser = function(){
+		$scope.tbElmnt = angular.element('#signInBtn');
+		$scope.tbElmnt.button('loading');
 		
 		LoginService.authenticateUser($scope.user)
 		.then(
@@ -20,11 +23,17 @@ omsApp.controller('LoginController', ['$scope', 'LoginService', 'CommonService',
 			
 					if(data.error!= null){
 						CommonService.showMsg('danger',data.error.message);
+						$scope.tbElmnt.button('reset');
 					} else {
-						$scope.validUser = data.object;
-						CommonService.setUserContext(data.object);
-						CommonService.showMsg('success','Welcome <Strong>'+data.object.userName+'</Strong>');
-						$state.go('base.dashboard');
+						setTimeout(function() {
+							$scope.validUser = data.object;
+							CommonService.setUserContext(data.object);
+							CommonService.showMsg('success','Welcome <Strong>'+data.object.userName+'</Strong>');
+							$state.go('base.dashboard');
+							
+							$scope.tbElmnt.button('reset');
+						   }, 200);
+						
 					}
 					
 				},
@@ -32,6 +41,7 @@ omsApp.controller('LoginController', ['$scope', 'LoginService', 'CommonService',
 					console.error('Error while authenticating user');
 				}
 		);
+		
 	};
 	
 	

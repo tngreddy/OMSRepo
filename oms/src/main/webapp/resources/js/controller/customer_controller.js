@@ -1,14 +1,29 @@
 'use strict';
 
-omsApp.controller('CustomerController', ['$scope', 'CustomerService', '$state', '$stateParams', function($scope, CustomerService, $state, $stateParams) {
+omsApp.controller('CustomerController', ['$scope', 'CustomerService','CommonService', '$state', '$stateParams', function($scope, CustomerService,CommonService, $state, $stateParams) {
 	$scope.customers=[];
 	$scope.customer={};
+	$scope.type = 'Customer';
+	$scope.tabElmnt = angular.element('#customerTable');
+	$scope.btnsContainer = '.addbuttoncontainer';
 
 	$scope.fetchAllCustomers = function(){
 		CustomerService.fetchAllCustomers()
 		.then(
 				function(data) {
-					$scope.customers = data;
+					
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.customers = data.object;
+							CommonService.initializeDataTable($scope.tabElmnt,$scope.btnsContainer);
+							
+						}
+					
+				    }
+					
 				},
 				function(errResponse){
 					console.error('Error while fetching Customers');
@@ -23,9 +38,18 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', '$state', 
 		CustomerService.addCustomer($scope.customer)
 		.then(
 				function(data) {
-					$scope.showAddModal = false;
-					$scope.reloadState();	
-
+					
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.showAddModal = false;
+							CommonService.showMsg('success',CommonService.buildSuccessMsg($scope.type,$scope.customer.name));
+							$scope.fetchAllCustomers();
+						}
+					
+				    }
 				},
 				function(errResponse){
 					console.error('Error while adding customer');
@@ -37,8 +61,19 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', '$state', 
 		CustomerService.updateCustomer(customer)
 		.then(
 				function(data) {
-					$scope.showEditModal = false;
-					$scope.reloadState();	
+					
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.showEditModal = false;
+							CommonService.showMsg('success',CommonService.buildUpdateMsg($scope.type,customer.name));
+							$scope.fetchAllCustomers();
+						}
+					
+				    }
+					
 				},
 				function(errResponse){
 					console.error('Error while updating customer');
@@ -46,12 +81,23 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', '$state', 
 		);
 	};
 
-	$scope.deleteCustomer = function(customerId){
-		CustomerService.deleteCustomer(customerId)
+	$scope.deleteCustomer = function(customer){
+		CustomerService.deleteCustomer(customer.customerId)
 		.then(
 				function(data) {
-					$scope.showDeleteModal = false;
-					$scope.reloadState();
+					
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.showDeleteModal = false;
+							CommonService.showMsg('success',CommonService.buildDeleteMsg($scope.type,customer.name));
+							$scope.fetchAllCustomers();
+						}
+					
+				    }
+					
 				},
 				function(errResponse){
 					console.error('Error while deleting customer');
@@ -77,16 +123,5 @@ omsApp.controller('CustomerController', ['$scope', 'CustomerService', '$state', 
 		$scope.customer = customer;
 	};
 
-	
-	$scope.reloadState = function() {
-		setTimeout(function(){
-			$state.transitionTo($state.current, $stateParams, {
-				reload: true,
-				inherit: false,
-				notify: true
-			});
-
-		}, 100);
-	};
 }]);
 

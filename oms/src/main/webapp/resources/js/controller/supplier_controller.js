@@ -1,14 +1,24 @@
 'use strict';
 
-omsApp.controller('SupplierController', ['$scope', 'SupplierService','$state', '$stateParams', function($scope, SupplierService ,$state, $stateParams) {
-			$scope.suppliers=[];
-			$scope.supplier={};
+omsApp.controller('SupplierController', ['$scope', 'SupplierService','CommonService','$state', '$stateParams', function($scope, SupplierService ,CommonService,$state, $stateParams) {
+	$scope.suppliers=[];
+	$scope.supplier={};
+	$scope.type = 'Supplier';
+	$scope.tabElmnt = angular.element('#supplierTable');
+	$scope.btnsContainer = '.addbuttoncontainer';
                         
 			$scope.fetchAllSuppliers = function(){
 				SupplierService.fetchAllSuppliers()
                   .then(
       					       function(data) {
-      					    	 $scope.suppliers = data;
+      					    	   
+      					    	 if(data.error!= null){
+      								CommonService.showMsg('danger',data.error.message);
+      							} else {
+      								$scope.suppliers = data.object;
+      								CommonService.initializeDataTable($scope.tabElmnt,$scope.btnsContainer);
+      							}
+      					    	 
       					       },
             					function(errResponse){
             						console.error('Error while fetching Suppliers');
@@ -23,9 +33,13 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService','$state', '
       		SupplierService.addSupplier($scope.supplier)
       		.then(
       				function(data) {
-      					$scope.showAddModal = false;
-    					$scope.reloadState();	
-
+      					if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.showAddModal = false;
+							CommonService.showMsg('success',CommonService.buildSuccessMsg($scope.type,$scope.supplier.name));
+							$scope.fetchAllSuppliers();
+						}
       				},
       				function(errResponse){
       					console.error('Error while adding supplier');
@@ -37,8 +51,14 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService','$state', '
       		SupplierService.updateSupplier(supplier)
       		.then(
       				function(data) {
-      					$scope.showEditModal = false;
-    					$scope.reloadState();	
+      					if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.showEditModal = false;
+							CommonService.showMsg('success',CommonService.buildUpdateMsg($scope.type,supplier.name));
+							$scope.fetchAllSuppliers();
+						}
+      						
       				},
       				function(errResponse){
       					console.error('Error while updating supplier');
@@ -46,12 +66,18 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService','$state', '
       		);
       	};
 
-      	$scope.deleteSupplier = function(supplierId){
-      		SupplierService.deleteSupplier(supplierId)
+      	$scope.deleteSupplier = function(supplier){
+      		SupplierService.deleteSupplier(supplier.supplierId)
       		.then(
       				function(data) {
-      					$scope.showDeleteModal = false;
-    					$scope.reloadState();	
+      					if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.showDeleteModal = false;
+							CommonService.showMsg('success',CommonService.buildDeleteMsg($scope.type,supplier.name));
+							$scope.fetchAllSuppliers();
+						}
+      					
       				},
       				function(errResponse){
       					console.error('Error while deleting supplier');
@@ -77,15 +103,5 @@ omsApp.controller('SupplierController', ['$scope', 'SupplierService','$state', '
     		$scope.supplier = supplier;
     	};
            
-    	$scope.reloadState = function() {
-    		setTimeout(function(){
-    			$state.transitionTo($state.current, $stateParams, {
-    				reload: true,
-    				inherit: false,
-    				notify: true
-    			});
-
-    		}, 100);
-    	};
          }]);
 

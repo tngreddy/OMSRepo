@@ -1,11 +1,11 @@
 'use strict';
 
-omsApp.factory('LoginService', ['$http', '$q', function($http, $q){
+omsApp.factory('LoginService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 
 		authenticateUser: function(user) {
-			return $http.post('http://ntiyyagura:8080/oms/service/auth/signIn',user)
+			return $http.post(CommonService.getBaseUrl()+'/service/auth/signIn',user)
 			.then(
 					function(response){
 						return response.data;

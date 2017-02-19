@@ -8,8 +8,8 @@ public class ProdInfo {
 	private long goodOut;
 	private long defOut;
 	private long totalQty;
-	private long unitBasicRate;
-	private long totalAmount;
+	private double unitBasicRate;
+	private double totalAmount;
 	private String status;
 	
 	public Product getProduct() {
@@ -48,16 +48,16 @@ public class ProdInfo {
 	public void setTotalQty(long totalQty) {
 		this.totalQty = totalQty;
 	}
-	public long getUnitBasicRate() {
+	public double getUnitBasicRate() {
 		return unitBasicRate;
 	}
-	public void setUnitBasicRate(long unitBasicRate) {
+	public void setUnitBasicRate(double unitBasicRate) {
 		this.unitBasicRate = unitBasicRate;
 	}
-	public long getTotalAmount() {
+	public double getTotalAmount() {
 		return totalAmount;
 	}
-	public void setTotalAmount(long totalAmount) {
+	public void setTotalAmount(double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 	public String getStatus() {

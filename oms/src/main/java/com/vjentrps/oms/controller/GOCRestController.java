@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,17 +14,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.exception.OmsServiceException;
+import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.Constants;
 import com.vjentrps.oms.model.Error;
 import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.GOCDetails;
 import com.vjentrps.oms.model.GoodsOutwardChallan;
 import com.vjentrps.oms.model.ResponseDTO;
-import com.vjentrps.oms.model.ServiceResponse;
 
 @RestController
 @RequestMapping(value="/service/goc")
 public class GOCRestController extends BaseRestController{
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 
     @RequestMapping(method = RequestMethod.GET)
@@ -33,7 +37,11 @@ public class GOCRestController extends BaseRestController{
         	try {
 				gocs = gocService.listGOCs();
 			} catch (OmsServiceException e) {
+				log.error("Error while getting GOCs",e);
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			} catch (Exception e) {
+				log.error("Error while getting GOCs",e);
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 			}
         return new ResponseDTO(gocs);
     }
@@ -46,19 +54,19 @@ public class GOCRestController extends BaseRestController{
     	try {
 			if (null != goc	&& CollectionUtils.isNotEmpty(goc.getProdInfoList())) {
 
-				Error err = commonUtil.isCrossedOutwardLimit(goc.getProdInfoList());
+				Error err = commonUtil.isCrossedLimit(goc.getProdInfoList(), null, CommonConstants.GOC);
 				if (null != err) {
 					return new ResponseDTO(err);
 				}
 			  gocNo = gocService.createGOC(goc);
 
 			}
-		}  catch (OmsServiceException e) {
-			
+		} catch (OmsServiceException e) {
+			log.error("Error while creating a GOC",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
-		}
-    	catch (Exception e) {
-    		return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+		} catch (Exception e) {
+			log.error("Error while creating a GOC",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
        
         return new ResponseDTO(gocNo);
@@ -120,7 +128,11 @@ public class GOCRestController extends BaseRestController{
         		return new ResponseDTO(gocDetails);
         		
 			} catch (OmsServiceException e) {
+				log.error("Error while getting GOC details",e);
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			} catch (Exception e) {
+				log.error("Error while getting GIN details",e);
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 			}
         
     }
@@ -133,8 +145,12 @@ public class GOCRestController extends BaseRestController{
         		
         		return new ResponseDTO(goc);
         		
-			} catch (OmsServiceException e) {
+			}  catch (OmsServiceException e) {
+				log.error("Error while getting GOC data",e);
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			} catch (Exception e) {
+				log.error("Error while getting GOC data",e);
+				return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 			}
         
     }

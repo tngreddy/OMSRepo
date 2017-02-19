@@ -62,6 +62,7 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
+			product.setUnitBasicRate(resultSet.getDouble("unit_basic_rate"));
 			product.setGoodBalance(resultSet.getLong("good_balance"));
 			product.setDefBalance(resultSet.getLong("def_balance"));
 			productStock.setProduct(product);

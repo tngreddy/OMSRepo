@@ -12,8 +12,6 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 	$scope.showError = false;
 	$scope.modalShowSuccess = false;	
 	$scope.modalShowError = false;	
-	$scope.viewDate;
-	$scope.dt;
 	
 	var products = "PRODUCTS";
 	$scope.ginData = {}
@@ -77,7 +75,7 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 							//$scope.errorMessage = data.error.message;
 							//$scope.showError = true;
 						} else {
-							CommonService.showMsg('success',"Successfully created <strong>"+data.object+"</Strong>");
+							CommonService.showMsg('success',CommonService.buildTransactionSuccessMsg(data.object));
 							//$scope.successMessage = "Successfully created "+data.object;
 							//$scope.modalShowSuccess = false;
 							//$scope.modalShowSuccess = true;
@@ -113,8 +111,6 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 							$scope.showEditModal = false;
 							$scope.reloadState();	
 						}
-						
-						
 					}
 						
 				},
@@ -186,7 +182,7 @@ omsApp.controller('GINController', ['$scope', 'GINService', 'CommonService', '$s
 
 
 	$scope.populateFromData = function(from){
-
+		
 		$scope.dataList = $scope.basicInfoMap[from];
 		
 	};
@@ -224,16 +220,6 @@ $scope.deleteGINModal = function(gin){
 };
 
 
-$scope.reloadState = function() {
-	setTimeout(function(){
-		$state.transitionTo($state.current, $stateParams, {
-			reload: true,
-			inherit: false,
-			notify: true
-		});
-
-	}, 100);
-};
 
 }]);
 

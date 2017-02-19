@@ -1,14 +1,14 @@
 'use strict';
 
-omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
+omsApp.factory('CustomerService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 		
 			fetchAllCustomers: function() {
-					return $http.get('http://ntiyyagura:8080/oms/service/customer/')
+					return $http.get(CommonService.getBaseUrl()+'/service/customer/')
 							.then(
 									function(response){
-										return response.data.object;
+										return response.data;
 									}, 
 									function(errResponse){
 										console.error('Error while fetching customers');
@@ -18,7 +18,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 			},
 			
 			addCustomer: function(customer) {
-				return $http.post('http://ntiyyagura:8080/oms/service/customer/', customer)
+				return $http.post(CommonService.getBaseUrl()+'/service/customer/', customer)
 				.then(
 						function(response){
 							return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 
 			},
 			updateCustomer: function(customer) {
-				return $http.put('http://ntiyyagura:8080/oms/service/customer/', customer)
+				return $http.put(CommonService.getBaseUrl()+'/service/customer/', customer)
 				.then(
 						function(response){
 							return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 			},
 
 			deleteCustomer: function(customerId) {
-				return $http.delete('http://ntiyyagura:8080/oms/service/customer/'+customerId)
+				return $http.delete(CommonService.getBaseUrl()+'/service/customer/'+customerId)
 				.then(
 						function(response){
 							return response.data;
@@ -59,7 +59,7 @@ omsApp.factory('CustomerService', ['$http', '$q', function($http, $q){
 			},
 
 			getCustomerCount: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/customer/count')
+			return $http.get(CommonService.getBaseUrl()+'/service/customer/count')
 					.then(
 							function(response){
 								return response.data;

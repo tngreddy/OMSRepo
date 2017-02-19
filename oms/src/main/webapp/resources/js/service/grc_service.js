@@ -1,11 +1,11 @@
 'use strict';
 
-omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
+omsApp.factory('GRCService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 
 		fetchAllGRCs: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/grc/')
+			return $http.get(CommonService.baseUrl+'/service/grc/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 		},
 
 		createGRC: function(grc) {
-			return $http.post('http://ntiyyagura:8080/oms/service/grc/', grc)
+			return $http.post(CommonService.getBaseUrl()+'/service/grc/', grc)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 
 		},
 		updateGRC: function(grc) {
-			return $http.put('http://ntiyyagura:8080/oms/service/grc/', grc)
+			return $http.put(CommonService.getBaseUrl()+'/service/grc/', grc)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteGRC: function(grcNo) {
-			return $http.delete('http://ntiyyagura:8080/oms/service/grc/'+grcNo)
+			return $http.delete(CommonService.getBaseUrl()+'/service/grc/'+grcNo)
 			.then(
 					function(response){
 						return response.data;
@@ -58,7 +58,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 		},
 		
 		fetchGRCNos: function(fromName) {
-			return $http.get('http://ntiyyagura:8080/oms/service/grc/grcNos/'+fromName)
+			return $http.get(CommonService.getBaseUrl()+'/service/grc/grcNos/'+fromName)
 			.then(
 					function(response){
 						return response.data.object;
@@ -71,7 +71,7 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 		},
 		
 		fetchGRCData: function(grcNo,fromToInfo) {
-			return $http.get('http://ntiyyagura:8080/oms/service/grc/details/'+grcNo+'/'+fromToInfo)
+			return $http.get(CommonService.getBaseUrl()+'/service/grc/details/'+grcNo+'/'+fromToInfo)
 			.then(
 					function(response){
 						return response.data;
@@ -84,10 +84,10 @@ omsApp.factory('GRCService', ['$http', '$q', function($http, $q){
 		},
 		
 		fetchPendingGRCs: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/grc/pending')
+			return $http.get(CommonService.getBaseUrl()+'/service/grc/pending')
 			.then(
 					function(response){
-						return response.data.object;
+						return response.data;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching pending GRCs ');

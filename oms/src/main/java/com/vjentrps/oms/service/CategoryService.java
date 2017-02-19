@@ -18,6 +18,6 @@ public interface CategoryService {
 
 	 int getCategoryCount() throws OmsServiceException;
 
-	 
+	 Category getCategoryByName(String categoryName) throws OmsServiceException;
 	
 }

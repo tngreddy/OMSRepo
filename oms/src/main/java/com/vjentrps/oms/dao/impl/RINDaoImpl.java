@@ -65,6 +65,7 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 			rin.setDocRefNo(resultSet.getString("doc_ref_no"));
 			rin.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			rin.setStatus(resultSet.getString("status"));
+			rin.setRemarks(resultSet.getString("remarks"));
 			
 			return rin;
 		}
@@ -80,11 +81,12 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
+			product.setUnitOfMeasure(resultSet.getString("unit_of_measure"));
 			prodInfo.setProduct(product);
 			prodInfo.setGoodIn(resultSet.getLong("good_in"));
 			prodInfo.setDefIn(resultSet.getLong("def_in"));
 			prodInfo.setTotalQty(resultSet.getLong("total_qty"));
-			prodInfo.setUnitBasicRate(resultSet.getLong("unit_basic_rate"));
+			prodInfo.setUnitBasicRate(resultSet.getDouble("unit_basic_rate"));
 			prodInfo.setTotalAmount(resultSet.getLong("total_amount"));
 			return prodInfo;
 		}

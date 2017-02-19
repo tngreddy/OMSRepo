@@ -65,6 +65,8 @@ omsApp.controller('RINController', ['$scope', 'RINService', 'CommonService', 'GR
 									console.error('Error while fetching GRC data');
 								}
 						);
+				 } else {
+					 $scope.productsInfo = $scope.basicInfoMap[products];
 				 }
 				  
 				};
@@ -195,11 +197,14 @@ omsApp.controller('RINController', ['$scope', 'RINService', 'CommonService', 'GR
 			
 		var prodsInfoList = data.prodInfoList;
 		for (var i = 0; i < prodsInfoList.length; i++) {
-			if(i>0){
-				prodList.push({});
+			if(prodsInfoList[i].status != 'CLOSED') {
+				if(i>0){
+					prodList.push({});
+				}
+			    prodList[i].id = prodsInfoList[i].product.productId;
+				prodList[i].name = prodsInfoList[i].product.productName;
 			}
-		    prodList[i].id = prodsInfoList[i].product.productId;
-			prodList[i].name = prodsInfoList[i].product.productName;
+			
 		}
 		$scope.productsInfo = prodList;
 	};
@@ -241,17 +246,6 @@ $scope.deleteRINModal = function(rin){
 	$scope.rin = rin;
 };
 
-
-$scope.reloadState = function() {
-	setTimeout(function(){
-		$state.transitionTo($state.current, $stateParams, {
-			reload: true,
-			inherit: false,
-			notify: true
-		});
-
-	}, 100);
-};
 
 }]);
 

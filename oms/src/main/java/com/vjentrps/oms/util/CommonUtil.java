@@ -3,12 +3,15 @@ package com.vjentrps.oms.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.acegisecurity.util.EncryptionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,7 @@ import com.vjentrps.oms.model.Product;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.ReturnedInwardNote;
 import com.vjentrps.oms.model.StockRecord;
+import com.vjentrps.oms.service.GRCService;
 import com.vjentrps.oms.service.ReportsService;
 
 @Component
@@ -35,6 +39,9 @@ public class CommonUtil {
 	
 	@Autowired
 	ReportsService reportsService;
+	
+	@Autowired
+	GRCService grcService;
 
 	public Error processError(ErrorsEnum err) {
 
@@ -114,27 +121,84 @@ public class CommonUtil {
 	}
 
 	
-	public Error isCrossedOutwardLimit(List<ProdInfo> prodInfos) throws OmsServiceException {
+	public Error isCrossedLimit(List<ProdInfo> prodInfos, String grcNo, String transType) throws OmsServiceException {
+		
+		GoodsReturnableChallan grc = null;
+		Error error = isDuplicateProductSelected(prodInfos);
+		if (error != null) {
+			return error;
+		}
 
+		if (null != grcNo) {
+			grc = grcService.getGRCbyNo(grcNo);
+		}
+		
 		for (ProdInfo prodInfo : prodInfos) {
 			if (null != prodInfo && null != prodInfo.getProduct()) {
-				ProductStock productStock = reportsService.fetchProductStock(prodInfo.getProduct().getProductId());
-
-				if (null != productStock && null != productStock.getProduct()) {
+				
+				if (null != grc) {
 					
-					boolean goodOutError = prodInfo.getGoodOut() > productStock.getProduct().getGoodBalance();
-					boolean defOutError = prodInfo.getDefOut() > productStock.getProduct().getDefBalance();
-					if (goodOutError && defOutError) {
-						return frameError(productStock.getProduct().getProductName(), ErrorsEnum.GOOD_DEF_OUT_EXCEEDED);
-					} else if (goodOutError) {
-						return frameError(productStock.getProduct().getProductName(), ErrorsEnum.GOOD_OUT_EXCEEDED);
-					} else if (defOutError) {
-						return frameError(productStock.getProduct().getProductName(), ErrorsEnum.DEF_OUT_EXCEEDED);
+					List<ProdInfo> prodInfListToCheck = null;
+					
+					if(CollectionUtils.isNotEmpty(grc.getPartPndgProdInfoList())){
+						
+						prodInfListToCheck = grc.getPartPndgProdInfoList();
+						
+					} else if(CollectionUtils.isNotEmpty(grc.getProdInfoList())){
+						
+						prodInfListToCheck = grc.getProdInfoList();
+					}
+					
+					for (ProdInfo grcPrdInf : prodInfListToCheck) {
+						if(prodInfo.getProduct().getProductId() == grcPrdInf.getProduct().getProductId()) {
+							boolean goodError = prodInfo.getGoodIn() > (grcPrdInf.getGoodOut()+grcPrdInf.getDefOut()-prodInfo.getDefIn());
+							 boolean defError = prodInfo.getDefIn() > ((grcPrdInf.getGoodOut()+grcPrdInf.getDefOut())-prodInfo.getGoodIn());
+							 
+								if (goodError && defError) {
+									return frameError(grcPrdInf.getProduct().getProductName(), ErrorsEnum.GOOD_DEF_IN_GRC_EXCEEDED);
+								} else if (goodError) {
+									return frameError(grcPrdInf.getProduct().getProductName(), ErrorsEnum.GOOD_IN_GRC_EXCEEDED);
+								} else if (defError) {
+									return frameError(grcPrdInf.getProduct().getProductName(), ErrorsEnum.DEF_IN_GRC_EXCEEDED);
+								}
+						}
 					}
 
-				}
+				} else if (!CommonConstants.RIN.equalsIgnoreCase(transType)){
+				
+					ProductStock productStock = reportsService.fetchProductStock(prodInfo.getProduct().getProductId());
+	
+					if (null != productStock && null != productStock.getProduct()) {
+						
+						boolean goodOutError = prodInfo.getGoodOut() > productStock.getProduct().getGoodBalance();
+						boolean defOutError = prodInfo.getDefOut() > productStock.getProduct().getDefBalance();
+						if (goodOutError && defOutError) {
+							return frameError(productStock.getProduct().getProductName(), ErrorsEnum.GOOD_DEF_OUT_EXCEEDED);
+						} else if (goodOutError) {
+							return frameError(productStock.getProduct().getProductName(), ErrorsEnum.GOOD_OUT_EXCEEDED);
+						} else if (defOutError) {
+							return frameError(productStock.getProduct().getProductName(), ErrorsEnum.DEF_OUT_EXCEEDED);
+						}
+					}
+			   }
 			}
 
+		}
+
+		return null;
+
+	}
+	
+	public Error isDuplicateProductSelected(List<ProdInfo> prodInfos) throws OmsServiceException {
+
+		final Set<Long> set1 = new HashSet<Long>();
+		
+		for (ProdInfo prodInfo : prodInfos) {
+			if (null != prodInfo && null != prodInfo.getProduct()) {
+				if (!set1.add(prodInfo.getProduct().getProductId())) {
+					return processError(ErrorsEnum.DUP_PRODS_SELECTED);
+				}
+			}
 		}
 
 		return null;

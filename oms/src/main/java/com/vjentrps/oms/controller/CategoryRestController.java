@@ -3,6 +3,8 @@ package com.vjentrps.oms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import com.vjentrps.oms.model.ResponseDTO;
 @RestController
 @RequestMapping(value="/service/category")
 public class CategoryRestController extends BaseRestController{
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseDTO getCategories() {
@@ -27,9 +31,11 @@ public class CategoryRestController extends BaseRestController{
 			categories = categoryService.listCategories();
 			
 		} catch (OmsServiceException e) {
+			log.error("Error while fetching the categories",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
 		 catch (Exception e) {
+			 log.error("Error while fetching the categories",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 	    }
 
@@ -47,10 +53,11 @@ public class CategoryRestController extends BaseRestController{
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 			}
 		} catch (OmsServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error while adding a category",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
 		catch (Exception e) {
+			log.error("Error while adding a category",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 	    }
 
@@ -69,9 +76,10 @@ public class CategoryRestController extends BaseRestController{
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 			}
 		} catch (OmsServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error while updating a category",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}catch (Exception e) {
+			log.error("Error while updating a category",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 	    }
 
@@ -91,8 +99,10 @@ public class CategoryRestController extends BaseRestController{
 			}
 			
 		} catch (OmsServiceException e) {
+			log.error("Error while deleting a category",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}catch (Exception e) {
+			log.error("Error while deleting a category",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 	    }
 

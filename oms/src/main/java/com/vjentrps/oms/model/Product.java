@@ -6,6 +6,7 @@ public class Product {
 	private String productName;
 	private Category category;
 	private String unitOfMeasure;
+	private double unitBasicRate;
 	private long goodBalance;
 	private long defBalance;
 	
@@ -35,6 +36,13 @@ public class Product {
 	}
 	public void setUnitOfMeasure(String unitOfMeasure) {
 		this.unitOfMeasure = unitOfMeasure;
+	}
+	
+	public double getUnitBasicRate() {
+		return unitBasicRate;
+	}
+	public void setUnitBasicRate(double unitBasicRate) {
+		this.unitBasicRate = unitBasicRate;
 	}
 	public long getGoodBalance() {
 		return goodBalance;

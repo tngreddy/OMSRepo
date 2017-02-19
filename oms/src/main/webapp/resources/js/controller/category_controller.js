@@ -1,16 +1,30 @@
 'use strict';
 
-omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal','$log', '$state', '$stateParams', function($scope, CategoryService, $uibModal, $log, $state, $stateParams) {
+omsApp.controller('CategoryController', ['$scope', 'CategoryService', 'CommonService','$uibModal','$log', '$state', '$stateParams', function($scope, CategoryService,CommonService, $uibModal, $log, $state, $stateParams) {
 	$scope.categories=[];
 	$scope.category={categoryId:null,categoryName:''};
 	$scope.reload = false;
-	
+	$scope.type = 'Category';
+	$scope.tabElmnt = angular.element('#categoryTable');
+	$scope.btnsContainer = '.addbuttoncontainer';
+		
 	$scope.fetchAllCategories = function(){
 		
 		CategoryService.fetchAllCategories()
 		.then(
 				function(data) {
-					$scope.categories = data;
+					
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.categories = data.object;
+							CommonService.initializeDataTable($scope.tabElmnt,$scope.btnsContainer);
+							
+						}
+					
+				    }
 				},
 				function(errResponse){
 					console.error('Error while fetching Currencies');
@@ -24,8 +38,20 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 		CategoryService.addCategory($scope.category)
 		.then(
 				function(data) {
-					$scope.showAddModal = false;
-					$scope.reloadState();	
+					
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+							
+						} else {
+							$scope.showAddModal = false;
+							CommonService.showMsg('success',CommonService.buildSuccessMsg($scope.type,$scope.category.categoryName));
+							$scope.fetchAllCategories();
+						}
+					
+				    }
+					
 				},
 				function(errResponse){
 					console.error('Error while adding category');
@@ -37,8 +63,22 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 		CategoryService.updateCategory(category)
 		.then(
 				function(data) {
-					$scope.showEditModal = false;
-					$scope.reloadState();		
+					
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+							
+						} else {
+							$scope.showEditModal = false;
+							CommonService.showMsg('success',CommonService.buildUpdateMsg($scope.type,category.categoryName));
+							$scope.fetchAllCategories();
+							
+						}
+					
+				    }
+					
+						
 				},
 				function(errResponse){
 					console.error('Error while updating category');
@@ -46,12 +86,23 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 		);
 	};
 
-	$scope.deleteCategory = function(categoryId){
-		CategoryService.deleteCategory(categoryId)
+	$scope.deleteCategory = function(category){
+		CategoryService.deleteCategory(category.categoryId)
 		.then(
 				function(data) {
-					$scope.showDeleteModal = false;
-					$scope.reloadState();			
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+							
+						} else {
+							$scope.showDeleteModal = false;
+							CommonService.showMsg('success',CommonService.buildDeleteMsg($scope.type,category.categoryName));
+							$scope.fetchAllCategories();
+						}
+					
+				    }
+					
 				},
 				function(errResponse){
 					console.error('Error while deleting category');
@@ -101,16 +152,6 @@ omsApp.controller('CategoryController', ['$scope', 'CategoryService','$uibModal'
 	};
 
 
-	$scope.reloadState = function() {
-		setTimeout(function(){
-			$state.transitionTo($state.current, $stateParams, {
-				reload: true,
-				inherit: false,
-				notify: true
-			});
-
-		}, 100);
-	};
 
 }]);
 

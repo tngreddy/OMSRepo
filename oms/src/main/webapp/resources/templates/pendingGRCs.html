@@ -1,0 +1,92 @@
+
+<div class="panel panel-default mainWrapper custompanel hidden-print">
+	<!-- Default panel contents -->
+	<div class="panel-heading">
+		<span class="lead">Pending GRCs</span>
+	</div>
+
+
+	<div class="filtercontainer">
+
+	
+				<label class="col-sm-1">GRC No</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" 
+						name="grcNo" placeholder="GRC No" ng-model="grcNo"
+						/>
+				</div>
+	</div>
+			
+<div class="tablecontainer">
+		<h4>
+			<span class="label label-default">Pending GRCs</span>
+		</h4>
+
+		<table id="grcTable" class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>GRC No</th>
+					<th>Product Id</th>
+					<th>Product Name</th>
+					<th>Good Out</th>
+					<th>Def Out</th>
+					<th>Total Qty</th>
+					<th>unit Basic Rate</th>
+					<th>Total Amount</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="pendingGRC in pendingGRCs | filter:grcNo">
+					<td><span ng-bind="pendingGRC.grcNo"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.product.productId"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.product.productName"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.goodOut"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.defOut"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.totalQty"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.unitBasicRate"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.totalAmount"></span></td>
+					<td><span ng-bind="pendingGRC.prodInfo.status"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="tablecontainer">
+	
+		<h4>
+			<span class="label label-default">Partial Pending GRCs</span>
+		</h4>
+		<table id="grcTable" class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>GRC No</th>
+					<th>Product Id</th>
+					<th>Product Name</th>
+					<th>Rmng Good Out</th>
+					<th>Rmng Def Out</th>
+					<th>Rmng Total Qty</th>
+					<th>unit Basic Rate</th>
+					<th>Rmng Total Amount</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="partialPendingGRC in partialPendingGRCs | filter:grcNo">
+					<td><span ng-bind="partialPendingGRC.grcNo"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.product.productId"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.product.productName"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.goodOut"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.defOut"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.totalQty"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.unitBasicRate"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.totalAmount"></span></td>
+					<td><span ng-bind="partialPendingGRC.prodInfo.status"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+</div>

@@ -2,15 +2,31 @@
 
 omsApp.controller('BaseController', ['$scope','CommonService','$state', '$stateParams', function($scope,CommonService, $state, $stateParams) {
 	
+
+	CommonService.setPreviousState();
+	
 	$scope.user = CommonService.checkAuth();
 	
+	if($scope.user!=null && typeof data != 'undefined')
 	CommonService.checkAdminStates($scope.user.isAdmin);
 	
 	$scope.signOut = function(){
 		
 		CommonService.clearUserContext();
+		CommonService.removePreviousState();
 		$state.go('login');
 	
+		};
+		
+	  $scope.reloadState = function() {
+			setTimeout(function(){
+				$state.transitionTo($state.current, $stateParams, {
+					reload: true,
+					inherit: false,
+					notify: true
+				});
+
+			}, 300);
 		};
 		
 		$scope.today = function() {

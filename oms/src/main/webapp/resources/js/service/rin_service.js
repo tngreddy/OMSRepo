@@ -1,11 +1,11 @@
 'use strict';
 
-omsApp.factory('RINService', ['$http', '$q', function($http, $q){
+omsApp.factory('RINService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 
 		fetchAllRINs: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/rin/')
+			return $http.get(CommonService.getBaseUrl()+'/service/rin/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 		},
 
 		createRIN: function(rin) {
-			return $http.post('http://ntiyyagura:8080/oms/service/rin/', rin)
+			return $http.post(CommonService.getBaseUrl()+'/service/rin/', rin)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 
 		},
 		updateRIN: function(rin) {
-			return $http.put('http://ntiyyagura:8080/oms/service/rin/', rin)
+			return $http.put(CommonService.getBaseUrl()+'/service/rin/', rin)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteRIN: function(rinNo) {
-			return $http.delete('http://ntiyyagura:8080/oms/service/rin/'+rinNo)
+			return $http.delete(CommonService.getBaseUrl()+'/service/rin/'+rinNo)
 			.then(
 					function(response){
 						return response.data;
@@ -58,7 +58,7 @@ omsApp.factory('RINService', ['$http', '$q', function($http, $q){
 		},
 		
 		fetchRINData: function(rinNo,fromToInfo) {
-			return $http.get('http://ntiyyagura:8080/oms/service/rin/details/'+rinNo+'/'+fromToInfo)
+			return $http.get(CommonService.getBaseUrl()+'/service/rin/details/'+rinNo+'/'+fromToInfo)
 			.then(
 					function(response){
 						return response.data;

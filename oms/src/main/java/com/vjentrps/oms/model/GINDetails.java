@@ -5,6 +5,9 @@ public class GINDetails {
 	private GoodsInwardNote gin;
 	private Supplier supplier;
 	private Customer customer;
+	
+	private Object fromDetails;
+	
 	public GoodsInwardNote getGin() {
 		return gin;
 	}
@@ -23,6 +26,13 @@ public class GINDetails {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	public Object getFromDetails() {
+		return fromDetails;
+	}
+	public void setFromDetails(Object fromDetails) {
+		this.fromDetails = fromDetails;
+	}
+	
 	
 
 

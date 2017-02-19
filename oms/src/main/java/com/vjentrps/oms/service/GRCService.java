@@ -2,6 +2,7 @@ package com.vjentrps.oms.service;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.GRCDetails;
@@ -26,7 +27,7 @@ public interface GRCService {
 
 	GoodsReturnableChallan getGRCbyNo(String grcNo) throws OmsServiceException;
 
-	List<PendingGRC> fetchAllGRCPendingProdInfo(String status) throws OmsServiceException;
+	Map<String, List<PendingGRC>> fetchAllGRCPendingProdInfo(String status) throws OmsServiceException;
 	
 	
 

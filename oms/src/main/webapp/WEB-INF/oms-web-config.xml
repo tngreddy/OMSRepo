@@ -24,6 +24,10 @@
 
 	<tx:annotation-driven />
 
+	<mvc:interceptors>
+      <bean class="com.vjentrps.oms.interceptor.SecureUserInterceptor" />
+	</mvc:interceptors> 
+	
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
@@ -34,6 +38,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:dbQueries.properties</value>
+				<value>classpath:log4j.properties</value>
 			</list>
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
@@ -48,7 +53,7 @@
 	<bean id="dataSource" destroy-method="close"
 		class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/oms_db" />
+		<property name="url" value="jdbc:mysql://localhost:3306/sms_db" />
 		<property name="username" value="root" />
 		<property name="password" value="" />
 	</bean>
@@ -69,6 +74,15 @@
 			value="DefOut value exceeds the total defective stock" />
 		<entry key="1006"
 			value="Both GoodOut and DefOut values exceeds the quantities in stock" />
+		<entry key="1007"
+			value="Duplicates Products selected" />
+		<entry key="1008"
+			value="GoodIn and DefIn value exceeds the selected GRC GoodOut and DefOut value" />
+		<entry key="1009"
+			value="GoodIn exceeds the selected GRC GoodOut value" />
+		<entry key="1010"
+			value="DefIn exceeds the selected GRC DefOut value" />
+			
 			
 	</util:map>
 

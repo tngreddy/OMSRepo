@@ -1,14 +1,14 @@
 'use strict';
 
-omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
+omsApp.factory('CategoryService', ['$http', '$q' ,'CommonService', function($http, $qm, CommonService){
 
 	return {
 
 		fetchAllCategories: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/category/')
+			return $http.get(CommonService.getBaseUrl()+'/service/category/')
 			.then(
 					function(response){
-						return response.data.object;
+						return response.data;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching categories');
@@ -18,7 +18,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 		},
 
 		addCategory: function(category) {
-			return $http.post('http://ntiyyagura:8080/oms/service/category/', category)
+			return $http.post(CommonService.getBaseUrl()+'/service/category/', category)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 
 		},
 		updateCategory: function(category) {
-			return $http.put('http://ntiyyagura:8080/oms/service/category/', category)
+			return $http.put(CommonService.getBaseUrl()+'/service/category/', category)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteCategory: function(categoryId) {
-			return $http.delete('http://ntiyyagura:8080/oms/service/category/'+categoryId)
+			return $http.delete(CommonService.getBaseUrl()+'/service/category/'+categoryId)
 			.then(
 					function(response){
 						return response.data;
@@ -58,7 +58,7 @@ omsApp.factory('CategoryService', ['$http', '$q', function($http, $q){
 
 		},
 		getCategoryCount: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/category/count')
+			return $http.get(CommonService.getBaseUrl()+'/service/category/count')
 			.then(
 					function(response){
 						return response.data;

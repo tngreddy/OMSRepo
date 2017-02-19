@@ -74,6 +74,16 @@ public class CategoryServiceImpl  implements CategoryService{
 		}
 	}
 
+	@Override
+	public Category getCategoryByName(String categoryName)
+			throws OmsServiceException {
+		try {
+			return categoryDao.getCategoryByName(categoryName);
+		} catch (OmsDataAccessException e) {
+			throw new OmsServiceException(e);
+		}
+	}
+
 	
 
 }

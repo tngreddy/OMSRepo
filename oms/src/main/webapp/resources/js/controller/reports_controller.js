@@ -1,10 +1,11 @@
 'use strict';
 
-omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonService',  '$state', function($scope, ReportsService, CommonService, $state) {
+omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'GRCService', 'CommonService',  '$state', function($scope, ReportsService,GRCService, CommonService, $state) {
 	$scope.productsStockList=[];
 	$scope.stockRecordList=[];
 	var prodStock = 'base.stockSummary';
 	var stkRecord = 'base.stockRecord';
+	var pendGRCs = 'base.pendingGRCs';
 	$scope.basicInfoMap = {};
 	$scope.productsInfo={};
 	$scope.categories = [];
@@ -12,6 +13,8 @@ omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonServi
 	$scope.catProdMap = {};
 	$scope.showResults = false;
 	$scope.searchObj= {};
+	$scope.pendingGRCs= [];
+	$scope.partialPendingGRCs= [];
 	var products = "PRODUCTS";
 	
 		
@@ -20,7 +23,16 @@ omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonServi
 		ReportsService.fetchAllProductsStock()
 		.then(
 				function(data) {
-					$scope.productsStockList = data;
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.productsStockList = data.object;
+						}
+					
+				    }
+					
 				},
 				function(errResponse){
 					console.error('Error while fetching products stock');
@@ -33,7 +45,16 @@ omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonServi
 		ReportsService.fetchAllStockRecords()
 		.then(
 				function(data) {
-					$scope.stockRecordList = data;
+					if((typeof data != 'undefined')){
+						
+						if(data.error!= null){
+							CommonService.showMsg('danger',data.error.message);
+						} else {
+							$scope.stockRecordList = data.object;
+						}
+					
+				    }
+					
 				},
 				function(errResponse){
 					console.error('Error while fetching stock records');
@@ -54,10 +75,22 @@ omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonServi
 			ReportsService.fetchStockRecords($scope.searchObj)
 			.then(
 					function(data) {
-						$scope.stockRecordList = data;
-						$scope.showResults = true;
-						var elmnt = angular.element('#resultsTable');
-						CommonService.initializeDataTable(elmnt,'.addbuttoncontainer');
+						
+						if((typeof data != 'undefined')){
+							
+							if(data.error!= null){
+								CommonService.showMsg('danger',data.error.message);
+							} else {
+								$scope.stockRecordList = data.object;
+								$scope.showResults = true;
+								//var elmnt = angular.element('#resultsTable');
+								//CommonService.initializeDataTable(elmnt,'.addbuttoncontainer');
+							}
+						
+					    }
+						
+						
+						
 			      					
 					},
 					function(errResponse){
@@ -65,6 +98,34 @@ omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonServi
 					}
 			);
 		};
+		
+		 $scope.fetchPendingGRCs = function(){
+
+			 
+			  GRCService.fetchPendingGRCs()
+				.then(
+						function(data) {
+							
+							if((typeof data != 'undefined')){
+								
+								if(data.error!= null){
+									CommonService.showMsg('danger',data.error.message);
+								} else {
+									$scope.pendingGRCs = data.object["PENDING_GRCS"];
+									$scope.partialPendingGRCs = data.object["PARTIAL_PENDING_GRCS"];
+									//var elmnt = angular.element('#resultsTable');
+									//CommonService.initializeDataTable(elmnt,'.addbuttoncontainer');
+								}
+							
+						    }
+							
+						},
+						function(errResponse){
+							console.error('Error while fetching stock records');
+						}
+				);
+			};
+		
 	
 	$scope.fetchBasicInfoToPopulate = function(){
 
@@ -97,10 +158,14 @@ omsApp.controller('ReportsController', ['$scope', 'ReportsService', 'CommonServi
 	} else if ($state.current.name == stkRecord) {
 		$scope.fetchBasicInfoToPopulate();
 		//$scope.fetchAllStockRecords();
+	} else if ($state.current.name == pendGRCs) {
+		$scope.fetchPendingGRCs();
 	}
 	
 	
-	$scope.minFromDate = new Date($scope.searchObj.toDateValue);
+	$scope.minFromDate = function() {
+		$scope.minDate = $scope.searchObj.FromDateValue;
+	};
 	$scope.currDate  = new Date();
 
 		

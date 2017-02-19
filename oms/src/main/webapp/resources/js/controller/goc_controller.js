@@ -268,7 +268,6 @@ omsApp.controller('GOCController', ['$scope', 'GOCService', 'CommonService','Rep
 	
 	//angular.element('#goodOut'+index).attr('max',data.product.goodBalance);
 	//angular.element('#defOut'+index).attr('max',data.product.defBalance);
-	$scope.fetchAllGOCs();
 	
 	$scope.fetchBasicInfoToPopulate();
 	
@@ -291,17 +290,6 @@ $scope.deleteGOCModal = function(goc){
 	$scope.goc = goc;
 };
 
-
-$scope.reloadState = function() {
-	setTimeout(function(){
-		$state.transitionTo($state.current, $stateParams, {
-			reload: true,
-			inherit: false,
-			notify: true
-		});
-
-	}, 100);
-};
 
 }]);
 

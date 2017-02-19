@@ -3,11 +3,14 @@
 omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http, $q, Flash, $state){
 
 	var userContext = null;
+	
 	var adminOnlyStates = ['base.category','base.product','base.customer','base.supplier','base.user'];
+	//var baseUrl = 'http://192.168.4.252:8080/sms';
+	var baseUrl = 'http://localhost:8080/sms';
 	return {
 		 
 		 fetchCounts: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/common/count')
+			return $http.get(baseUrl+'/service/common/count')
 			.then(
 					function(response){
 						return response.data.object;
@@ -20,7 +23,7 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 		},
 
 		fetchInfoToPopulate: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/common/basicInfo')
+			return $http.get(baseUrl+'/service/common/basicInfo')
 			.then(
 					function(response){
 						return response.data.object;
@@ -46,6 +49,27 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 			}
 			
 		},
+		buildSuccessMsg: function(type,msg) {
+					
+			return "Successfully added "+type+" <strong>"+msg+"</Strong>"
+			
+			},
+		buildUpdateMsg: function(type,msg) {
+				
+				return "Successfully Updated "+type+" <strong>"+msg+"</Strong>"
+				
+			},
+		buildDeleteMsg: function(type,msg) {
+					
+					return "Successfully deleted "+type+" <strong>"+msg+"</Strong>"
+					
+			},
+		
+		buildTransactionSuccessMsg: function(msg) {
+				
+				return "Successfully created <strong>"+msg+"</Strong>"
+				
+		},
 		setUserContext: function(user) {
 			if(null!=user) {
 				 userContext = user;
@@ -69,6 +93,21 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 		     sessionStorage.removeItem('userContext');
 		},
 
+		setPreviousState: function() {
+			
+			sessionStorage.setItem('previousState',JSON.stringify($state.current.name));
+				     
+		},
+		getPreviousState: function() {
+			
+				return $.parseJSON(sessionStorage.getItem('previousState'));
+			
+		},
+		removePreviousState: function() {
+			
+			sessionStorage.removeItem('previousState');
+		
+		},		
 		checkAuth: function() {
 				
 				if (null==this.getUserContext()) {
@@ -87,7 +126,11 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 			} 
 	
 	},
+		getBaseUrl: function() {
 		
+		return baseUrl;
+
+	},
 		initializeDataTable:function(elmnt,btnContainerElmnt) {
 			
 			$(elmnt).dataTable().fnDestroy();

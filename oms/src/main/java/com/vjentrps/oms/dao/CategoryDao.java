@@ -18,5 +18,7 @@ public interface CategoryDao {
 
 	int getCategoryCount() throws OmsDataAccessException;
 
+	Category getCategoryByName(String categoryName) throws OmsDataAccessException;
+
 
 }

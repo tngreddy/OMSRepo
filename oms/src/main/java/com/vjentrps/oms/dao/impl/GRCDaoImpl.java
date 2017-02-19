@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import com.vjentrps.oms.dao.GRCDao;
@@ -73,6 +72,9 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 	@Value("${FETCH_All_GRC_PARTIAL_PENDING_PROD_INFO_LIST}")
 	private String fetchAllGRCPartPendProdInfoListQuery;
 	
+	@Value("${FETCH_All_GRC_PENDING_PROD_INFO_LIST}")
+	private String fetchAllGRCPendProdInfoListQuery;
+	
 		
 	@Value("${UPDATE_GRC_PARTIAL_PENDING_PROD_INFO}")
 	private String updateGrcPartialPendingProdInfoQuery;
@@ -95,6 +97,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			grc.setDocRefNo(resultSet.getString("doc_ref_no"));
 			grc.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			grc.setStatus(resultSet.getString("status"));
+			grc.setRemarks(resultSet.getString("remarks"));
 			return grc;
 		}
 
@@ -109,11 +112,12 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
+			product.setUnitOfMeasure(resultSet.getString("unit_of_measure"));
 			prodInfo.setProduct(product);
 			prodInfo.setGoodOut(resultSet.getLong("good_out"));
 			prodInfo.setDefOut(resultSet.getLong("def_out"));
 			prodInfo.setTotalQty(resultSet.getLong("total_qty"));
-			prodInfo.setUnitBasicRate(resultSet.getLong("unit_basic_rate"));
+			prodInfo.setUnitBasicRate(resultSet.getDouble("unit_basic_rate"));
 			prodInfo.setTotalAmount(resultSet.getLong("total_amount"));
 			prodInfo.setStatus(resultSet.getString("status"));
 			return prodInfo;
@@ -135,7 +139,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			prodInfo.setGoodOut(resultSet.getLong("rem_good_out"));
 			prodInfo.setDefOut(resultSet.getLong("rem_def_out"));
 			prodInfo.setTotalQty(resultSet.getLong("rem_total_qty"));
-			prodInfo.setUnitBasicRate(resultSet.getLong("unit_basic_rate"));
+			prodInfo.setUnitBasicRate(resultSet.getDouble("unit_basic_rate"));
 			prodInfo.setTotalAmount(resultSet.getLong("rem_total_amount"));
 			prodInfo.setStatus(resultSet.getString("status"));
 			return prodInfo;
@@ -143,7 +147,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 
 	}
 	
-	private static class PendingGRCRowMapper implements RowMapper<PendingGRC> {
+	private static class PartPendingGRCRowMapper implements RowMapper<PendingGRC> {
 
 		public PendingGRC mapRow(ResultSet resultSet, int arg1)
 				throws SQLException {
@@ -158,6 +162,30 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			prodInfo.setTotalQty(resultSet.getInt("rem_total_qty"));
 			prodInfo.setUnitBasicRate(resultSet.getInt("unit_basic_rate"));
 			prodInfo.setTotalAmount(resultSet.getInt("rem_total_amount"));
+			prodInfo.setStatus(resultSet.getString("status"));
+			PendingGRC pendingGRC = new PendingGRC();
+			pendingGRC.setGrcNo(resultSet.getString("grc_no"));
+			pendingGRC.setProdInfo(prodInfo);
+			return pendingGRC;
+		}
+
+	}
+	
+	private static class PendingGRCRowMapper implements RowMapper<PendingGRC> {
+
+		public PendingGRC mapRow(ResultSet resultSet, int arg1)
+				throws SQLException {
+
+			ProdInfo prodInfo = new ProdInfo();
+			Product product = new Product();
+			product.setProductId(resultSet.getLong("product_id"));
+			product.setProductName(resultSet.getString("product_name"));
+			prodInfo.setProduct(product);
+			prodInfo.setGoodOut(resultSet.getInt("good_out"));
+			prodInfo.setDefOut(resultSet.getInt("def_out"));
+			prodInfo.setTotalQty(resultSet.getInt("total_qty"));
+			prodInfo.setUnitBasicRate(resultSet.getInt("unit_basic_rate"));
+			prodInfo.setTotalAmount(resultSet.getInt("total_amount"));
 			prodInfo.setStatus(resultSet.getString("status"));
 			PendingGRC pendingGRC = new PendingGRC();
 			pendingGRC.setGrcNo(resultSet.getString("grc_no"));
@@ -331,15 +359,15 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 	@Override
 	public List<PendingGRC> getAllGrcPartialPendingProdInfo(String status)
 			throws OmsDataAccessException {
-		List<PendingGRC> pendingGRCs = null;
+		List<PendingGRC> PartialPendingGRCs = null;
 
-		PendingGRCRowMapper resultSetExtractor = new PendingGRCRowMapper();
+		PartPendingGRCRowMapper resultSetExtractor = new PartPendingGRCRowMapper();
 		try {
-			pendingGRCs = (List<PendingGRC>) jdbcTemplate.query(fetchAllGRCPartPendProdInfoListQuery,new Object[] { status }, resultSetExtractor);
+			PartialPendingGRCs = (List<PendingGRC>) jdbcTemplate.query(fetchAllGRCPartPendProdInfoListQuery,new Object[] { status }, resultSetExtractor);
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
-		return pendingGRCs;
+		return PartialPendingGRCs;
 	}
 
 	@Override
@@ -385,6 +413,20 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			throw new OmsDataAccessException(dae);
 		}
 		return grc;
+	}
+
+	@Override
+	public List<PendingGRC> getAllGrcPendingProdInfo(String status)
+			throws OmsDataAccessException {
+		List<PendingGRC> pendingGRCs = null;
+
+		PendingGRCRowMapper resultSetExtractor = new PendingGRCRowMapper();
+		try {
+			pendingGRCs = (List<PendingGRC>) jdbcTemplate.query(fetchAllGRCPendProdInfoListQuery,new Object[] { status }, resultSetExtractor);
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return pendingGRCs;
 	}
 
 

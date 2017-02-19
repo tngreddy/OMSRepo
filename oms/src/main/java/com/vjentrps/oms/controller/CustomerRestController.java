@@ -3,6 +3,8 @@ package com.vjentrps.oms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,8 @@ import com.vjentrps.oms.model.ResponseDTO;
 @RequestMapping(value="/service/customer")
 public class CustomerRestController extends BaseRestController{
 	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
+	
     @RequestMapping(method = RequestMethod.GET)
     public ResponseDTO getCustomers() {
               
@@ -26,9 +30,14 @@ public class CustomerRestController extends BaseRestController{
    	
         try {
 			customers = customerService.listCustomers();
-		} catch (OmsServiceException e) {
+		}  catch (OmsServiceException e) {
+			log.error("Error while getting customers",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
+		 catch (Exception e) {
+			 log.error("Error while getting customers",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
+	    }
         return new ResponseDTO(customers);
     }
     
@@ -39,8 +48,13 @@ public class CustomerRestController extends BaseRestController{
 		try {
 			customer = customerService.getCustomerById(customerId);
 		} catch (OmsServiceException e) {
+			log.error("Error while getting a customerInfo",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
+		 catch (Exception e) {
+			 log.error("Error while getting a customerInfo",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
+	    }
    	
         return new ResponseDTO(customer);
     }
@@ -53,8 +67,13 @@ public class CustomerRestController extends BaseRestController{
     	try {
 			customerService.addCustomer(customer);
 		} catch (OmsServiceException e) {
+			log.error("Error while adding a customer",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
+		 catch (Exception e) {
+			log.error("Error while adding a customer",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
+	    }
        
         return new ResponseDTO();
     }
@@ -62,13 +81,18 @@ public class CustomerRestController extends BaseRestController{
     
    
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseDTO updateCustomer(Customer customer) {
+    public ResponseDTO updateCustomer(@RequestBody Customer customer) {
  
         try {
 			customerService.updateCustomer(customer);
 		} catch (OmsServiceException e) {
+			log.error("Error while updating a customer",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
+		 catch (Exception e) {
+			 log.error("Error while updating a customer",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
+	    }
         
          return new ResponseDTO();
     }
@@ -79,8 +103,13 @@ public class CustomerRestController extends BaseRestController{
     	 try {
 			customerService.deleteCustomer(customerId);
 		} catch (OmsServiceException e) {
+			log.error("Error while deleting a customer",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
+		 catch (Exception e) {
+			 log.error("Error while deleting a customer",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
+	    }
  
            return new ResponseDTO();
     }
@@ -110,6 +139,9 @@ public class CustomerRestController extends BaseRestController{
 		} catch (OmsServiceException e) {
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
+		 catch (Exception e) {
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
+	    }
         return new ResponseDTO(customers);
     }
 }

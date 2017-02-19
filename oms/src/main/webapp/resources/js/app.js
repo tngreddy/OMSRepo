@@ -82,6 +82,12 @@ omsApp.config(function($stateProvider, $urlRouterProvider) {
 	            controller: 'ReportsController'
 	        })
 	        
+	        .state('base.pendingGRCs', {
+	        	url: '/pendingGRCs',
+	            templateUrl: 'resources/templates/pendingGRCs.html',
+	            controller: 'ReportsController'
+	        })
+	        
 	        .state('base.user', {
 	        	url: '/userHome',
 	            templateUrl: 'resources/templates/user.html',

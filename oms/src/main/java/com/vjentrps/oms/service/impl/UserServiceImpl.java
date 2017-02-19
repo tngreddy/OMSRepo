@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUser(User user) throws OmsServiceException {
 		try {
+			user.setEncryptedPassword(CommonUtil.encryptString(user.getPassword()));
 			userDao.updateUser(user);
 			
 		} catch (OmsDataAccessException e) {

@@ -66,6 +66,7 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 			goc.setDocRefNo(resultSet.getString("doc_ref_no"));
 			goc.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			goc.setStatus(resultSet.getString("status"));
+			goc.setRemarks(resultSet.getString("remarks"));
 			return goc;
 		}
 
@@ -80,11 +81,12 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 			Product product = new Product();
 			product.setProductId(resultSet.getLong("product_id"));
 			product.setProductName(resultSet.getString("product_name"));
+			product.setUnitOfMeasure(resultSet.getString("unit_of_measure"));
 			prodInfo.setProduct(product);
 			prodInfo.setGoodOut(resultSet.getLong("good_out"));
 			prodInfo.setDefOut(resultSet.getLong("def_out"));
 			prodInfo.setTotalQty(resultSet.getLong("total_qty"));
-			prodInfo.setUnitBasicRate(resultSet.getLong("unit_basic_rate"));
+			prodInfo.setUnitBasicRate(resultSet.getDouble("unit_basic_rate"));
 			prodInfo.setTotalAmount(resultSet.getLong("total_amount"));
 			return prodInfo;
 		}

@@ -39,7 +39,9 @@ public interface GRCDao {
 
 	GoodsReturnableChallan fetchGRCByNo(String grcNo) throws OmsDataAccessException;
 
-	List<PendingGRC> getAllGrcPartialPendingProdInfo(String status)
-			throws OmsDataAccessException;
+	List<PendingGRC> getAllGrcPartialPendingProdInfo(String status)	throws OmsDataAccessException;
+
+	List<PendingGRC> getAllGrcPendingProdInfo(String status) throws OmsDataAccessException;
+	
 	
 }

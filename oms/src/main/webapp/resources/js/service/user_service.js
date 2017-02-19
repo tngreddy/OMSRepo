@@ -1,11 +1,11 @@
 'use strict';
 
-omsApp.factory('UserService', ['$http', '$q', function($http, $q){
+omsApp.factory('UserService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 
 		fetchAllUsers: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/user/')
+			return $http.get(CommonService.getBaseUrl()+'/service/user/')
 			.then(
 					function(response){
 						return response.data.object;
@@ -18,7 +18,7 @@ omsApp.factory('UserService', ['$http', '$q', function($http, $q){
 		},
 
 		addUser: function(user) {
-			return $http.post('http://ntiyyagura:8080/oms/service/user/', user)
+			return $http.post(CommonService.getBaseUrl()+'/service/user/',user)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('UserService', ['$http', '$q', function($http, $q){
 
 		},
 		updateUser: function(user) {
-			return $http.put('http://ntiyyagura:8080/oms/service/user/', user)
+			return $http.put(CommonService.getBaseUrl()+'/service/user/',user)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('UserService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteUser: function(userId) {
-			return $http.delete('http://ntiyyagura:8080/oms/service/user/'+userId)
+			return $http.delete(CommonService.getBaseUrl()+'/service/user/'+userId)
 			.then(
 					function(response){
 						return response.data;

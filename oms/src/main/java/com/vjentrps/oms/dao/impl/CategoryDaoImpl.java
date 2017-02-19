@@ -35,6 +35,9 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 
 	@Value("${CATEGORY_COUNT}")
 	private String categoryCountQuery;
+	
+	@Value("${GET_CATEGORY_BY_NAME}")
+	private String getCategoryByNameQuery;
 
 	@Override
 	public int addCategory(Category category) throws OmsDataAccessException {
@@ -117,6 +120,25 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
 			throw new OmsDataAccessException(dae);
 		}
 		return count;
+	}
+
+	@Override
+	public Category getCategoryByName(String categoryName)
+			throws OmsDataAccessException {
+		Category category = null;
+
+		CategoryRowMapper resultSetExtractor = new CategoryRowMapper();
+		try {
+			category = (Category) jdbcTemplate.queryForObject(getCategoryByNameQuery,new Object[] { categoryName },
+					resultSetExtractor);
+		} catch (EmptyResultDataAccessException emptyDataAccessException) {
+			// log.debug();
+
+		} catch (DataAccessException dae) {
+			throw new OmsDataAccessException(dae);
+		}
+		return category;
+
 	}
 
 

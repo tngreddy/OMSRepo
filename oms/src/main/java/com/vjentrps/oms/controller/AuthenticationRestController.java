@@ -3,6 +3,8 @@ package com.vjentrps.oms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,9 +19,11 @@ import com.vjentrps.oms.model.User;
 @RestController
 @RequestMapping(value="/service/auth")
 public class AuthenticationRestController extends BaseRestController{
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping(value="/signIn", method = RequestMethod.POST)
-	public ResponseDTO ProcessSignIn( @RequestBody User user) {
+	public ResponseDTO ProcessSignIn(@RequestBody User user) {
 
 		User validUser;
 		try {
@@ -28,9 +32,11 @@ public class AuthenticationRestController extends BaseRestController{
 				return new ResponseDTO(commonUtil.processError(ErrorsEnum.NO_USER_FOUND));
 			}
 		} catch (OmsServiceException e) {
+			log.error("Error while signing in",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		}
 		catch (Exception e) {
+			log.error("Error while signing in",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 	    }
 

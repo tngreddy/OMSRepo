@@ -1,14 +1,14 @@
 'use strict';
 
-omsApp.factory('ReportsService', ['$http', '$q', function($http, $q){
+omsApp.factory('ReportsService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 
 		fetchAllProductsStock: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/reports/productStock')
+			return $http.get(CommonService.getBaseUrl()+'/service/reports/productStock')
 			.then(
 					function(response){
-						return response.data.object;
+						return response.data;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching products stock');
@@ -17,7 +17,7 @@ omsApp.factory('ReportsService', ['$http', '$q', function($http, $q){
 			);
 		},
 		fetchProductStock: function(productId) {
-			return $http.get('http://ntiyyagura:8080/oms/service/reports/productStock/'+productId)
+			return $http.get(CommonService.getBaseUrl()+'/service/reports/productStock/'+productId)
 			.then(
 					function(response){
 						return response.data.object;
@@ -29,10 +29,10 @@ omsApp.factory('ReportsService', ['$http', '$q', function($http, $q){
 			);
 		},
 		fetchAllStockRecords: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/reports/stockRecord')
+			return $http.get(CommonService.getBaseUrl()+'/service/reports/stockRecord')
 			.then(
 					function(response){
-						return response.data.object;
+						return response.data;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching stock records');
@@ -42,10 +42,10 @@ omsApp.factory('ReportsService', ['$http', '$q', function($http, $q){
 		},
 		
 		fetchStockRecords: function(searchObj) {
-			return $http.post('http://ntiyyagura:8080/oms/service/reports/stockRecord/search', searchObj)
+			return $http.post(CommonService.getBaseUrl()+'/service/reports/stockRecord/search', searchObj)
 			.then(
 					function(response){
-						return response.data.object;
+						return response.data;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching stock records');

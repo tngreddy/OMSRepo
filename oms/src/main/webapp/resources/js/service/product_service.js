@@ -1,14 +1,14 @@
 'use strict';
 
-omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
+omsApp.factory('ProductService', ['$http', '$q','CommonService', function($http, $q, CommonService){
 
 	return {
 
 		fetchAllProducts: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/product/')
+			return $http.get(CommonService.getBaseUrl()+'/service/product/')
 			.then(
 					function(response){
-						return response.data.object;
+						return response.data;
 					}, 
 					function(errResponse){
 						console.error('Error while fetching products');
@@ -18,7 +18,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 		},
 
 		addProduct: function(product) {
-			return $http.post('http://ntiyyagura:8080/oms/service/product/', product)
+			return $http.post(CommonService.getBaseUrl()+'/service/product/', product)
 			.then(
 					function(response){
 						return response.data;
@@ -31,7 +31,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 
 		},
 		updateProduct: function(product) {
-			return $http.put('http://ntiyyagura:8080/oms/service/product/', product)
+			return $http.put(CommonService.getBaseUrl()+'/service/product/', product)
 			.then(
 					function(response){
 						return response.data;
@@ -45,7 +45,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 		},
 
 		deleteProduct: function(productId) {
-			return $http.delete('http://ntiyyagura:8080/oms/service/product/'+productId)
+			return $http.delete(CommonService.getBaseUrl()+'/service/product/'+productId)
 			.then(
 					function(response){
 						return response.data;
@@ -59,7 +59,7 @@ omsApp.factory('ProductService', ['$http', '$q', function($http, $q){
 		},
 
 		getProductCount: function() {
-			return $http.get('http://ntiyyagura:8080/oms/service/product/count')
+			return $http.get(CommonService.getBaseUrl()+'/service/product/count')
 			.then(
 					function(response){
 						return response.data;

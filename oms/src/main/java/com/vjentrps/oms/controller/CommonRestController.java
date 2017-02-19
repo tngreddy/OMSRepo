@@ -1,15 +1,18 @@
 package com.vjentrps.oms.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vjentrps.oms.exception.OmsServiceException;
+import com.vjentrps.oms.model.BasicInfo;
 import com.vjentrps.oms.model.CommonConstants;
 import com.vjentrps.oms.model.ErrorsEnum;
 import com.vjentrps.oms.model.HomeResponseDTO;
@@ -18,6 +21,8 @@ import com.vjentrps.oms.model.ResponseDTO;
 @RestController
 @RequestMapping(value = "/service/common")
 public class CommonRestController extends BaseRestController {
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResponseDTO getCounts() {
@@ -31,9 +36,11 @@ public class CommonRestController extends BaseRestController {
 			homeResponseDTO.setSupplierCount(supplierService.getSupplierCount());
 			
 		} catch (OmsServiceException e) {
+			log.error("Error while getting counts",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		} catch (Exception e) {
-			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			log.error("Error while getting counts",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
 
 		return new ResponseDTO(homeResponseDTO);
@@ -54,13 +61,22 @@ public class CommonRestController extends BaseRestController {
 			if(MapUtils.isNotEmpty(catProdMap)) {
 				basicInfo.put(CommonConstants.CATEGORIES, catProdMap.keySet());
 			}
+			BasicInfo bInfo = new BasicInfo();
+			bInfo.setId(0);
+			bInfo.setName("INITIAL_ENTRY");
+			ArrayList<BasicInfo> blist = new ArrayList<BasicInfo>();
+			blist.add(bInfo);
+			
+			basicInfo.put(CommonConstants.OTHERS, blist);
 			
 			
 			
 		} catch (OmsServiceException e) {
+			log.error("Error while getting basic info",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
 		} catch (Exception e) {
-			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));
+			log.error("Error while getting basic info",e);
+			return new ResponseDTO(commonUtil.processError(ErrorsEnum.SERVICE_DOWN));
 		}
 
 		return new ResponseDTO(basicInfo);
