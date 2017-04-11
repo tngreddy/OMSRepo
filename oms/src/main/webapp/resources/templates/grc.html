@@ -48,7 +48,7 @@
 	<div class="panel-heading">
 		<span class="lead">{{grcData.grc.grcNo}} </span>
 	</div>
-	<div ng-show=user.isAdmin class="modal-footer">
+	<div ng-show=user.maverick class="modal-footer">
 		<button class="btn btn-flat btn-warning"
 			ng-click="editGRCModal(grcData)">
 			<i class="fa fa-edit "></i> Edit
@@ -164,9 +164,10 @@
 
 <div ng-show="showGRCDetails" class="printFormatPanel" ng-init="showCust={{grcData.hasCustomer}}">
 	<table class="table table-bordered" style="margin-bottom:2px;">
-			 <tr class="header" ng-include="'resources/templates/common/header.html'" >
-		     </tr>
-			<tr>
+		<tr class="header"
+			ng-include="'resources/templates/common/header.html'">
+		</tr>
+		<tr>
 				<td colspan="2">
 					<h3 class="text-center">
 						<u>GOODS RETURNABLE CHALLAN</u>

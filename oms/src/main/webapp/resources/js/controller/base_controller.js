@@ -8,7 +8,7 @@ omsApp.controller('BaseController', ['$scope','CommonService','$state', '$stateP
 	$scope.user = CommonService.checkAuth();
 	
 	if($scope.user!=null && typeof data != 'undefined')
-	CommonService.checkAdminStates($scope.user.isAdmin);
+	CommonService.checkAdminStates($scope.user.maverick);
 	
 	$scope.signOut = function(){
 		

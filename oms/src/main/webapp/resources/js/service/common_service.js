@@ -5,8 +5,8 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 	var userContext = null;
 	
 	var adminOnlyStates = ['base.category','base.product','base.customer','base.supplier','base.user'];
-	//var baseUrl = 'http://192.168.4.252:8080/sms';
-	var baseUrl = 'http://localhost:8080/sms';
+	var baseUrl = 'http://192.168.4.252:8080/sms';
+	//var baseUrl = 'http://localhost:8080/sms';
 	return {
 		 
 		 fetchCounts: function() {
@@ -74,10 +74,11 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 			if(null!=user) {
 				 userContext = user;
 				 if(user.userRole.roleName == 'ADMIN') {
-					 userContext.isAdmin = true;
+					 userContext.maverick = true;
 				 } else {
-					 userContext.isAdmin = false;
+					 userContext.maverick = false;
 				 }
+				 userContext.userRole = null;
 				 sessionStorage.setItem('userContext',JSON.stringify(userContext));
 			}
 			     
@@ -117,9 +118,9 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 				}
 		
 		},
-		checkAdminStates: function(isAdmin) {
+		checkAdminStates: function(maverick) {
 			
-			if (!isAdmin) {
+			if (!maverick) {
 				if ($.inArray($state.current.name, adminOnlyStates) > -1){
 					$state.go('base.dashboard');
 				}
