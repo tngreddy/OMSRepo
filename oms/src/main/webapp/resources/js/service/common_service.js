@@ -5,8 +5,8 @@ omsApp.factory('CommonService', ['$http', '$q', 'Flash','$state', function($http
 	var userContext = null;
 	
 	var adminOnlyStates = ['base.category','base.product','base.customer','base.supplier','base.user'];
-	var baseUrl = 'http://192.168.4.252:8080/sms';
-	//var baseUrl = 'http://localhost:8080/sms';
+	//var baseUrl = 'http://192.168.4.252:8080/sms';
+	var baseUrl = 'http://localhost:8080/sms';
 	return {
 		 
 		 fetchCounts: function() {
