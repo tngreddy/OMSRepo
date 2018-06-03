@@ -25,7 +25,10 @@
 		<table id="grcTable" class="table table-bordered table-striped">
 			<thead>
 				<tr>
+					<th>SNo</th>
 					<th>GRC No</th>
+					<th>To</th>
+					<th>ToName</th>
 					<th>Product Id</th>
 					<th>Product Name</th>
 					<th>Good Out</th>
@@ -33,12 +36,17 @@
 					<th>Total Qty</th>
 					<th>unit Basic Rate</th>
 					<th>Total Amount</th>
+					<th>GRC Date</th>
+					<th>Last Modified</th>
 					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="pendingGRC in pendingGRCs | filter:grcNo">
+					<td><span ng-bind="$index+1"></span></td>
 					<td><span ng-bind="pendingGRC.grcNo"></span></td>
+					<td><span ng-bind="pendingGRC.to"></span></td>
+					<td><span ng-bind="pendingGRC.toName"></span></td>
 					<td><span ng-bind="pendingGRC.prodInfo.product.productId"></span></td>
 					<td><span ng-bind="pendingGRC.prodInfo.product.productName"></span></td>
 					<td><span ng-bind="pendingGRC.prodInfo.goodOut"></span></td>
@@ -46,6 +54,8 @@
 					<td><span ng-bind="pendingGRC.prodInfo.totalQty"></span></td>
 					<td><span ng-bind="pendingGRC.prodInfo.unitBasicRate"></span></td>
 					<td><span ng-bind="pendingGRC.prodInfo.totalAmount"></span></td>
+					<td><span ng-bind="pendingGRC.grcDate"></span></td>
+					<td><span ng-bind="pendingGRC.lastModified"></span></td>
 					<td><span ng-bind="pendingGRC.prodInfo.status"></span></td>
 				</tr>
 			</tbody>

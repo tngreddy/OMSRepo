@@ -58,7 +58,7 @@ omsApp.factory('GRCService', ['$http', '$q','CommonService', function($http, $q,
 		},
 		
 		fetchGRCNos: function(fromName) {
-			return $http.get(CommonService.getBaseUrl()+'/service/grc/grcNos/'+fromName)
+			return $http.get(CommonService.getBaseUrl()+'/service/grc/grcNos?toName='+fromName)
 			.then(
 					function(response){
 						return response.data.object;

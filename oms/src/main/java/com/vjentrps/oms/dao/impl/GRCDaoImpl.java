@@ -190,6 +190,10 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			PendingGRC pendingGRC = new PendingGRC();
 			pendingGRC.setGrcNo(resultSet.getString("grc_no"));
 			pendingGRC.setProdInfo(prodInfo);
+			pendingGRC.setGrcDate(resultSet.getString("grc_date"));
+			pendingGRC.setTo(resultSet.getString("_to"));
+			pendingGRC.setToName(resultSet.getString("to_name"));
+			pendingGRC.setLastModified(resultSet.getString("last_modified"));
 			return pendingGRC;
 		}
 
