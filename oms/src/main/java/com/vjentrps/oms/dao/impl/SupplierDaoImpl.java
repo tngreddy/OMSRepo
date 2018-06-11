@@ -50,7 +50,7 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 	public void addSupplier(Supplier supplier) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(addSupplierQuery,
-					new Object[] { supplier.getName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getContact().getContactId() });
+					new Object[] { supplier.getName(), supplier.getGstNo(), supplier.getPanNo(), supplier.getContact().getContactId() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -72,7 +72,7 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 	public void updateSupplier(Supplier supplier) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateSupplierQuery,
-					new Object[] { supplier.getName(), supplier.getTinNo(), supplier.getCstNo(), supplier.getSupplierId()});
+					new Object[] { supplier.getName(), supplier.getGstNo(), supplier.getPanNo(), supplier.getSupplierId()});
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -172,8 +172,8 @@ public class SupplierDaoImpl extends BaseDao implements SupplierDao {
 			supplier.setContact(contact);
 			supplier.setSupplierId(resultSet.getLong("supplier_id"));
 			supplier.setName(resultSet.getString("supplier_name"));
-			supplier.setTinNo(resultSet.getString("tin_no"));
-			supplier.setCstNo(resultSet.getString("cst_no"));
+			supplier.setGstNo(resultSet.getString("gst_no"));
+			supplier.setPanNo(resultSet.getString("pan_no"));
 			return supplier;
 		}
 

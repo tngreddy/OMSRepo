@@ -8,6 +8,7 @@ public class GoodsOutwardChallan {
 	private String gocDate;
 	private String to;
 	private String toName;
+	private Long toId;
 	private String docRefNo;
 	private String docDate;
 	private List<ProdInfo> prodInfoList;
@@ -68,6 +69,14 @@ public class GoodsOutwardChallan {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	public Long getToId() {
+		return toId;
+	}
+	public void setToId(Long toId) {
+		this.toId = toId;
+	}
+	
+	
 	
 	
 

@@ -18,17 +18,19 @@ import com.vjentrps.oms.dao.SupplierDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
+import com.vjentrps.oms.model.Customer;
 import com.vjentrps.oms.model.GINDetails;
 import com.vjentrps.oms.model.GoodsInwardNote;
 import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
+import com.vjentrps.oms.model.Supplier;
 import com.vjentrps.oms.service.GINService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Service
 @Transactional(rollbackFor = { RuntimeException.class, Exception.class })
-public class GINServiceImpl implements GINService {
+public class GINServiceImpl extends BaseService implements GINService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -39,28 +41,24 @@ public class GINServiceImpl implements GINService {
 	private StockDao stockDao;
 
 	@Autowired
-	private SupplierDao supplierDao;
-
-	@Autowired
-	private CustomerDao customerDao;
-
-	@Autowired
 	DataFieldMaxValueIncrementer ginIdIncrementer;
 
 	@Override
-	public String createGIN(GoodsInwardNote gin) throws OmsServiceException,
-			ParseException {
-		
+	public String createGIN(GoodsInwardNote gin) throws OmsServiceException, ParseException {
+
 		String ginNo = "";
 
 		if (null != gin && CollectionUtils.isNotEmpty(gin.getProdInfoList())) {
 			try {
 
 				gin.setGinNo(CommonUtil.buildTransId(CommonConstants.GIN, ginIdIncrementer.nextStringValue()));
-				
+
 				ginNo = gin.getGinNo();
 
 				gin.setDocDate(CommonUtil.formatDate(gin.getDocDate()));
+
+				// fetching and setting fromId using fromName
+				gin.setFromId(getIdFromName(gin.getFrom(), gin.getFromName()));
 
 				int success = ginDao.createGIN(gin);
 
@@ -68,15 +66,16 @@ public class GINServiceImpl implements GINService {
 
 					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
 
-					if (success > 0 && null != productStock	&& null != productStock.getProduct()) {
+					if (success > 0 && null != productStock && null != productStock.getProduct()) {
 
 						prodInfo.setUnitBasicRate(productStock.getProduct().getUnitBasicRate());
 						prodInfo.setTotalQty(prodInfo.getGoodIn() + prodInfo.getDefIn());
-						prodInfo.setTotalAmount(prodInfo.getTotalQty() * prodInfo.getUnitBasicRate() );
+						prodInfo.setTotalAmount(prodInfo.getTotalQty() * prodInfo.getUnitBasicRate());
 
 						ginDao.addGinProdInfo(gin.getGinNo(), prodInfo);
 
-						StockRecord stockRecord = CommonUtil.buildStockRecord(gin, prodInfo, productStock.getProduct(),	CommonConstants.GIN);
+						StockRecord stockRecord = CommonUtil.buildStockRecord(gin, prodInfo, productStock.getProduct(),
+								CommonConstants.GIN);
 
 						stockDao.addStockRecord(stockRecord);
 						stockDao.updateProductStock(productStock);
@@ -94,7 +93,13 @@ public class GINServiceImpl implements GINService {
 	@Override
 	public List<GoodsInwardNote> listGINs() throws OmsServiceException {
 		try {
-			return ginDao.fetchAllGINs();
+			List<GoodsInwardNote> ginsList = ginDao.fetchAllGINs();
+			if (CollectionUtils.isNotEmpty(ginsList)) {
+				for (GoodsInwardNote gin : ginsList) {
+					gin.setFromName(getNameFromId(gin.getFrom(), gin.getFromId()));
+				}
+			}
+			return ginsList;
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
 		}
@@ -102,28 +107,26 @@ public class GINServiceImpl implements GINService {
 
 	@Override
 	public void updateGIN(GoodsInwardNote gin) {
-		
+
 		if (null != gin && CollectionUtils.isNotEmpty(gin.getProdInfoList())) {
-		try {
-			
-			List<StockRecord> stockRecords = stockDao.getStockRecords(gin.getGinNo());
-			
-			if(CollectionUtils.isNotEmpty(stockRecords)) {
-				
-				for(StockRecord record:stockRecords) {
-					
+			try {
+
+				List<StockRecord> stockRecords = stockDao.getStockRecords(gin.getGinNo());
+
+				if (CollectionUtils.isNotEmpty(stockRecords)) {
+
+					for (StockRecord record : stockRecords) {
+
+					}
+
 				}
-												
+
+				ginDao.updateGIN(gin);
+
+			} catch (OmsDataAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			
-			ginDao.updateGIN(gin);
-			
-		
-		} catch (OmsDataAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		}
 	}
 
@@ -156,20 +159,32 @@ public class GINServiceImpl implements GINService {
 			GoodsInwardNote gin = getGINbyNo(ginNo);
 			if (null != gin) {
 
-				if(fromToInfo){
-
-					if (CommonConstants.SUPPLIER.equalsIgnoreCase(gin.getFrom())) {
-
-						ginDetails.setFromDetails(supplierDao.getSupplierByName(gin.getFromName()));
-						//ginDetails.setSupplier(supplierDao.getSupplierByName(gin.getFromName()));
-
-					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(gin.getFrom())) {
-						ginDetails.setFromDetails(customerDao.getCustomerByName(gin.getFromName()));
-						//ginDetails.setCustomer(customerDao.getCustomerByName(gin.getFromName()));
+				if (CommonConstants.SUPPLIER.equalsIgnoreCase(gin.getFrom())) {
+					Supplier supplier = supplierDao.getSupplierById(gin.getFromId());
+					if (null != supplier) {
+						if (fromToInfo) {
+							ginDetails.setFromDetails(supplier);
+							// ginDetails.setSupplier(supplierDao.getSupplierByName(gin.getFromName()));
+						}
+						gin.setFromName(supplier.getName());
 					}
+
+				} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(gin.getFrom())) {
+					Customer customer = customerDao.getCustomerById(gin.getFromId());
+					if (null != customer) {
+						if (fromToInfo) {
+							ginDetails.setFromDetails(customer);
+							// ginDetails.setCustomer(customerDao.getCustomerByName(gin.getFromName()));
+						}
+						gin.setFromName(customer.getName());
+					}
+
+				} else if (CommonConstants.OTHERS.equalsIgnoreCase(gin.getFrom())) {
+					gin.setFromName(CommonConstants.INITIAL_ENTRY);
 				}
-				ginDetails.setGin(gin);
 			}
+			ginDetails.setGin(gin);
+
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
 		}

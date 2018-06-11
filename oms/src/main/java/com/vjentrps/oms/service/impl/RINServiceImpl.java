@@ -21,6 +21,7 @@ import com.vjentrps.oms.dao.SupplierDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
+import com.vjentrps.oms.model.Customer;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
 import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.ProductStock;
@@ -28,12 +29,13 @@ import com.vjentrps.oms.model.RINDetails;
 import com.vjentrps.oms.model.ReturnedInwardNote;
 import com.vjentrps.oms.model.StatusEnum;
 import com.vjentrps.oms.model.StockRecord;
+import com.vjentrps.oms.model.Supplier;
 import com.vjentrps.oms.service.RINService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Service
-@Transactional(rollbackFor = { RuntimeException.class, Exception.class },isolation=Isolation.READ_UNCOMMITTED)
-public class RINServiceImpl implements RINService {
+@Transactional(rollbackFor = { RuntimeException.class, Exception.class }, isolation = Isolation.READ_UNCOMMITTED)
+public class RINServiceImpl extends BaseService implements RINService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -45,7 +47,7 @@ public class RINServiceImpl implements RINService {
 
 	@Autowired
 	private StockDao stockDao;
-	
+
 	@Autowired
 	private SupplierDao supplierDao;
 
@@ -65,53 +67,66 @@ public class RINServiceImpl implements RINService {
 				rin.setRinNo(CommonUtil.buildTransId(CommonConstants.RIN, rinIdIncrementer.nextStringValue()));
 				rinNo = rin.getRinNo();
 				rin.setDocDate(CommonUtil.formatDate(rin.getDocDate()));
+				// fetching and setting fromId using fromName
+				rin.setFromId(getIdFromName(rin.getFrom(), rin.getFromName()));
 
 				int success = rinDao.createRIN(rin);
 
-				for (ProdInfo prodInfo: rin.getProdInfoList()) {
+				for (ProdInfo prodInfo : rin.getProdInfoList()) {
 
 					ProductStock productStock = stockDao.getProductStock(prodInfo.getProduct().getProductId());
 
-					if(success > 0 && null != productStock && null != productStock.getProduct()) {
+					if (success > 0 && null != productStock && null != productStock.getProduct()) {
 
 						prodInfo.setUnitBasicRate(productStock.getProduct().getUnitBasicRate());
-						prodInfo.setTotalQty(prodInfo.getGoodIn()+prodInfo.getDefIn());
-						prodInfo.setTotalAmount(prodInfo.getTotalQty()*prodInfo.getUnitBasicRate());
+						prodInfo.setTotalQty(prodInfo.getGoodIn() + prodInfo.getDefIn());
+						prodInfo.setTotalAmount(prodInfo.getTotalQty() * prodInfo.getUnitBasicRate());
 
-						rinDao.addRinProdInfo(rin.getRinNo(),prodInfo);
+						rinDao.addRinProdInfo(rin.getRinNo(), prodInfo);
 
-						StockRecord stockRecord = CommonUtil.buildStockRecord(rin, prodInfo, productStock.getProduct(), CommonConstants.RIN);
+						StockRecord stockRecord = CommonUtil.buildStockRecord(rin, prodInfo, productStock.getProduct(),
+								CommonConstants.RIN);
 
 						stockDao.addStockRecord(stockRecord);
 						stockDao.updateProductStock(productStock);
 
-						if(StringUtils.isNotBlank(rin.getGrcNo()) && !CommonConstants.NONE.equalsIgnoreCase(rin.getGrcNo())) {
+						if (StringUtils.isNotBlank(rin.getGrcNo())
+								&& !CommonConstants.NONE.equalsIgnoreCase(rin.getGrcNo())) {
 
-							//checking the respective GRC, checking for the pending GRCs and closing them
-							ProdInfo grcProdInfo = grcDao.getGRCProdInfo(rin.getGrcNo(), prodInfo.getProduct().getProductId());
+							// checking the respective GRC, checking for the
+							// pending GRCs and closing them
+							ProdInfo grcProdInfo = grcDao.getGRCProdInfo(rin.getGrcNo(),
+									prodInfo.getProduct().getProductId());
 
-							if(null!=grcProdInfo && null!=grcProdInfo.getProduct()) {
+							if (null != grcProdInfo && null != grcProdInfo.getProduct()) {
 
-								if(isProdOutCountMatching(prodInfo,	grcProdInfo)) {
+								if (isProdOutCountMatching(prodInfo, grcProdInfo)) {
 									grcProdInfo.setStatus(StatusEnum.CLOSED.name());
-									//updating the grc product status to closed 
+									// updating the grc product status to closed
 									grcDao.updateGrcProdInfoStatus(rin.getGrcNo(), grcProdInfo);
 								} else {
-									//fetching the grc partial pending product info 
-									ProdInfo grcExistingPendInfo = grcDao.getGrcPartialPendingProdInfo(rin.getGrcNo(), grcProdInfo.getProduct().getProductId());
+									// fetching the grc partial pending product
+									// info
+									ProdInfo grcExistingPendInfo = grcDao.getGrcPartialPendingProdInfo(rin.getGrcNo(),
+											grcProdInfo.getProduct().getProductId());
 
-									if(null == grcExistingPendInfo) {
+									if (null == grcExistingPendInfo) {
 
-										ProdInfo partialPendingProdInfo =  buildGRCPartialPendingProdInfo(prodInfo, grcProdInfo);
+										ProdInfo partialPendingProdInfo = buildGRCPartialPendingProdInfo(prodInfo,
+												grcProdInfo);
 										grcDao.addGrcPartialPendingProdInfo(rin.getGrcNo(), partialPendingProdInfo);
 
-									} else if(!StatusEnum.CLOSED.name().equalsIgnoreCase(grcExistingPendInfo.getStatus())) {
+									} else if (!StatusEnum.CLOSED.name()
+											.equalsIgnoreCase(grcExistingPendInfo.getStatus())) {
 
-										ProdInfo partialPendingProdInfo =  buildGRCPartialPendingProdInfo(prodInfo, grcExistingPendInfo);
+										ProdInfo partialPendingProdInfo = buildGRCPartialPendingProdInfo(prodInfo,
+												grcExistingPendInfo);
 										grcDao.updateGrcPartialPendingProdInfo(rin.getGrcNo(), partialPendingProdInfo);
-										
-										if(StatusEnum.CLOSED.name().equalsIgnoreCase(partialPendingProdInfo.getStatus())) {
-											//updating the grc product status to closed 
+
+										if (StatusEnum.CLOSED.name()
+												.equalsIgnoreCase(partialPendingProdInfo.getStatus())) {
+											// updating the grc product status
+											// to closed
 											grcProdInfo.setStatus(StatusEnum.CLOSED.name());
 											grcDao.updateGrcProdInfoStatus(rin.getGrcNo(), grcProdInfo);
 										}
@@ -122,18 +137,18 @@ public class RINServiceImpl implements RINService {
 						}
 					}
 				}
-				
+
 				List<ProdInfo> prodInfos = grcDao.getGRCProdInfo(rin.getGrcNo(), StatusEnum.PENDING.name());
-				//if there is no prodinfo with PENDING status then updating the GRC status to CLOSED
-				if(CollectionUtils.isEmpty(prodInfos)) {
+				// if there is no prodinfo with PENDING status then updating the
+				// GRC status to CLOSED
+				if (CollectionUtils.isEmpty(prodInfos)) {
 					GoodsReturnableChallan grc = new GoodsReturnableChallan();
 					grc.setStatus(StatusEnum.CLOSED.name());
 					grc.setGrcNo(rin.getGrcNo());
-					
+
 					grcDao.updateGRCStatus(grc);
 				}
-				
-				
+
 			} catch (OmsDataAccessException e) {
 				throw new OmsServiceException(e);
 			}
@@ -141,55 +156,56 @@ public class RINServiceImpl implements RINService {
 		return rinNo;
 
 	}
+
 	/**
 	 * Method to check if the goods out count matches with grc out count
+	 * 
 	 * @param prodInfo
 	 * @param grcProdInfo
 	 * @return
 	 */
-	private boolean isProdOutCountMatching(ProdInfo prodInfo,
-			ProdInfo grcProdInfo) {
-		return (grcProdInfo.getGoodOut() == prodInfo.getGoodIn() && 
-				grcProdInfo.getDefOut() == prodInfo.getDefIn())
-				|| ((grcProdInfo.getGoodOut() + grcProdInfo.getDefOut()) == (prodInfo.getGoodIn() + prodInfo.getDefIn()));
+	private boolean isProdOutCountMatching(ProdInfo prodInfo, ProdInfo grcProdInfo) {
+		return (grcProdInfo.getGoodOut() == prodInfo.getGoodIn() && grcProdInfo.getDefOut() == prodInfo.getDefIn())
+				|| ((grcProdInfo.getGoodOut() + grcProdInfo.getDefOut()) == (prodInfo.getGoodIn()
+						+ prodInfo.getDefIn()));
 	}
-/**
- * Method to build partial pending grc product information
- * @param prodInfo
- * @param grcProdInfo
- * @return
- */
+
+	/**
+	 * Method to build partial pending grc product information
+	 * 
+	 * @param prodInfo
+	 * @param grcProdInfo
+	 * @return
+	 */
 	private ProdInfo buildGRCPartialPendingProdInfo(ProdInfo prodInfo, ProdInfo grcProdInfo) {
-		
+
 		ProdInfo resultProdInfo = new ProdInfo();
 		long qtyToMinusFromGoodOut = 0;
 		long qtyToMinusFromDefOut = 0;
 		long goodOut = 0;
 		long defOut = 0;
-		
-		
-		if(prodInfo.getGoodIn() > grcProdInfo.getGoodOut()){
-			
-			qtyToMinusFromDefOut = prodInfo.getGoodIn()-grcProdInfo.getGoodOut();
+
+		if (prodInfo.getGoodIn() > grcProdInfo.getGoodOut()) {
+
+			qtyToMinusFromDefOut = prodInfo.getGoodIn() - grcProdInfo.getGoodOut();
 		} else {
-			goodOut = grcProdInfo.getGoodOut()-prodInfo.getGoodIn();
+			goodOut = grcProdInfo.getGoodOut() - prodInfo.getGoodIn();
 		}
-		
+
 		if (prodInfo.getDefIn() > grcProdInfo.getDefOut()) {
 			qtyToMinusFromGoodOut = prodInfo.getDefIn() - grcProdInfo.getDefOut();
 		} else {
-			defOut = grcProdInfo.getDefOut()-prodInfo.getDefIn();
+			defOut = grcProdInfo.getDefOut() - prodInfo.getDefIn();
 		}
-		
-		
-		resultProdInfo.setGoodOut(goodOut-qtyToMinusFromGoodOut);
-		resultProdInfo.setDefOut(defOut-qtyToMinusFromDefOut);
-		resultProdInfo.setTotalQty(resultProdInfo.getGoodOut()+resultProdInfo.getDefOut());
+
+		resultProdInfo.setGoodOut(goodOut - qtyToMinusFromGoodOut);
+		resultProdInfo.setDefOut(defOut - qtyToMinusFromDefOut);
+		resultProdInfo.setTotalQty(resultProdInfo.getGoodOut() + resultProdInfo.getDefOut());
 		resultProdInfo.setUnitBasicRate(grcProdInfo.getUnitBasicRate());
-		resultProdInfo.setTotalAmount(resultProdInfo.getTotalQty()*resultProdInfo.getUnitBasicRate());
+		resultProdInfo.setTotalAmount(resultProdInfo.getTotalQty() * resultProdInfo.getUnitBasicRate());
 		resultProdInfo.setProduct(prodInfo.getProduct());
-		
-		if (resultProdInfo.getGoodOut() == 0 && resultProdInfo.getDefOut() == 0){
+
+		if (resultProdInfo.getGoodOut() == 0 && resultProdInfo.getDefOut() == 0) {
 			resultProdInfo.setStatus(StatusEnum.CLOSED.name());
 		} else {
 			resultProdInfo.setStatus(StatusEnum.PENDING.name());
@@ -245,19 +261,32 @@ public class RINServiceImpl implements RINService {
 		RINDetails rinDetails = new RINDetails();
 		try {
 			ReturnedInwardNote rin = getRINbyNo(rinNo);
+
 			if (null != rin) {
-				if(fromToInfo) {
-					if (CommonConstants.SUPPLIER.equalsIgnoreCase(rin.getFrom())) {
-						
-						rinDetails.setFromDetails(supplierDao.getSupplierByName(rin.getFromName()));
 
-						//rinDetails.setSupplier(supplierDao.getSupplierByName(rin.getFromName()));
+				if (CommonConstants.SUPPLIER.equalsIgnoreCase(rin.getFrom())) {
+					Supplier supplier = supplierDao.getSupplierById(rin.getFromId());
+					if (null != supplier) {
+						if (fromToInfo) {
+							rinDetails.setFromDetails(supplier);
+							// rinDetails.setSupplier(supplierDao.getSupplierByName(rin.getFromName()));
 
-					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(rin.getFrom())) {
-
-						rinDetails.setFromDetails(customerDao.getCustomerByName(rin.getFromName()));
-						//rinDetails.setCustomer(customerDao.getCustomerByName(rin.getFromName()));
+						}
+						rin.setFromName(supplier.getName());
 					}
+
+				} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(rin.getFrom())) {
+					Customer customer = customerDao.getCustomerById(rin.getFromId());
+					if (null != customer) {
+						if (fromToInfo) {
+							rinDetails.setFromDetails(customer);
+							// rinDetails.setCustomer(customerDao.getCustomerByName(rin.getFromName()));
+						}
+						rin.setFromName(customer.getName());
+					}
+
+				} else if (CommonConstants.OTHERS.equalsIgnoreCase(rin.getFrom())) {
+					rin.setFromName(CommonConstants.INITIAL_ENTRY);
 				}
 				rinDetails.setRin(rin);
 			}

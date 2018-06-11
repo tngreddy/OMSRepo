@@ -5,6 +5,8 @@ public class StockRecord {
 	private long recordId;
 	private String transDocRef;
 	private Product product;
+	private long fromToId;
+	private String fromToType;
 	private String fromTo;
 	private long goodIn;
 	private long goodOut;
@@ -27,12 +29,6 @@ public class StockRecord {
 		this.transDocRef = transDocRef;
 	}
 	
-	public String getFromTo() {
-		return fromTo;
-	}
-	public void setFromTo(String fromTo) {
-		this.fromTo = fromTo;
-	}
 	public long getGoodIn() {
 		return goodIn;
 	}
@@ -82,15 +78,23 @@ public class StockRecord {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public String getFromToType() {
+		return fromToType;
+	}
+	public void setFromToType(String fromToType) {
+		this.fromToType = fromToType;
+	}
+	public long getFromToId() {
+		return fromToId;
+	}
+	public void setFromToId(long fromToId) {
+		this.fromToId = fromToId;
+	}
+	public String getFromTo() {
+		return fromTo;
+	}
+	public void setFromTo(String fromTo) {
+		this.fromTo = fromTo;
+	}	
 
 }

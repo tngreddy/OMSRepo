@@ -53,7 +53,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	public void addCustomer(Customer customer) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(addCustomerQuery,
-					new Object[] { customer.getName(), customer.getTinNo(), customer.getCstNo(), customer.getContact().getContactId() });
+					new Object[] { customer.getName(), customer.getGstNo(), customer.getPanNo(), customer.getContact().getContactId() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -75,7 +75,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 	public void updateCustomer(Customer customer) throws OmsDataAccessException {
 		try {
 			jdbcTemplate.update(updateCustomerQuery,
-					new Object[] { customer.getName(), customer.getTinNo(), customer.getCstNo(), customer.getCustomerId()});
+					new Object[] { customer.getName(), customer.getGstNo(), customer.getPanNo(), customer.getCustomerId()});
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -163,8 +163,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao {
 			customer.setContact(contact);
 			customer.setCustomerId(resultSet.getLong("customer_id"));
 			customer.setName(resultSet.getString("customer_name"));
-			customer.setTinNo(resultSet.getString("tin_no"));
-			customer.setCstNo(resultSet.getString("cst_no"));
+			customer.setGstNo(resultSet.getString("gst_no"));
+			customer.setPanNo(resultSet.getString("pan_no"));
 			return customer;
 		}
 

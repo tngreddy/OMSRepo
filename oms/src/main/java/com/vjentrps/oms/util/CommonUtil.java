@@ -221,7 +221,8 @@ public class CommonUtil {
 				product.setProductId(prodInfo.getProduct().getProductId());
 				stockRecord.setProduct(product);
 				stockRecord.setTransDocRef(gin.getGinNo());
-				stockRecord.setFromTo(gin.getFromName());
+				stockRecord.setFromToId(gin.getFromId());
+				stockRecord.setFromToType(gin.getFrom());
 				stockRecord.setGoodIn(prodInfo.getGoodIn());
 				stockRecord.setDefIn(prodInfo.getDefIn());
 				prodt.setGoodBalance(prodt.getGoodBalance()	+ prodInfo.getGoodIn());
@@ -236,7 +237,8 @@ public class CommonUtil {
 				product.setProductId(prodInfo.getProduct().getProductId());
 				stockRecord.setProduct(product);
 				stockRecord.setTransDocRef(goc.getGocNo());
-				stockRecord.setFromTo(goc.getToName());
+				stockRecord.setFromToId(goc.getToId());
+				stockRecord.setFromToType(goc.getTo());
 				stockRecord.setGoodOut(prodInfo.getGoodOut());
 				stockRecord.setDefOut(prodInfo.getDefOut());
 				prodt.setGoodBalance(prodt.getGoodBalance()	- prodInfo.getGoodOut());
@@ -253,7 +255,8 @@ public class CommonUtil {
 				product.setProductId(prodInfo.getProduct().getProductId());
 				stockRecord.setProduct(product);
 				stockRecord.setTransDocRef(rin.getRinNo());
-				stockRecord.setFromTo(rin.getFromName());
+				stockRecord.setFromToId(rin.getFromId());
+				stockRecord.setFromToType(rin.getFrom());
 				stockRecord.setGoodIn(prodInfo.getGoodIn());
 				stockRecord.setDefIn(prodInfo.getDefIn());
 				prodt.setGoodBalance(prodt.getGoodBalance()	+ prodInfo.getGoodIn());
@@ -268,7 +271,8 @@ public class CommonUtil {
 				product.setProductId(prodInfo.getProduct().getProductId());
 				stockRecord.setProduct(product);
 				stockRecord.setTransDocRef(grc.getGrcNo());
-				stockRecord.setFromTo(grc.getToName());
+				stockRecord.setFromToId(grc.getToId());
+				stockRecord.setFromToType(grc.getTo());
 				stockRecord.setGoodOut(prodInfo.getGoodOut());
 				stockRecord.setDefOut(prodInfo.getDefOut());
 				prodt.setGoodBalance(prodt.getGoodBalance()	- prodInfo.getGoodOut());

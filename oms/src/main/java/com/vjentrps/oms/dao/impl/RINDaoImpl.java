@@ -61,7 +61,7 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 			rin.setRinNo(resultSet.getString("rin_no"));
 			rin.setRinDate(CommonUtil.formatFromSQLDate(resultSet.getString("rin_date")));
 			rin.setFrom(resultSet.getString("_from"));
-			rin.setFromName(resultSet.getString("from_name"));
+			rin.setFromId(resultSet.getLong("from_id"));
 			rin.setDocRefNo(resultSet.getString("doc_ref_no"));
 			rin.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			rin.setStatus(resultSet.getString("status"));
@@ -125,7 +125,7 @@ public class RINDaoImpl extends BaseDao implements RINDao {
 		
 		try {
 			success = jdbcTemplate.update(createRINQuery,
-					new Object[] { rin.getRinNo(), rin.getFrom(), rin.getFromName(), rin.getDocRefNo(), rin.getDocDate(), rin.getStatus(), rin.getRemarks() });
+					new Object[] { rin.getRinNo(), rin.getFrom(), rin.getFromId(), rin.getDocRefNo(), rin.getDocDate(), rin.getStatus(), rin.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}

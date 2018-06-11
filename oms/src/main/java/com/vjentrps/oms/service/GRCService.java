@@ -21,13 +21,13 @@ public interface GRCService {
 
 	void updateGRCStatus(GoodsReturnableChallan grc) throws OmsServiceException;
 
-	List<String> getGRCNoList(String fromName) throws OmsServiceException;
-
 	GRCDetails buildGRCDetails(String grcNo, boolean fromToInfo) throws OmsServiceException;
 
 	GoodsReturnableChallan getGRCbyNo(String grcNo) throws OmsServiceException;
 
 	Map<String, List<PendingGRC>> fetchAllGRCPendingProdInfo(String status) throws OmsServiceException;
+
+	List<String> getGRCNoList(String toName, String type) throws OmsServiceException;
 	
 	
 

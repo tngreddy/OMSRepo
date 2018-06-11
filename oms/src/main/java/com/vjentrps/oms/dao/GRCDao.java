@@ -21,7 +21,7 @@ public interface GRCDao {
 
 	void addGrcProdInfo(String grcNo, ProdInfo prodInfo) throws OmsDataAccessException;
 
-	List<String> fetchGRCNoList(String fromName) throws OmsDataAccessException;
+	List<String> fetchGRCNoList(long toId, String to) throws OmsDataAccessException;
 
 	List<ProdInfo> getGRCProdInfo(String grcNo, String status) throws OmsDataAccessException;
 

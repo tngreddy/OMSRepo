@@ -9,6 +9,7 @@ public class GoodsInwardNote {
 	private String ginDate;
 	private String from;
 	private String fromName;
+	private long fromId;
 	private String docRefNo;
 	private String docDate;
 	private List<ProdInfo> prodInfoList;
@@ -70,6 +71,13 @@ public class GoodsInwardNote {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	public long getFromId() {
+		return fromId;
+	}
+	public void setFromId(long fromId) {
+		this.fromId = fromId;
+	}
+	
 	
 	
 

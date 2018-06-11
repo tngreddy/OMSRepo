@@ -127,10 +127,10 @@ public class GRCRestController extends BaseRestController{
     }
     
     @RequestMapping(value="/grcNos",method = RequestMethod.GET)
-    public ResponseDTO getGRCNoList(@RequestParam("toName") String toName) {
+    public ResponseDTO getGRCNoList(@RequestParam("toName") String toName, @RequestParam("type") String type) {
     	List<String> grcNoList = new ArrayList<String>();
     	try {
-			grcNoList = grcService.getGRCNoList(toName);
+			grcNoList = grcService.getGRCNoList(toName, type);
 		} catch (OmsServiceException e) {
 			log.error("Error while getting GRCNo list",e);
 			return new ResponseDTO(commonUtil.processError(ErrorsEnum.TECHNICAL_EXCEPTION));

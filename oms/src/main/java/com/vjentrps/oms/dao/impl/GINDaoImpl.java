@@ -59,7 +59,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 			gin.setGinNo(resultSet.getString("gin_no"));
 			gin.setGinDate(CommonUtil.formatFromSQLDate(resultSet.getString("gin_date")));
 			gin.setFrom(resultSet.getString("_from"));
-			gin.setFromName(resultSet.getString("from_name"));
+			gin.setFromId(resultSet.getLong("from_id"));
 			gin.setDocRefNo(resultSet.getString("doc_ref_no"));
 			gin.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			gin.setStatus(resultSet.getString("status"));
@@ -100,7 +100,7 @@ public class GINDaoImpl extends BaseDao implements GINDao {
 		
 		try {
 			success = jdbcTemplate.update(createGINQuery,
-					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromName(), gin.getDocRefNo(), gin.getDocDate(), gin.getStatus(), gin.getRemarks() });
+					new Object[] { gin.getGinNo(), gin.getFrom(), gin.getFromId(), gin.getDocRefNo(), gin.getDocDate(), gin.getStatus(), gin.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}

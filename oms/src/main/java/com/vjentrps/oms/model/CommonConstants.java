@@ -19,6 +19,7 @@ public interface CommonConstants {
 	String NONE="NONE";
 	String PENDING_GRCS="PENDING_GRCS";
 	String PARTIAL_PENDING_GRCS="PARTIAL_PENDING_GRCS";
+	String INITIAL_ENTRY="INITIAL_ENTRY";
 	
 	
 

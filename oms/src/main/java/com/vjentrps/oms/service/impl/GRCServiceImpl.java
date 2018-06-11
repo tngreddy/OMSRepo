@@ -20,18 +20,20 @@ import com.vjentrps.oms.dao.SupplierDao;
 import com.vjentrps.oms.exception.OmsDataAccessException;
 import com.vjentrps.oms.exception.OmsServiceException;
 import com.vjentrps.oms.model.CommonConstants;
+import com.vjentrps.oms.model.Customer;
 import com.vjentrps.oms.model.GRCDetails;
 import com.vjentrps.oms.model.GoodsReturnableChallan;
 import com.vjentrps.oms.model.PendingGRC;
 import com.vjentrps.oms.model.ProdInfo;
 import com.vjentrps.oms.model.ProductStock;
 import com.vjentrps.oms.model.StockRecord;
+import com.vjentrps.oms.model.Supplier;
 import com.vjentrps.oms.service.GRCService;
 import com.vjentrps.oms.util.CommonUtil;
 
 @Service
 @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-public class GRCServiceImpl implements GRCService {
+public class GRCServiceImpl extends BaseService implements GRCService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -60,6 +62,9 @@ public class GRCServiceImpl implements GRCService {
 				grc.setGrcNo(CommonUtil.buildTransId(CommonConstants.GRC, grcIdIncrementer.nextStringValue()));
 				grcNo = grc.getGrcNo();
 				grc.setDocDate(CommonUtil.formatDate(grc.getDocDate()));
+				
+				// fetching and setting fromId using fromName
+				grc.setToId(getIdFromName(grc.getTo(), grc.getToName()));
 
 				int success = grcDao.createGRC(grc);
 
@@ -132,9 +137,10 @@ public class GRCServiceImpl implements GRCService {
 	}
 
 	@Override
-	public List<String> getGRCNoList(String toName) throws OmsServiceException {
+	public List<String> getGRCNoList(String toName, String type) throws OmsServiceException {
 		try {
-			return grcDao.fetchGRCNoList(toName);
+			long id = getIdFromName(type, toName);
+			return grcDao.fetchGRCNoList(id, type);
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
 		}
@@ -147,22 +153,49 @@ public class GRCServiceImpl implements GRCService {
 		GRCDetails grcDetails = new GRCDetails();
 		try {
 			GoodsReturnableChallan grc = getGRCbyNo(grcNo);
+			
 			if (null != grc) {
-				if(fromToInfo) {
-					
-					if (CommonConstants.SUPPLIER.equalsIgnoreCase(grc.getTo())) {
-						
-						grcDetails.setToDetails(supplierDao.getSupplierByName(grc.getToName()));
-						//grcDetails.setSupplier(supplierDao.getSupplierByName(grc.getToName()));
-						//grcDetails.setHasSupplier(true);
-						
-					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(grc.getTo())) {
-						grcDetails.setToDetails(customerDao.getCustomerByName(grc.getToName()));
-						//grcDetails.setCustomer(customerDao.getCustomerByName(grc.getToName()));
-						//grcDetails.setHasCustomer(true);
+
+				if (CommonConstants.SUPPLIER.equalsIgnoreCase(grc.getTo())) {
+					Supplier supplier = supplierDao.getSupplierById(grc.getToId());
+					if (null != supplier) {
+						if (fromToInfo) {
+							grcDetails.setToDetails(supplier);
+							// gocDetails.setSupplier(supplierDao.getSupplierByName(goc.getToName()));
+						}
+						grc.setToName(supplier.getName());
 					}
+
+				} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(grc.getTo())) {
+					Customer customer = customerDao.getCustomerById(grc.getToId());
+					if (null != customer) {
+						if (fromToInfo) {
+							grcDetails.setToDetails(customer);
+							// gocDetails.setCustomer(customerDao.getCustomerByName(goc.getToName()));
+						}
+						grc.setToName(customer.getName());
+					}
+				} else if (CommonConstants.OTHERS.equalsIgnoreCase(grc.getTo())) {
+					grc.setToName(CommonConstants.INITIAL_ENTRY);
 				}
 				grcDetails.setGrc(grc);
+				
+//			if (null != grc) {
+//				if(fromToInfo) {
+//					
+//					if (CommonConstants.SUPPLIER.equalsIgnoreCase(grc.getTo())) {
+//						
+//						grcDetails.setToDetails(supplierDao.getSupplierByName(grc.getToName()));
+//						//grcDetails.setSupplier(supplierDao.getSupplierByName(grc.getToName()));
+//						//grcDetails.setHasSupplier(true);
+//						
+//					} else if (CommonConstants.CUSTOMER.equalsIgnoreCase(grc.getTo())) {
+//						grcDetails.setToDetails(customerDao.getCustomerByName(grc.getToName()));
+//						//grcDetails.setCustomer(customerDao.getCustomerByName(grc.getToName()));
+//						//grcDetails.setHasCustomer(true);
+//					}
+//				}
+//				grcDetails.setGrc(grc);
 			}
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
@@ -191,7 +224,8 @@ public class GRCServiceImpl implements GRCService {
 		try {
 			
 			Map<String, List<PendingGRC>> pendingGRCsMap = new HashMap<String, List<PendingGRC>>();
-			pendingGRCsMap.put(CommonConstants.PENDING_GRCS, grcDao.getAllGrcPendingProdInfo(status));
+			
+			pendingGRCsMap.put(CommonConstants.PENDING_GRCS, updateToName(grcDao.getAllGrcPendingProdInfo(status)));
 			pendingGRCsMap.put(CommonConstants.PARTIAL_PENDING_GRCS, grcDao.getAllGrcPartialPendingProdInfo(status));
 					
 			return pendingGRCsMap;
@@ -199,6 +233,16 @@ public class GRCServiceImpl implements GRCService {
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
 		}
+	}
+
+	private List<PendingGRC> updateToName(List<PendingGRC> pendingGrcs) throws OmsDataAccessException {
+		if(CollectionUtils.isNotEmpty(pendingGrcs)){
+			for(PendingGRC pendingGRC : pendingGrcs){
+				pendingGRC.setToName(getNameFromId(pendingGRC.getTo(), pendingGRC.getToId()));
+			}
+		}
+		return pendingGrcs;	
+		
 	}
 
 

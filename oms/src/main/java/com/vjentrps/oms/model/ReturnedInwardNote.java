@@ -8,6 +8,7 @@ public class ReturnedInwardNote {
 	private String rinNo;
 	private String rinDate;
 	private String from;
+	private long fromId;
 	private String fromName;
 	private String docRefNo;
 	private String docDate;
@@ -75,6 +76,12 @@ public class ReturnedInwardNote {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public long getFromId() {
+		return fromId;
+	}
+	public void setFromId(long fromId) {
+		this.fromId = fromId;
 	}
 	
 	

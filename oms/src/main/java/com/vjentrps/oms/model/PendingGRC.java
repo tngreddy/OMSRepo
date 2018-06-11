@@ -5,6 +5,7 @@ public class PendingGRC {
 	 private String grcNo;
 	 private String grcDate;
 	 private String to;
+	 private long toId;
 	 private String toName;
 	 private ProdInfo prodInfo;
 	 private String lastModified;
@@ -45,7 +46,14 @@ public class PendingGRC {
 	public void setLastModified(String lastModified) {
 		this.lastModified = lastModified;
 	}
-	 
+	public long getToId() {
+		return toId;
+	}
+	public void setToId(long toId) {
+		this.toId = toId;
+	}
+	
+	
 	
 
 }

@@ -40,9 +40,9 @@ omsApp.controller('RINController', ['$scope', 'RINService', 'CommonService', 'GR
 		    
 		  };
 		
-		  $scope.fetchGRCNos = function(fromName){
-
-			  GRCService.fetchGRCNos(fromName)
+		  $scope.fetchGRCNos = function(fromName, type){
+			  
+			  GRCService.fetchGRCNos(fromName, type)
 				.then(
 						function(data) {
 							$scope.grcs = data;

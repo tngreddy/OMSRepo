@@ -4,8 +4,8 @@ public class Supplier{
 	
 	private long supplierId;
 	private String name;
-	private String tinNo;
-	private String cstNo;
+	private String gstNo;
+	private String panNo;
 	private Contact contact;
 	
 	public long getSupplierId() {
@@ -20,17 +20,17 @@ public class Supplier{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getTinNo() {
-		return tinNo;
+	public String getGstNo() {
+		return gstNo;
 	}
-	public void setTinNo(String tinNo) {
-		this.tinNo = tinNo;
+	public void setGstNo(String gstNo) {
+		this.gstNo = gstNo;
 	}
-	public String getCstNo() {
-		return cstNo;
+	public String getPanNo() {
+		return panNo;
 	}
-	public void setCstNo(String cstNo) {
-		this.cstNo = cstNo;
+	public void setPanNo(String panNo) {
+		this.panNo = panNo;
 	}
 	public Contact getContact() {
 		return contact;

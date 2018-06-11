@@ -170,11 +170,11 @@
 			</tr>
 			<tr>
 				<td><span>Contact No : </span><span>{{rinData.fromDetails.contact.phoneNo}}</span></td>
-				<td><span>TIN : </span><span>{{rinData.fromDetails.tinNo}}</span> </td>
+				<td><span>GST No : </span><span>{{rinData.fromDetails.gstNo}}</span> </td>
 			</tr>
 			<tr>
 				<td><span>Mobile No : </span><span>{{rinData.fromDetails.contact.mobileNo}}</span></td>
-				<td><span>CST No : </span><span>{{rinData.fromDetails.cstNo}}</span> </td>
+				<td><span>PAN No : </span><span>{{rinData.fromDetails.panNo}}</span> </td>
 			</tr>
 			<tr>
 				<td><span>Fax No : </span><span></span></td>
@@ -253,7 +253,7 @@
 				<div class="col-sm-8 selectContainer">
 						<select class="form-control" name="fromName"
 							ng-model="rin.fromName" validate-on="dirty"
-							ng-change="fetchGRCNos(rin.fromName)"
+							ng-change="fetchGRCNos(rin.fromName, rin.from)"
 							required-message="'From Name is required'" required>
 							<option	ng-selected="{{data.name == rin.fromName}}"
 								    ng-repeat="data in dataList" value="{{data.name}}">{{data.name}}</option>

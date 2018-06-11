@@ -43,7 +43,7 @@ public class LoadProducDataController {
         
          
         Workbook workbook = new XSSFWorkbook(inputStream);
-        Sheet firstSheet = workbook.getSheetAt(0);
+        Sheet firstSheet = workbook.getSheetAt(1);
         Iterator<Row> iterator = firstSheet.iterator();
         
          
@@ -55,10 +55,10 @@ public class LoadProducDataController {
 			while (cellIterator.hasNext()) {
 				Cell cell = cellIterator.next();
 				if (i == 0) {
-					product.setProductName(cell.getStringCellValue());
+					product.setProductName(cell.getStringCellValue().trim());
 				} else if (i == 1) {
 					Category category = new Category();
-					category.setCategoryName(cell.getStringCellValue());
+					category.setCategoryName(cell.getStringCellValue().trim());
 					product.setCategory(category);
 				} else if (i == 2) {
 					product.setUnitOfMeasure(cell.getStringCellValue());
@@ -84,7 +84,15 @@ public class LoadProducDataController {
 						product.getCategory().setCategoryId(category.getCategoryId());
 						productService.addProduct(product);
 					} else {
-						System.out.println(product.getProductName());
+						categoryService.addCategory(product.getCategory());
+						Category category1 = categoryService.getCategoryByName(product.getCategory().getCategoryName());
+						if(null!=category1) {
+							product.getCategory().setCategoryId(category1.getCategoryId());
+							productService.addProduct(product);
+							System.out.println(product.getProductName());
+						}
+						
+					
 					}
 				
 				} catch (OmsServiceException e) {

@@ -3,6 +3,7 @@ package com.vjentrps.oms.service.impl;
 import java.text.ParseException;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ import com.vjentrps.oms.util.CommonUtil;
 
 @Service
 @Transactional
-public class ReportsServiceImpl implements ReportsService {
+public class ReportsServiceImpl extends BaseService implements ReportsService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -55,10 +56,23 @@ public class ReportsServiceImpl implements ReportsService {
 	@Override
 	public List<StockRecord> fetchStockRecords() throws OmsServiceException {
 		try {
-			return stockDao.getAllStockRecords();
+			List<StockRecord> stockRecords = stockDao.getAllStockRecords();
+			//set fromTo Name for the respective fromToId and fromToType
+			setFromToName(stockRecords);
+			return stockRecords;
 		} catch (OmsDataAccessException e) {
 			throw new OmsServiceException(e);
 		}
+	}
+
+	private void setFromToName(List<StockRecord> stockRecords) throws OmsDataAccessException {
+		
+		if(CollectionUtils.isNotEmpty(stockRecords)){
+			for(StockRecord stockRecord : stockRecords) {
+				stockRecord.setFromTo(getNameFromId(stockRecord.getFromToType(), stockRecord.getFromToId()));
+			}
+		}
+		
 	}
 
 	@Override
@@ -74,9 +88,15 @@ public class ReportsServiceImpl implements ReportsService {
 				}
 
 				if (CommonConstants.ALL.equalsIgnoreCase(searchObj.getCategoryName()) && !StringUtils.isNoneBlank(searchObj.getFromDate(), searchObj.getToDate())) {
-					return stockDao.getAllStockRecords();
+					List<StockRecord> stockRecords = stockDao.getAllStockRecords();
+					//set fromTo Name for the respective fromToId and fromToType
+					setFromToName(stockRecords);
+					return stockRecords;
 				} else {
-					return stockDao.getAllStockRecords(searchObj);
+					List<StockRecord> stockRecords = stockDao.getAllStockRecords(searchObj);
+					//set fromTo Name for the respective fromToId and fromToType
+					setFromToName(stockRecords);
+					return stockRecords;
 				}
 
 			}

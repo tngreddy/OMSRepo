@@ -62,7 +62,7 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 			goc.setGocNo(resultSet.getString("goc_no"));
 			goc.setGocDate(CommonUtil.formatFromSQLDate(resultSet.getString("goc_date")));
 			goc.setTo(resultSet.getString("_to"));
-			goc.setToName(resultSet.getString("to_name"));
+			goc.setToId(resultSet.getLong("to_id"));
 			goc.setDocRefNo(resultSet.getString("doc_ref_no"));
 			goc.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			goc.setStatus(resultSet.getString("status"));
@@ -101,7 +101,7 @@ public class GOCDaoImpl extends BaseDao implements GOCDao {
 		
 		try {
 			success = jdbcTemplate.update(createGOCQuery,
-					new Object[] { goc.getGocNo(), goc.getTo(), goc.getToName(), goc.getDocRefNo(), goc.getDocDate(), goc.getStatus(), goc.getRemarks() });
+					new Object[] { goc.getGocNo(), goc.getTo(), goc.getToId(), goc.getDocRefNo(), goc.getDocDate(), goc.getStatus(), goc.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}

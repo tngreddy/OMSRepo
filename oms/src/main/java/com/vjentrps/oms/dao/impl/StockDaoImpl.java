@@ -103,7 +103,8 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			StockRecord stockRecord = new StockRecord();
 			stockRecord.setRecordId(resultSet.getLong("record_id"));
 			stockRecord.setTransDocRef(resultSet.getString("trans_doc_ref"));
-			stockRecord.setFromTo(resultSet.getString("fromTo"));
+			stockRecord.setFromToId(resultSet.getLong("fromToId"));
+			stockRecord.setFromToType(resultSet.getString("fromToType"));
 			stockRecord.setGoodIn(resultSet.getLong("good_in"));
 			stockRecord.setGoodOut(resultSet.getLong("good_out"));
 			stockRecord.setGoodBalance(resultSet.getLong("good_balance"));
@@ -135,7 +136,7 @@ public class StockDaoImpl extends BaseDao implements StockDao {
 			jdbcTemplate.update(
 					addStockRecordQuery,
 					new Object[] { stockRecord.getTransDocRef(), stockRecord.getProduct().getProductId(), 
-							stockRecord.getFromTo(), stockRecord.getGoodIn(),
+							stockRecord.getFromToId(), stockRecord.getFromToType(), stockRecord.getGoodIn(),
 							stockRecord.getGoodOut(),
 							stockRecord.getGoodBalance(),
 							stockRecord.getDefIn(), stockRecord.getDefOut(),

@@ -7,6 +7,7 @@ public class GoodsReturnableChallan {
 	private String grcNo;
 	private String grcDate;
 	private String to;
+	private long toId;
 	private String toName;
 	private String docRefNo;
 	private String docDate;
@@ -75,6 +76,14 @@ public class GoodsReturnableChallan {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	public long getToId() {
+		return toId;
+	}
+	public void setToId(long toId) {
+		this.toId = toId;
+	}
+	
+	
 	
 	
 

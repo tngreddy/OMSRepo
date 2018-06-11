@@ -93,7 +93,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			grc.setGrcNo(resultSet.getString("grc_no"));
 			grc.setGrcDate(CommonUtil.formatFromSQLDate(resultSet.getString("grc_date")));
 			grc.setTo(resultSet.getString("_to"));
-			grc.setToName(resultSet.getString("to_name"));
+			grc.setToId(resultSet.getLong("to_id"));
 			grc.setDocRefNo(resultSet.getString("doc_ref_no"));
 			grc.setDocDate(CommonUtil.formatFromSQLDate(resultSet.getString("doc_date")));
 			grc.setStatus(resultSet.getString("status"));
@@ -192,7 +192,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 			pendingGRC.setProdInfo(prodInfo);
 			pendingGRC.setGrcDate(resultSet.getString("grc_date"));
 			pendingGRC.setTo(resultSet.getString("_to"));
-			pendingGRC.setToName(resultSet.getString("to_name"));
+			pendingGRC.setToId(resultSet.getLong("to_id"));
 			pendingGRC.setLastModified(resultSet.getString("last_modified"));
 			return pendingGRC;
 		}
@@ -206,7 +206,7 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 		
 		try {
 			success = jdbcTemplate.update(createGRCQuery,
-					new Object[] { grc.getGrcNo(), grc.getTo(), grc.getToName(), grc.getDocRefNo(), grc.getDocDate(), grc.getStatus(), grc.getRemarks() });
+					new Object[] { grc.getGrcNo(), grc.getTo(), grc.getToId(), grc.getDocRefNo(), grc.getDocDate(), grc.getStatus(), grc.getRemarks() });
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
@@ -272,10 +272,10 @@ public class GRCDaoImpl extends BaseDao implements GRCDao {
 	}
 
 	@Override
-	public List<String> fetchGRCNoList(String toName) throws OmsDataAccessException {
+	public List<String> fetchGRCNoList(long toId, String type) throws OmsDataAccessException {
 		List<String> grcNoList = new ArrayList<String>();
 		try {
-			grcNoList =  jdbcTemplate.queryForList(fetchGRCNoListQuery, new Object[] { toName }, String.class);
+			grcNoList =  jdbcTemplate.queryForList(fetchGRCNoListQuery, new Object[] { toId, type }, String.class);
 		} catch (DataAccessException dae) {
 			throw new OmsDataAccessException(dae);
 		}
